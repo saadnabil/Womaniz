@@ -39,6 +39,7 @@ class AuthController extends Controller
     {
         Auth::logout();
         return $this->sendResponse([]);
+
     }
 
     public function forgetPasswordStepOne(ForgetPasswordUserValidationStepOne $request){
