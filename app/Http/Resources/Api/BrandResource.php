@@ -15,6 +15,7 @@ class BrandResource extends JsonResource
     public function toArray($request)
     {
        return [
+            'id' => $this->id,
             'name_en' => $this->name_en,
             'icon' => $this->icon?  url('storage/'.$this->icon) : null,
             'categories' => CategoryResource::collection($this->categories)
