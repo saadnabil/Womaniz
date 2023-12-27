@@ -11,7 +11,10 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'v1/user'],function(){
     Route::post('login', [AuthController::class , 'login']);
     Route::post('register', [AuthController::class , 'register']);
-    Route::post('forgetpassword', [AuthController::class , 'forgetpassword']);
+    Route::post('forgetPasswordStepOne', [AuthController::class , 'forgetPasswordStepOne']);
+    Route::post('forgetPasswordStepTwo', [AuthController::class , 'forgetPasswordStepTwo']);
+    Route::post('forgetPasswordStepThree', [AuthController::class , 'forgetPasswordStepThree']);
+
     Route::get('countries', [SettingController::class, 'countries']);
     Route::group(['middleware' => 'auth'],function(){
         Route::post('logout', [AuthController::class , 'logout'] );
@@ -38,8 +41,6 @@ Route::group(['prefix' => 'v1/user'],function(){
             Route::post('bookStepTwo', [SalonController::class, 'bookStepTwo']);
             Route::post('bookStepThree', [SalonController::class, 'bookStepThree']);
             Route::post('bookStepFour', [SalonController::class, 'bookStepFour']);
-
-
         });
     });
 });

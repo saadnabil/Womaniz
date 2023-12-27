@@ -2,7 +2,9 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\User\ForgetPasswordUserValidation;
+use App\Http\Requests\Api\User\ForgetPasswordUserValidationStepOne;
+use App\Http\Requests\Api\User\ForgetPasswordUserValidationStepThree;
+use App\Http\Requests\Api\User\ForgetPasswordUserValidationStepTwo;
 use App\Http\Requests\Api\User\LoginUserValidation;
 use App\Http\Requests\Api\User\RegisterUserValidation;
 use App\Http\Resources\Api\UserResource;
@@ -39,9 +41,18 @@ class AuthController extends Controller
         return $this->sendResponse([]);
     }
 
-    public function forgetpassword(ForgetPasswordUserValidation $request){
+    public function forgetPasswordStepOne(ForgetPasswordUserValidationStepOne $request){
         $data = $request->validated();
-        return $this->authService->forgetpassword($data);
+        return $this->authService->forgetPasswordStepOne($data);
+    }
+
+    public function forgetPasswordStepTwo(ForgetPasswordUserValidationStepTwo $request){
+        $data = $request->validated();
+        return $this->authService->forgetPasswordStepTwo($data);
+    }
+    public function forgetPasswordStepThree(ForgetPasswordUserValidationStepThree $request){
+        $data = $request->validated();
+        return $this->authService->forgetPasswordStepThree($data);
     }
 
 

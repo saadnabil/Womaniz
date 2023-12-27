@@ -72,8 +72,6 @@ class SalonController extends Controller
     }
 
     public function bookStepFour(BookSalonStepFourValidation $request){
-        $booking = SalonBooking::with('details')->first();
-        return response()->json($booking);
 
         $data = $request->validated();
         $booking = SalonBooking::create([
@@ -94,7 +92,34 @@ class SalonController extends Controller
                 'salon_booking_id' =>  $booking->id,
             ]);
         }
-        $booking = $booking->load('details.expert','details.service','details.user' ,'salon','branch');
-        return $this->sendResponse(new SalonBookingResource($booking));
+
+        //get response data
+        $bookingData = SalonBookingDetails::query()
+            ->where('salon_booking_id', $booking->id)  // Filter by salon_booking_id = 1
+            ->with([
+                'expert',                // Eager load the related expert model
+                'service',  // Eager load salon service and its nested service model
+            ])
+            ->get()
+            ->groupBy('expert.id')  // Group results by expert
+            ->map(function ($bookingsByExpert) {
+                // Format data for each expert
+                $expert = $bookingsByExpert->first()->expert;
+                $bookings = $bookingsByExpert->map(function ($booking) {
+                    $booking = $booking->load('service');
+                    return [
+                        'day' => $booking->day,
+                        'time' => $booking->time,
+                        'service' => $booking->service->name,  // Access service name
+                    ];
+                });
+            return [
+                'expert' => $expert,
+                'bookings' => $bookings,
+            ];
+        });
+        //get response data
+
+        return $this->sendResponse($bookingData);
     }
 }

@@ -16,6 +16,7 @@ class CategoryResource extends JsonResource
     public function toArray($request)
     {
         $data = [
+            'id' => $this->id,
             'name' => $this->name,
             'image' => $this->image?  url('storage/'.$this->image) : null,
             'isLastLevel' => $this->children->count() > 0 ? 0 : 1,

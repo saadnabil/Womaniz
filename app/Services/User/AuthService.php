@@ -31,7 +31,31 @@ class AuthService{
         return $this->sendResponse(new UserResource($user));
     }
 
-    public function forgetpassword($data){
+
+
+    public function forgetPasswordStepOne($data){
+        $user = User::where('email', $data['email'])->first();
+        if(!$user){
+            return $this->sendResponse(['error' => __('messages.Invalid credentials. Please make sure you are registered.'), 'fail' ,404]);
+        }
+        $code = generate_otp_function();
+        create_new_otp($data['email'], $code);
+        return $this->sendResponse(['code' => $code]);
+    }
+
+    public function forgetPasswordStepTwo($data){
+        $user = User::where('email', $data['email'])->first();
+        if(!$user){
+            return $this->sendResponse(['error' => __('messages.Invalid credentials. Please make sure you are registered.'), 'fail' ,404]);
+        }
+        $otp = Otp::where(['email' => $data['email'], 'code' => $data['otp']])->first();
+        if(!$otp){
+            return $this->sendResponse(['error' => __('messages.Verification code is not correct')],'fail','404');
+        }
+        return $this->sendResponse([]);
+    }
+
+    public function forgetPasswordStepThree($data){
         $user = User::where('email', $data['email'])->first();
         if(!$user){
             return $this->sendResponse(['error' => __('messages.Invalid credentials. Please make sure you are registered.'), 'fail' ,404]);
@@ -47,7 +71,6 @@ class AuthService{
         }
         $user->update(['password' => Hash::make($data['password'])]);
         return $this->sendResponse([]);
-
     }
 
     public function login(array $data){
