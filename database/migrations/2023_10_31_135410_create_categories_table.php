@@ -29,6 +29,8 @@ return new class extends Migration
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
 
+            $table->string('type')->default('brand_category')->nullable();
+
             $table->softDeletes();
             $table->timestamps();
         });
