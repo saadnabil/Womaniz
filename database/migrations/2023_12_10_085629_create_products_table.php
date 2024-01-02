@@ -23,8 +23,9 @@ return new class extends Migration
             $table->string('thumbnail')->nullable();
             $table->double('price')->nullable();
             $table->double('price_after_sale')->nullable();
-            $table->foreignIdFor(Category::class)->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->double('discount')->default(0.00);
+
+            $table->string('product_type')->nullable();
 
             $table->foreignId('designer_id')
                   ->nullable()
@@ -37,6 +38,39 @@ return new class extends Migration
                   ->constrained('countries')
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
+
+                  $table->foreignId('size_id')
+                  ->nullable()
+                  ->constrained('sizes')
+                  ->onUpdate('cascade')
+                  ->onDelete('cascade');
+
+            $table->text('fit_size_desc_en')->nullable();
+            $table->text('fit_size_desc_ar')->nullable();
+
+            $table->text('ship_information_desc_en')->nullable();
+            $table->text('ship_information_desc_ar')->nullable();
+
+            $table->text('return_order_desc_en')->nullable();
+            $table->text('return_order_desc_ar')->nullable();
+
+            $table->text('ingredients_desc_en')->nullable();
+            $table->text('ingredients_desc_ar')->nullable();
+
+            $table->text('about_product_desc_en')->nullable();
+            $table->text('about_product_desc_ar')->nullable();
+
+            $table->text('dimension')->nullable();
+
+            $table->text('diamond_en')->nullable();
+            $table->text('diamond_ar')->nullable();
+
+            $table->text('metal_en')->nullable();
+            $table->text('metal_ar')->nullable();
+
+            $table->integer('chain_length')->nullable();
+
+
 
             $table->softDeletes();
             $table->timestamps();

@@ -15,11 +15,10 @@ class SalonBookingResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'salon' => $this->salon->name,
-            'branch' => $this->branch->name,
-            'day' => $this->day,
-            'details' => SalonBookingDetailsResource::collection($this->details),
+            'expert' => $this['expert']['name'],
+            'image' => url('storage/'. $this['expert']['image']),
+            'day' => $this['bookings'][0]['day'],
+            'details' => SalonBookingDetailsResource::collection($this['bookings']),
         ];
     }
 }

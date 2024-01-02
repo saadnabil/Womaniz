@@ -15,9 +15,7 @@ class Brand extends Model
     protected $date = ['deleted_at'];
 
     public function categories(){
-
-        return $this->belongsToMany(Category::class , 'category_brands')->where('parent_id','!=',null);
-
+        return $this->belongsToMany(Category::class , 'category_brands')->where('type','brand_category');
     }
 
 }

@@ -26,7 +26,7 @@ class CategoryResource extends JsonResource
             $data['childs'] = CategoryResource::collection($this->children);
         }
 
-        if($this->parent_id == null && $this->is_salon != 1){
+        if($this->parent_id == null && $this->is_salon != 1 && $this->type == 'app_category'){
             $data['brands'] = BrandResource::collection($this->brands);
         }
 

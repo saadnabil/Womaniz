@@ -72,7 +72,6 @@ class SalonController extends Controller
     }
 
     public function bookStepFour(BookSalonStepFourValidation $request){
-
         $data = $request->validated();
         $booking = SalonBooking::create([
             'salon_id' => $data['salon_id'],
@@ -92,7 +91,6 @@ class SalonController extends Controller
                 'salon_booking_id' =>  $booking->id,
             ]);
         }
-
         //get response data
         $bookingData = SalonBookingDetails::query()
             ->where('salon_booking_id', $booking->id)  // Filter by salon_booking_id = 1
@@ -111,6 +109,9 @@ class SalonController extends Controller
                         'day' => $booking->day,
                         'time' => $booking->time,
                         'service' => $booking->service->name,  // Access service name
+                        'price' => $booking->service->price,
+                        'price_after_sale' => $booking->service->price_after_sale,
+                        'discount' => $booking->service->discount,
                     ];
                 });
             return [
@@ -119,7 +120,7 @@ class SalonController extends Controller
             ];
         });
         //get response data
-
-        return $this->sendResponse($bookingData);
+        return $this->sendResponse(SalonBookingResource::collection($bookingData));
+        // return $this->sendResponse($bookingData);
     }
 }

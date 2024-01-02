@@ -15,7 +15,13 @@ class SalonBookingDetailsResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
+            'day' => $this['day'],
+            'time' => $this['time'],
+            'service' => $this['service'],
+            'price' => $this['price'],
+            'price_after_sale' => $this['price_after_sale'],
+            'discount' => $this['discount'],
+
         ];
     }
 }

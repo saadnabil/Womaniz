@@ -28,8 +28,35 @@ class Product extends Model
         return $this->desc_ar;
     }
 
-    public function category(){
-        return $this->belongsTo(Category::class);
+
+
+    public function getFitSizeDescAttribute(){
+        $lang = app()->getLocale();
+        if($lang == 'en'){
+            return $this->fit_size_desc_en;
+        }
+        return $this->fit_size_desc_ar;
+    }
+
+    public function getShipInformationDescAttribute(){
+        $lang = app()->getLocale();
+        if($lang == 'en'){
+            return $this->ship_information_desc_en;
+        }
+        return $this->ship_information_desc_ar;
+    }
+
+    public function getReturnOrderDescAttribute(){
+        $lang = app()->getLocale();
+        if($lang == 'en'){
+            return $this->return_order_desc_en;
+        }
+        return $this->return_order_desc_ar;
+    }
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'category_products');
     }
 
     public function designer(){

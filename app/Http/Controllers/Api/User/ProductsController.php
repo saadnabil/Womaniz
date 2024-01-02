@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\User\GetProductsValidation;
 use App\Http\Resources\Api\CategoryResource;
 use App\Http\Resources\Api\ProductResource;
 use App\Http\Traits\ApiResponseTrait;
@@ -13,14 +14,10 @@ use Illuminate\Http\Request;
 class ProductsController extends Controller
 {
     use ApiResponseTrait;
-    public function index(){
-        $products = Product::where([
-                        'category_id' => request('category'),
-                        'country_id' => auth()->user()->country_id
-                    ])->with('images','variants.size')
-                      ->latest()
-                      ->simplepaginate();
-        return $this->sendResponse(resource_collection(ProductResource::collection($products)));
+    public function index(GetProductsValidation $request){
+        $data = $request->validated();
+        $category = Category::with('products.images','products.variants.size')->where('id', $data['category'])->first();
+        return $this->sendResponse(resource_collection(ProductResource::collection($category->products()->where('country_id' , auth()->user()->country_id)->simplepaginate())));
     }
     public function show($id){
         $product = Product::with('images','variants.size')->find($id);

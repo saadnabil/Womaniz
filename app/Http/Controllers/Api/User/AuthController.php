@@ -55,9 +55,6 @@ class AuthController extends Controller
         $data = $request->validated();
         return $this->authService->forgetPasswordStepThree($data);
     }
-
-
-
 }
 
 
