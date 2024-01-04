@@ -1,7 +1,9 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -13,11 +15,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('countries', function (Blueprint $table) {
+        Schema::create('scratch_games', function (Blueprint $table) {
             $table->id();
-            $table->string('country')->nullable();
-            $table->string('timezone')->nullable();
+            $table->string('code')->nullable();
+            $table->integer('discount')->default(0);
+            $table->foreignId('country_id')->nullable()->constrained('countries')->onDelete('cascade')->onUpdate('cascade');
             $table->softDeletes();
+            $table->date('date')->nullable()->default(Carbon::now()->toDateString());
             $table->timestamps();
         });
     }
@@ -29,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('countries');
+        Schema::dropIfExists('scratch_games');
     }
 };

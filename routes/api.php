@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\User\AuthController;
 use App\Http\Controllers\Api\User\CategoriesController;
+use App\Http\Controllers\Api\User\GamesController;
 use App\Http\Controllers\Api\User\HomeController;
 use App\Http\Controllers\Api\User\ProductsController;
 use App\Http\Controllers\Api\User\ProfileController;
@@ -21,6 +22,12 @@ Route::group(['prefix' => 'v1/user'],function(){
     Route::group(['middleware' => 'auth'],function(){
 
         Route::post('logout', [AuthController::class , 'logout'] );
+
+        Route::group(['prefix' => 'games'], function(){
+            Route::get('scratchGameDetails' , [GamesController::class , 'scratchgamedetails']);
+            Route::get('scratch' , [GamesController::class , 'scratch']);
+
+        });
 
         Route::group(['prefix' => 'categories'],function(){
             Route::get('/',[CategoriesController::class,'index']);

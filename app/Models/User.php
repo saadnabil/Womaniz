@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -51,12 +53,19 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsTo(Country::class);
     }
 
+    public function scratchgameusers(){
+        return $this->hasMany(ScratchGameUser::class);
+    }
+
+    public function todayscratchgameuser(){
+        return $this->hasOne(ScratchGameUser::class)->whereDate('date',Carbon::today());
+    }
+
     public function favouriteproducts(){
         return $this->belongsToMany(Product::class , 'user_products');
     }
 
-
-
-
-
+    public function coupons(){
+        return $this->hasMany(Coupon::class);
+    }
 }
