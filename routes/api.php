@@ -26,7 +26,6 @@ Route::group(['prefix' => 'v1/user'],function(){
         Route::group(['prefix' => 'games'], function(){
             Route::get('scratchGameDetails' , [GamesController::class , 'scratchgamedetails']);
             Route::get('scratch' , [GamesController::class , 'scratch']);
-
         });
 
         Route::group(['prefix' => 'categories'],function(){

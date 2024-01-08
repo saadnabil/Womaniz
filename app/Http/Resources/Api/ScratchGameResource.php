@@ -22,7 +22,7 @@ class ScratchGameResource extends JsonResource
             'expiration_date' => $this->expiration_date,
             'open_cell_index' => $this->open_cell_index,
             'time_open_cell_index' => $this->time_open_cell_index,
-            'allow_to_scratch' =>  Carbon::now()->diffInMinutes(Carbon::createFromFormat('h:i a',$this->time_open_cell_index)) > 60 ? 1 : 0,
+            'allow_to_scratch' => $this->open_cell_index == 0 ? 1 : (Carbon::now(auth()->user()->country->timezone)->diffInMinutes(Carbon::createFromFormat('h:i a',$this->time_open_cell_index)) > 60 ? 1 : 0) ,
         ];
     }
 }

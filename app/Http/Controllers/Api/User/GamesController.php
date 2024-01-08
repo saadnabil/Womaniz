@@ -8,31 +8,47 @@ use Carbon\Carbon;
 class GamesController extends Controller
 {
     use ApiResponseTrait;
+
     public function scratchgamedetails(){
-        $user = auth()->user();
+        $user = auth()->user()->load('country');
         $scratchgame = $user -> todayscratchgameuser;
-        if($scratchgame){
-            $scratchgame -> load('scratchgame');
+        if(!$scratchgame){
+            return $this->sendResponse(['error' => __('messages.Game is not found')] , 'fail' ,404);
         }
+        $scratchgame -> load('scratchgame');
         return $this->sendResponse(new ScratchGameResource($scratchgame));
     }
+
     public function scratch(){
-        $user = auth()->user();
+
+        $user = auth()->user()->load('country');
+
+        $country = $user->country;
+
         $scratchgame = $user -> todayscratchgameuser;
+
         if(!$scratchgame){
            return $this->sendResponse(['error' => __('messages.Game is not found')], 'fail' , 404);
         }
-        $scratchgame -> load('scratchgame');
+
         if($scratchgame->open_cell_index == 5){
             return $this->sendResponse(['error' => __('messages.Game is over')], 'fail' , 404);
         }
-        if(Carbon::now()->diffInMinutes(Carbon::createFromFormat('h:i a',$scratchgame->time_open_cell_index)) < 60){
+
+        $scratchgame -> load('scratchgame');
+
+        $time_open_cell_index = $scratchgame->time_open_cell_index == null ?  (Carbon::now($country->timezone)->subHours(3))->format('h:i a'): $scratchgame->time_open_cell_index;
+
+
+        if(Carbon::now($country->timezon)->diffInMinutes(Carbon::createFromFormat('h:i a',$time_open_cell_index)) < 60){
             return $this->sendResponse(['error' => __('messages.Scratch is not available now')], 'fail' , 404);
         }
+
         $scratchgame->update([
             'open_cell_index' => $scratchgame->open_cell_index  + 1,
-            'time_open_cell_index' => Carbon::now()->format('h:i a'),
+            'time_open_cell_index' => Carbon::now($country->timezon)->format('h:i a'),
         ]);
+
         if($scratchgame->open_cell_index == 5){ //scratched last cell in the game
             //steps add coupons
             Coupon::create([
@@ -44,6 +60,7 @@ class GamesController extends Controller
                 'type' => 'scratch',
             ]);
         }
+
         return $this->sendResponse(new ScratchGameResource($scratchgame));
     }
 }
