@@ -33,7 +33,7 @@ class ProductsController extends Controller
         return $this->sendResponse(resource_collection(ProductResource::collection($favouriteproducts)));
     }
     public function togglefavourites($id){
-        $product = Product::where([
+        $product = Product::with('images','variants.size')->where([
                 'id' => $id,
                 'country_id' => auth()->user()->country_id
         ])->first();
@@ -52,6 +52,6 @@ class ProductsController extends Controller
                 'product_id' => $id,
             ]);
         }
-        return $this->sendResponse([]);
+        return $this->sendResponse(new ProductResource($product));
     }
 }
