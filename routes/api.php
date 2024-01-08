@@ -48,6 +48,7 @@ Route::group(['prefix' => 'v1/user'],function(){
             Route::post('/',[ProductsController::class,'index']);
             Route::get('/show/{id}',[ProductsController::class,'show']);
             Route::get('/favourites',[ProductsController::class,'favourites']);
+            Route::get('/favourites/togglefavourites/{id}',[ProductsController::class,'togglefavourites']);
         });
 
         Route::group(['prefix' => 'salon'], function(){

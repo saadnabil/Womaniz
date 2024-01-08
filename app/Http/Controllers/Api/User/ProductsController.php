@@ -9,6 +9,7 @@ use App\Http\Resources\Api\ProductResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\UserProduct;
 use Illuminate\Http\Request;
 
 class ProductsController extends Controller
@@ -30,5 +31,27 @@ class ProductsController extends Controller
         $user = auth()->user()->load('favouriteproducts');
         $favouriteproducts = $user->favouriteproducts()->where('country_id', auth()->user()->country_id)->simplepaginate();
         return $this->sendResponse(resource_collection(ProductResource::collection($favouriteproducts)));
+    }
+    public function togglefavourites($id){
+        $product = Product::where([
+                'id' => $id,
+                'country_id' => auth()->user()->country_id
+        ])->first();
+        if(!$product){
+            return $this->sendResponse(['error' => __('messages.Product is not found')] , 'fail' , 404);
+        }
+        $fav = UserProduct::where([
+            'user_id' => auth()->user()->id,
+            'product_id' => $id,
+        ])->first();
+        if($fav){
+            $fav->delete();
+        }else{
+            UserProduct::create([
+                'user_id' => auth()->user()->id,
+                'product_id' => $id,
+            ]);
+        }
+        return $this->sendResponse([]);
     }
 }
