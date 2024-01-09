@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests\Api\User;
 
+use App\Http\Requests\AbstractFormRequest;
 use Illuminate\Foundation\Http\FormRequest;
 
-class BookSalonStepFourValidation extends FormRequest
+class BookSalonStepFourValidation extends AbstractFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

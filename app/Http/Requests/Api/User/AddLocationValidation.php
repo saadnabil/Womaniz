@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests\Api\User;
 
+use App\Http\Requests\AbstractFormRequest;
 use Illuminate\Foundation\Http\FormRequest;
 
-class AddLocationValidation extends FormRequest
+class AddLocationValidation extends AbstractFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

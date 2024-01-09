@@ -1,10 +1,12 @@
 <?php
 namespace App\Http\Requests\Api\User;
 
+use App\Http\Requests\AbstractFormRequest;
 use App\Models\Country;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ForgetPasswordUserValidationStepThree extends FormRequest
+class ForgetPasswordUserValidationStepThree extends AbstractFormRequest
+
 {
     /**
      * Determine if the user is authorized to make this request.
