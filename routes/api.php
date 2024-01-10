@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\User\AuthController;
+use App\Http\Controllers\Api\User\CartController;
 use App\Http\Controllers\Api\User\CategoriesController;
 use App\Http\Controllers\Api\User\GamesController;
 use App\Http\Controllers\Api\User\HomeController;
@@ -34,6 +35,14 @@ Route::group(['prefix' => 'v1/user'],function(){
 
         Route::group(['prefix' => 'home'], function() {
             Route::get('/', [HomeController::class, 'index']);
+        });
+
+        Route::group(['prefix' => 'cart'], function() {
+            Route::get('/', [CartController::class, 'index']);
+            Route::get('/minusQuantity/{cartId}', [CartController::class, 'minusQuantity']);
+            Route::get('/plusQuantity/{cartId}', [CartController::class, 'plusQuantity']);
+            Route::get('/remove/{cartId}', [CartController::class, 'remove']);
+
         });
 
         Route::group(['prefix' => 'profile'], function() {

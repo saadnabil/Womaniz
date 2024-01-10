@@ -7,4 +7,6 @@ return [
     'Game is not found' => 'Game is not found',
     'Scratch is not available now' => 'Scratch is not available now',
     'Game is over' => 'Game is over',
+    'Quantity cant be less than one' => 'Quantity cant be less than one',
+    'Cart item is not found' => 'Cart item is not found',
 ];
