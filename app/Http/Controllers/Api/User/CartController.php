@@ -17,7 +17,7 @@ class CartController extends Controller
 {
     use ApiResponseTrait;
 
-    public function index(){
+    public function cartDetails(){
         $user = auth()->user()->load(['carts.product']);
         $total = 0;
         $totalSub = 0;
@@ -48,7 +48,7 @@ class CartController extends Controller
         $cart->update([
             'quantity' => $cart->quantity - 1,
         ]);
-        return $this->index();
+        return $this->cartDetails();
     }
 
     public function plusQuantity($cartId){
@@ -59,7 +59,7 @@ class CartController extends Controller
         $cart->update([
             'quantity' => $cart->quantity + 1,
         ]);
-        return $this->index();
+        return $this->cartDetails();
     }
 
     public function remove($cartId){
@@ -68,7 +68,7 @@ class CartController extends Controller
             return $this->sendResponse(['error' => __('messages.Cart item is not found')],'fail' , 404);
         }
         $cart->delete();
-        return $this->index();
+        return $this->cartDetails();
     }
 
     public function add(AddProductCartValidation $request){
@@ -84,7 +84,7 @@ class CartController extends Controller
             'product_id' =>  $data['product_id'] ,
             'user_id' => auth()->user()->id ,
         ]);
-        return $this->index();
+        return $this->cartDetails();
     }
 
 }

@@ -36,7 +36,7 @@ Route::group(['prefix' => 'v1/user'],function(){
         });
 
         Route::group(['prefix' => 'cart'], function() {
-            Route::get('/', [CartController::class, 'index']);
+            Route::get('/details', [CartController::class, 'cartDetails']);
             Route::get('/minusQuantity/{cartId}', [CartController::class, 'minusQuantity']);
             Route::post('/add', [CartController::class, 'add']);
             Route::get('/plusQuantity/{cartId}', [CartController::class, 'plusQuantity']);
