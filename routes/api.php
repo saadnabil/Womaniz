@@ -21,9 +21,7 @@ Route::group(['prefix' => 'v1/user'],function(){
     Route::get('countries', [SettingController::class, 'countries']);
 
     Route::group(['middleware' => 'auth'],function(){
-
         Route::post('logout', [AuthController::class , 'logout'] );
-
         Route::group(['prefix' => 'games'], function(){
             Route::get('scratchGameDetails' , [GamesController::class , 'scratchgamedetails']);
             Route::get('scratch' , [GamesController::class , 'scratch']);
@@ -40,6 +38,7 @@ Route::group(['prefix' => 'v1/user'],function(){
         Route::group(['prefix' => 'cart'], function() {
             Route::get('/', [CartController::class, 'index']);
             Route::get('/minusQuantity/{cartId}', [CartController::class, 'minusQuantity']);
+            Route::post('/add', [CartController::class, 'add']);
             Route::get('/plusQuantity/{cartId}', [CartController::class, 'plusQuantity']);
             Route::get('/remove/{cartId}', [CartController::class, 'remove']);
 

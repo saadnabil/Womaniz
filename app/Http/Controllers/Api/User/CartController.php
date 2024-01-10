@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\User\AddProductCartValidation;
 use App\Http\Resources\Api\CartResource;
 use App\Http\Resources\Api\CategoryResource;
 use App\Http\Resources\Api\ProductResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Cart;
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -66,6 +68,22 @@ class CartController extends Controller
             return $this->sendResponse(['error' => __('messages.Cart item is not found')],'fail' , 404);
         }
         $cart->delete();
+        return $this->index();
+    }
+
+    public function add(AddProductCartValidation $request){
+        $data = $request->validated();
+        $user  =  auth()->user();
+        $product = Product::where([
+            'id' => $data['product_id'],
+        ]);
+        if(!$product){
+            return $this->sendResponse(['error' => __('messages.Product is not found')],'fail',404);
+        }
+        Cart::firstorcreate([
+            'product_id' =>  $data['product_id'] ,
+            'user_id' => auth()->user()->id ,
+        ]);
         return $this->index();
     }
 
