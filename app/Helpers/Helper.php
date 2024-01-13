@@ -14,6 +14,20 @@ function langs(){
     return ['en', 'ar'];
 }
 
+function spin_game_array(){
+    return [
+        '1' => 'digit_one',
+        '2' => 'digit_two',
+        '3' => 'digit_three',
+        '4' => 'digit_four',
+        '5' => 'digit_five',
+        '6' => 'digit_six',
+        '7' => 'digit_seven',
+        '8' => 'digit_eight',
+        '9' => 'digit_nine',
+    ];
+}
+
 function generate_otp_function()
 {
     return str_pad(mt_rand(0, 9999), 4, '0', STR_PAD_LEFT);

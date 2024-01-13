@@ -9,4 +9,5 @@ return [
     'Game is over' => 'Game is over',
     'Quantity cant be less than one' => 'Quantity cant be less than one',
     'Cart item is not found' => 'Cart item is not found',
+    'Game is not available right now' => 'Game is not available right now',
 ];

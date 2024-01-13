@@ -2,12 +2,15 @@
 namespace App\Http\Controllers\Api\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\User\SpinGameValidation;
+use App\Http\Resources\Api\CouponResource;
 use App\Http\Resources\Api\ScratchGameResource;
 use App\Http\Resources\Api\SpinGameResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Coupon;
 use App\Models\SpinGame;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
+
 class GamesController extends Controller
 {
     use ApiResponseTrait;
@@ -45,7 +48,28 @@ class GamesController extends Controller
         if(!$spinGame){
             return $this->sendResponse(['error' => __('messages.Game is not found')] , 'fail' ,404);
         }
-
+        if($spinGame -> status == 'off'){
+            return $this->sendResponse(['error' => __('messages.Game is not available right now')] , 'fail' ,404);
+        }
+        $wheelResult = $spinGame[spin_game_array()[$data['digit']]];
+        if($wheelResult == 'spin_again'){
+            $user->update([
+                'spins' => $user->spins ,
+            ]);
+            return $this->spingamedetails();
+        }
+        $coupon = Coupon::create([
+            'user_id' => auth()->user()->id,
+            'code' => strtoupper(Str::random(mt_rand(5, 9))), //5 - 9 digits
+            'expiration_date' => Carbon::now($user->country->timezone)->addDays(3)->format('Y-m-d'),
+            'discount' => $wheelResult,
+            'country_id' => $user->country_id,
+            'type' => 'spin',
+        ]);
+        $user->update([
+            'spins' => $user->spins - 1,
+        ]);
+        return $this->sendResponse(new CouponResource($coupon));
     }
 
     public function scratch(){

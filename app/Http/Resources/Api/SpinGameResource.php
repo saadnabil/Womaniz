@@ -18,6 +18,7 @@ class SpinGameResource extends JsonResource
         return [
             'id' => $this->id,
             'status' => $this->status,
+            'spins' => auth()->user()->spins,
             'country_id' => $this->country_id,
             'country' => $this->country->country,
             'digit_one' =>  is_numeric($this->digit_one) ? (int)($this->digit_one) :$this->digit_one ,
