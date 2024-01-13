@@ -24,6 +24,7 @@ Route::group(['prefix' => 'v1/user'],function(){
         Route::post('logout', [AuthController::class , 'logout'] );
 
         Route::group(['prefix' => 'games'], function(){
+            Route::get('spinGameDetails' , [GamesController::class , 'spingamedetails']);
             Route::get('scratchGameDetails' , [GamesController::class , 'scratchgamedetails']);
             Route::get('scratch' , [GamesController::class , 'scratch']);
         });

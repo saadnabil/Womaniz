@@ -2,8 +2,10 @@
 namespace App\Http\Controllers\Api\User;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\ScratchGameResource;
+use App\Http\Resources\Api\SpinGameResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Coupon;
+use App\Models\SpinGame;
 use Carbon\Carbon;
 class GamesController extends Controller
 {
@@ -18,6 +20,25 @@ class GamesController extends Controller
         $scratchgame -> load('scratchgame');
         return $this->sendResponse(new ScratchGameResource($scratchgame));
     }
+
+    public function spingamedetails(){
+        $user = auth()->user()->load('country');
+        $spinGame = SpinGame::with('country')->where([
+            'country_id' => $user->country_id,
+        ])->first();
+        if(!$spinGame){
+            return $this->sendResponse(['error' => __('messages.Game is not found')] , 'fail' ,404);
+        }
+        return $this->sendResponse(new SpinGameResource($spinGame));
+    }
+
+    // public function spingame(){
+    //     $user = auth()->user()->load('country');
+    //     if($user->spins <= 0){
+    //         return $this->sendResponse(['error' => __('messages.Game is over')],'fail', 400);
+    //     }
+
+    // }
 
     public function scratch(){
 

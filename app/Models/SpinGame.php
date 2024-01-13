@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class SpinGame extends Model
 {
     use HasFactory;
+    public function country(){
+        return $this->belongsTo(Country::class);
+    }
 }

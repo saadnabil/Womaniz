@@ -23,6 +23,7 @@ class UserResource extends JsonResource
                 'country' => $this->country->country,
                 'image' => $this->image ?  url('storage/'.$this->image) : null,
                 'country_id' => $this->country_id,
+                'spins' => $this->spins,
             ]
         ];
         if($this->token){
