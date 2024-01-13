@@ -1,5 +1,4 @@
 <?php
-
 use App\Http\Controllers\Api\User\AuthController;
 use App\Http\Controllers\Api\User\CartController;
 use App\Http\Controllers\Api\User\CategoriesController;
@@ -21,7 +20,9 @@ Route::group(['prefix' => 'v1/user'],function(){
     Route::get('countries', [SettingController::class, 'countries']);
 
     Route::group(['middleware' => 'auth'],function(){
+
         Route::post('logout', [AuthController::class , 'logout'] );
+
         Route::group(['prefix' => 'games'], function(){
             Route::get('scratchGameDetails' , [GamesController::class , 'scratchgamedetails']);
             Route::get('scratch' , [GamesController::class , 'scratch']);
@@ -41,7 +42,6 @@ Route::group(['prefix' => 'v1/user'],function(){
             Route::post('/add', [CartController::class, 'add']);
             Route::get('/plusQuantity/{cartId}', [CartController::class, 'plusQuantity']);
             Route::get('/remove/{cartId}', [CartController::class, 'remove']);
-
         });
 
         Route::group(['prefix' => 'profile'], function() {
