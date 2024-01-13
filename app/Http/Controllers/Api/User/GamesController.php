@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Api\User;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\User\SpinGameValidation;
 use App\Http\Resources\Api\ScratchGameResource;
 use App\Http\Resources\Api\SpinGameResource;
 use App\Http\Traits\ApiResponseTrait;
@@ -32,13 +33,20 @@ class GamesController extends Controller
         return $this->sendResponse(new SpinGameResource($spinGame));
     }
 
-    // public function spingame(){
-    //     $user = auth()->user()->load('country');
-    //     if($user->spins <= 0){
-    //         return $this->sendResponse(['error' => __('messages.Game is over')],'fail', 400);
-    //     }
+    public function spin(SpinGameValidation $request){
+        $data = $request->validated();
+        $user = auth()->user()->load('country');
+        if($user->spins <= 0){
+            return $this->sendResponse(['error' => __('messages.Game is over')],'fail', 400);
+        }
+        $spinGame = SpinGame::with('country')->where([
+            'country_id' => $user->country_id,
+        ])->first();
+        if(!$spinGame){
+            return $this->sendResponse(['error' => __('messages.Game is not found')] , 'fail' ,404);
+        }
 
-    // }
+    }
 
     public function scratch(){
 

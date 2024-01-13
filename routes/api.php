@@ -27,6 +27,7 @@ Route::group(['prefix' => 'v1/user'],function(){
             Route::get('spinGameDetails' , [GamesController::class , 'spingamedetails']);
             Route::get('scratchGameDetails' , [GamesController::class , 'scratchgamedetails']);
             Route::get('scratch' , [GamesController::class , 'scratch']);
+            Route::post('spin' , [GamesController::class , 'spin']);
         });
 
         Route::group(['prefix' => 'categories'],function(){

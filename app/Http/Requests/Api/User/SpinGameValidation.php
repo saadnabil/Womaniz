@@ -5,7 +5,7 @@ namespace App\Http\Requests\Api\User;
 use App\Http\Requests\AbstractFormRequest;
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginUserValidation extends AbstractFormRequest
+class SpinGameValidation extends AbstractFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,8 +25,7 @@ class LoginUserValidation extends AbstractFormRequest
     public function rules()
     {
         return [
-            'email' => ['required','email', 'max:50'],
-            'password' => ['required', 'string', 'min:8'],
+            'digit' => ['required','numeric','min:1','max:9'],
         ];
     }
 }
