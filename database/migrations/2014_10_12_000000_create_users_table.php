@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('password')->nullable();
             $table->date('birthdate')->nullable();
             $table->string('image')->nullable();
+            $table->integer('spins')->default();
             $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
