@@ -20,20 +20,5 @@ class CouponsController extends Controller
         $user = auth()->user()->load('validcoupons');
         return $this->sendResponse(CouponResource::collection($user->validcoupons));
     }
-    public function apply(ApplyCouponValidation  $request){
-        $data = $request->validated();
-        $user = auth()->user()->load('country');
-        $country = $user->country;
-        $coupon = Coupon::where('country_id', $country->id)
-                        ->where('expiration_date', '>=', Carbon::today($country->timezone))
-                        ->where([
-                            'user_id' =>  $user->id,
-                            'code' => $data['code'],
-                        ])
-                        ->first();
-        if(!$coupon){
-            return $this->sendResponse(['error' => __('messages.Coupon not found or expired')] , 'fail', '404');
-        }
-        dd($coupon);
-    }
+
 }

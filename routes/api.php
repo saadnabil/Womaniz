@@ -41,9 +41,7 @@ Route::group(['prefix' => 'v1/user'],function(){
 
         Route::group(['prefix' => 'coupons'], function() {
             Route::get('/', [CouponsController::class, 'index']);
-            Route::post('/apply', [CouponsController::class, 'apply']);
         });
-
 
         Route::group(['prefix' => 'cart'], function() {
             Route::get('/details', [CartController::class, 'cartDetails']);
@@ -51,6 +49,8 @@ Route::group(['prefix' => 'v1/user'],function(){
             Route::post('/add', [CartController::class, 'add']);
             Route::get('/plusQuantity/{cartId}', [CartController::class, 'plusQuantity']);
             Route::get('/remove/{cartId}', [CartController::class, 'remove']);
+            Route::post('/applycoupn', [CartController::class, 'applycoupn']);
+            Route::get('/removecoupon', [CartController::class, 'removecoupon']);
         });
 
         Route::group(['prefix' => 'profile'], function() {

@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\User\AddProductCartValidation;
+use App\Http\Requests\Api\User\ApplyCouponValidation;
 use App\Http\Resources\Api\CartResource;
 use App\Http\Resources\Api\CategoryResource;
 use App\Http\Resources\Api\ProductResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Cart;
+use App\Models\Coupon;
 use App\Models\Product;
+use Carbon\Carbon;
 
 class CartController extends Controller
 {
@@ -35,7 +38,6 @@ class CartController extends Controller
             'totalSub' => $totalSub ,
             'discount' => $discount ,
             'details' => CartResource::collection($user->carts) ,
-
         ];
         return $this->sendResponse($data);
     }
@@ -88,6 +90,32 @@ class CartController extends Controller
             'user_id' => auth()->user()->id ,
         ]);
         return $this->cartDetails();
+    }
+
+    public function applycoupn(ApplyCouponValidation $request){
+        $data = $request->validated();
+        $user = auth()->user()->load('country');
+        $country = $user->country;
+        $coupon = Coupon::where('country_id', $country->id)
+                        ->where('expiration_date', '>=', Carbon::today($country->timezone))
+                        ->where([
+                            'user_id' =>  $user->id,
+                            'code' => $data['code'],
+                        ])
+                        ->first();
+        if(!$coupon){
+            return $this->sendResponse(['error' => __('messages.Coupon not found or expired')] , 'fail', '404');
+        }
+        $user->update([
+            'coupon_id' => $coupon->id,
+        ]);
+        return $this->cartDetails();
+    }
+
+    public function removecoupon(){
+        $user = auth()->user();
+        $user->update(['coupon_id' => null]);
+        return $this->sendResponse([]);
     }
 
 }
