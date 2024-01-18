@@ -29,7 +29,7 @@ class CartController extends Controller
             //sum cart final
         });
         $data = [
-            'total' => ceil( $totalSub + ( $totalSub * $tax / 100 ) + $shipping ) ,
+            'total' =>  $totalSub + ( $totalSub * $tax / 100 ) + $shipping ,
             'totalSub' => $totalSub,
             'details' => CartResource::collection($user->carts),
         ];
