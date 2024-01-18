@@ -72,4 +72,9 @@ class User extends Authenticatable implements JWTSubject
     public function carts(){
         return $this->hasMany(Cart::class);
     }
+
+    public function appliedcoupon(){
+        return $this->belongsTo(Coupon::class ,'coupon_id');
+    }
+
 }

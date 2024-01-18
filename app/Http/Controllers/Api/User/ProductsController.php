@@ -17,7 +17,7 @@ class ProductsController extends Controller
     use ApiResponseTrait;
     public function index(GetProductsValidation $request){
         $data = $request->validated();
-        $category = Category::with('products.images','products.variants.size')->where('id', $data['category'])->first();
+        $category = Category::with('products.images','products.variants.size','products.country')->where('id', $data['category'])->first();
         return $this->sendResponse(resource_collection(ProductResource::collection($category->products()->where('country_id' , auth()->user()->country_id)->simplepaginate())));
     }
     public function show($id){

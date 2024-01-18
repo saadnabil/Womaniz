@@ -80,4 +80,8 @@ class Product extends Model
         return $this->hasMany(Cart::class);
     }
 
+    public function country(){
+        return $this->belongsTo(Country::class);
+    }
+
 }

@@ -19,18 +19,18 @@ class CartController extends Controller
 
     public function cartDetails(){
         $user = auth()->user()->load(['carts.product']);
-        $total = 0;
         $totalSub = 0;
+        $tax  = 10 ;
+        $shipping = 20 ;
         $user->carts->each(function ($cart) use (&$total , &$totalSub) {
-            $cart->total = $cart->quantity * $cart->product->price_after_sale; // Assuming there's a 'price' column in your 'products' table
-            $cart->totalSub = $cart->quantity * ( $cart->product->price -  $cart->product->price_after_sale);
+            $cart->price = $cart->quantity * $cart->product->price; // Assuming there's a 'price' column in your 'products' table
+            $cart->price_after_sale = $cart->quantity * ( $cart->product->price -  $cart->product->price_after_sale);
             //sum cart final
-            $total += $cart->total;
-            $totalSub += $cart->totalSub;
+            $totalSub += $cart->price_after_sale;
             //sum cart final
         });
         $data = [
-            'total' => $total,
+            'total' =>  $totalSub + ( $totalSub * $tax / 100 ) + $shipping  ,
             'totalSub' => $totalSub,
             'details' => CartResource::collection($user->carts),
         ];

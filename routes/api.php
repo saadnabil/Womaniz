@@ -2,6 +2,7 @@
 use App\Http\Controllers\Api\User\AuthController;
 use App\Http\Controllers\Api\User\CartController;
 use App\Http\Controllers\Api\User\CategoriesController;
+use App\Http\Controllers\Api\User\CouponsController;
 use App\Http\Controllers\Api\User\GamesController;
 use App\Http\Controllers\Api\User\HomeController;
 use App\Http\Controllers\Api\User\ProductsController;
@@ -21,7 +22,7 @@ Route::group(['prefix' => 'v1/user'],function(){
 
     Route::group(['middleware' => 'auth'],function(){
 
-        Route::post('logout', [AuthController::class , 'logout'] );
+        Route::post('logout', [AuthController::class , 'logout']);
 
         Route::group(['prefix' => 'games'], function(){
             Route::get('spinGameDetails' , [GamesController::class , 'spingamedetails']);
@@ -37,6 +38,12 @@ Route::group(['prefix' => 'v1/user'],function(){
         Route::group(['prefix' => 'home'], function() {
             Route::get('/', [HomeController::class, 'index']);
         });
+
+        Route::group(['prefix' => 'coupons'], function() {
+            Route::get('/', [CouponsController::class, 'index']);
+            Route::post('/apply', [CouponsController::class, 'apply']);
+        });
+
 
         Route::group(['prefix' => 'cart'], function() {
             Route::get('/details', [CartController::class, 'cartDetails']);
