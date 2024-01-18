@@ -16,11 +16,11 @@ class CartController extends Controller
     use ApiResponseTrait;
 
     public function cartDetails(){
-        $user = auth()->user()->load(['carts.product']);
-
+        $user = auth()->user()->load(['carts.product','coupon']);
         $totalSub = 0 ;
-        $tax  = 14 ;
+        $tax  = 14;
         $shipping = count($user->carts) > 0 ?  20 : 0 ;
+        $discount = $user->coupon ? $user->coupon->discount : 0  ;
         $user->carts->each(function ($cart) use (&$total , &$totalSub) {
             $cart->price = $cart->quantity * $cart->product->price; // Assuming there's a 'price' column in your 'products' table
             $cart->price_after_sale = $cart->quantity * ( $cart->product->price -  $cart->product->price_after_sale);
@@ -29,9 +29,12 @@ class CartController extends Controller
             //sum cart final
         });
         $data = [
-            'total' =>  round(( $totalSub + ( $totalSub * $tax / 100 ) + $shipping ) * 2) / 2,
-            'totalSub' => $totalSub,
-            'details' => CartResource::collection($user->carts),
+            'total' =>  round(( ($totalSub - ($totalSub * $discount / 100))  + ( $totalSub * $tax / 100 ) + $shipping ) * 2) / 2 ,
+            'totalSub' => $totalSub ,
+            'discount' => $discount ,
+            'details' => CartResource::collection($user->carts) ,
+            'vat' => $tax ,
+            'shipping' => $shipping ,
         ];
         return $this->sendResponse($data);
     }
