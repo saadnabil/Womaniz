@@ -9,9 +9,7 @@ use App\Http\Resources\Api\CategoryResource;
 use App\Http\Resources\Api\ProductResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Cart;
-use App\Models\Category;
 use App\Models\Product;
-use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
@@ -19,9 +17,10 @@ class CartController extends Controller
 
     public function cartDetails(){
         $user = auth()->user()->load(['carts.product']);
-        $totalSub = 0;
-        $tax  = 10 ;
-        $shipping = 20 ;
+
+        $totalSub = 0 ;
+        $tax  = 14 ;
+        $shipping = count($user->carts) > 0 ?  20 : 0 ;
         $user->carts->each(function ($cart) use (&$total , &$totalSub) {
             $cart->price = $cart->quantity * $cart->product->price; // Assuming there's a 'price' column in your 'products' table
             $cart->price_after_sale = $cart->quantity * ( $cart->product->price -  $cart->product->price_after_sale);
@@ -30,7 +29,7 @@ class CartController extends Controller
             //sum cart final
         });
         $data = [
-            'total' =>  $totalSub + ( $totalSub * $tax / 100 ) + $shipping  ,
+            'total' =>  $totalSub + ( $totalSub * $tax / 100 ) + $shipping ,
             'totalSub' => $totalSub,
             'details' => CartResource::collection($user->carts),
         ];
