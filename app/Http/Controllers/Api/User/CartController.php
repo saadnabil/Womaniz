@@ -29,12 +29,13 @@ class CartController extends Controller
             //sum cart final
         });
         $data = [
+            'vat' => $tax ,
+            'shipping' => $shipping ,
             'total' =>  round(( ($totalSub - ($totalSub * $discount / 100))  + ( $totalSub * $tax / 100 ) + $shipping ) * 2) / 2 ,
             'totalSub' => $totalSub ,
             'discount' => $discount ,
             'details' => CartResource::collection($user->carts) ,
-            'vat' => $tax ,
-            'shipping' => $shipping ,
+
         ];
         return $this->sendResponse($data);
     }
