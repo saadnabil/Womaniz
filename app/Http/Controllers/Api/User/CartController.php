@@ -16,11 +16,11 @@ class CartController extends Controller
     use ApiResponseTrait;
 
     public function cartDetails(){
-        $user = auth()->user()->load(['carts.product','coupon']);
+        $user = auth()->user()->load(['carts.product','appliedcoupon']);
         $totalSub = 0 ;
         $tax  = 14;
         $shipping = count($user->carts) > 0 ?  20 : 0 ;
-        $discount = $user->coupon ? $user->coupon->discount : 0  ;
+        $discount = $user->appliedcoupon ? $user->appliedcoupon->discount : 0  ;
         $user->carts->each(function ($cart) use (&$total , &$totalSub) {
             $cart->price = $cart->quantity * $cart->product->price; // Assuming there's a 'price' column in your 'products' table
             $cart->price_after_sale = $cart->quantity * ( $cart->product->price -  $cart->product->price_after_sale);
