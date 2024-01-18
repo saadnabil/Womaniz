@@ -115,7 +115,8 @@ class CartController extends Controller
     public function removecoupon(){
         $user = auth()->user();
         $user->update(['coupon_id' => null]);
-        return $this->sendResponse([]);
+        return $this->cartDetails();
+
     }
 
 }
