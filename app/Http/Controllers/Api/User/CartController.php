@@ -29,7 +29,7 @@ class CartController extends Controller
             //sum cart final
         });
         $data = [
-            'total' =>  $totalSub + ( $totalSub * $tax / 100 ) + $shipping ,
+            'total' =>  round(( $totalSub + ( $totalSub * $tax / 100 ) + $shipping ) * 2) / 2,
             'totalSub' => $totalSub,
             'details' => CartResource::collection($user->carts),
         ];
