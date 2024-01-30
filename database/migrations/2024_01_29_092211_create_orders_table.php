@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignId('country_id')->nullable()->constrained('countries')->onDelete('cascade')->onUpdate('cascade');
             $table->double('total')->nullable();
             $table->double('totalsub')->nullable();
-            $table->double('payment_method')->default('cash')->nullable();
+            $table->string('payment_method')->default('cash')->nullable();
             $table->timestamps();
         });
     }
