@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Resources\Api\CartResource;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,4 +18,5 @@ class Cart extends Model
     public function product(){
         return $this->belongsTo(Product::class);
     }
+
 }

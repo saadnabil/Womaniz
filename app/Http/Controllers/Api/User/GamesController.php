@@ -66,9 +66,11 @@ class GamesController extends Controller
             'country_id' => $user->country_id,
             'type' => 'spin',
         ]);
+
         $user->update([
-            'spins' => $user->spins - 1,
+            'spins' => $user->spins - 1 ,
         ]);
+
         return $this->sendResponse(new CouponResource($coupon));
     }
 

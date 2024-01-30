@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Http\Resources\Api\CartResource;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -70,7 +71,10 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Coupon::class);
     }
 
-
+    public function validcoupons()
+    {
+        return $this->hasMany(Coupon::class)->where('expiration_date', '>=', Carbon::now()->toDateString());
+    }
 
     public function carts(){
         return $this->hasMany(Cart::class);
@@ -79,5 +83,30 @@ class User extends Authenticatable implements JWTSubject
     public function appliedcoupon(){
         return $this->belongsTo(Coupon::class ,'coupon_id');
     }
+
+    public function cartData(){
+        $user = $this->load(['carts.product','appliedcoupon']);
+        $totalSub = 0 ;
+        $tax  = 14;
+        $shipping = count($user->carts) > 0 ?  20 : 0 ;
+        $discount = $user->appliedcoupon ? $user->appliedcoupon->discount : 0  ;
+        $user->carts->each(function ($cart) use (&$total , &$totalSub) {
+            $cart->price = $cart->quantity * $cart->product->price; // Assuming there's a 'price' column in your 'products' table
+            $cart->price_after_sale = $cart->quantity * ( $cart->product->price -  $cart->product->price_after_sale);
+            //sum cart final
+            $totalSub += $cart->price_after_sale;
+            //sum cart final
+        });
+        $data = [
+            'vat' => $tax ,
+            'shipping' => $shipping ,
+            'total' =>  round(( ($totalSub - ($totalSub * $discount / 100))  + ( $totalSub * $tax / 100 ) + $shipping ) * 2) / 2 ,
+            'totalSub' => $totalSub ,
+            'discount' => $discount ,
+            'details' => CartResource::collection($user->carts) ,
+        ];
+        return $data;
+    }
+
 
 }
