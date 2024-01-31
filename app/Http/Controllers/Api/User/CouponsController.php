@@ -14,11 +14,9 @@ use Illuminate\Http\Request;
 
 class CouponsController extends Controller
 {
-    //
     use ApiResponseTrait;
     public function index(){
         $user = auth()->user()->load('validcoupons');
         return $this->sendResponse(CouponResource::collection($user->validcoupons));
     }
-
 }

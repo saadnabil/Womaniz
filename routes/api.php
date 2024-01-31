@@ -56,6 +56,7 @@ Route::group(['prefix' => 'v1/user'],function(){
             Route::post('/update', [ProfileController::class, 'update']);
             Route::post('/addlocation', [ProfileController::class, 'addlocation']);
         });
+
         Route::group(['prefix' => 'product'],function(){
             Route::post('/',[ProductsController::class,'index']);
             Route::get('/show/{id}',[ProductsController::class,'show']);
