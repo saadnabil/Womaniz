@@ -30,33 +30,34 @@ function spin_game_array(){
     ];
 }
 
-function generate_otp_function()
-{
+function generate_otp_function(){
     return str_pad(mt_rand(0, 9999), 4, '0', STR_PAD_LEFT);
 }
 
-// app/Helpers.php
-
-
-
-function generateTimeSlotsBetweenIntervals($start_time, $end_time, $interval = '1 hour')
-    {
-        $start = Carbon::parse($start_time);
-        $end = Carbon::parse($end_time);
-
-        // Fix: Ensure the interval format is correct (e.g., 'PT1H' for 1 hour)
-        $interval = new DateInterval('PT' . strtoupper($interval[0]) . 'H');
-
-        $time_slots = [];
-
-        // Create a DatePeriod to iterate over the time range
-        $period = new DatePeriod($start, $interval, $end);
-        foreach ($period as $slot) {
-            $time_slots[] = ['time' => $slot->format('h:i A') , 'booked' => 0 ];
-        }
-        // Add the end time to ensure it's included in the slots
-        return $time_slots;
+function checkValidAppliedCouponBeforeSubmitOrder($coupon , $timezone){
+    if ($coupon->expiration_date >= Carbon::now($timezone)->format('Y-m-d')) {
+        return true;
+    } else {
+       return false;
     }
+}
+
+function generateTimeSlotsBetweenIntervals($start_time, $end_time, $interval = '1 hour'){
+    $start = Carbon::parse($start_time);
+    $end = Carbon::parse($end_time);
+
+    // Fix: Ensure the interval format is correct (e.g., 'PT1H' for 1 hour)
+    $interval = new DateInterval('PT' . strtoupper($interval[0]) . 'H');
+    $time_slots = [];
+
+    // Create a DatePeriod to iterate over the time range
+    $period = new DatePeriod($start, $interval, $end);
+    foreach ($period as $slot) {
+        $time_slots[] = ['time' => $slot->format('h:i A') , 'booked' => 0 ];
+    }
+    // Add the end time to ensure it's included in the slots
+    return $time_slots;
+}
 
 
 

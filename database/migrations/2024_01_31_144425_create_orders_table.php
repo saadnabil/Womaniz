@@ -18,8 +18,14 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('coupon_id')->nullable()->constrained('coupons')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('country_id')->nullable()->constrained('countries')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('payment_card_id')->nullable()->constrained('payment_cards')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('address_id')->nullable()->constrained('addresses')->onDelete('cascade')->onUpdate('cascade');
             $table->double('total')->nullable();
             $table->double('totalsub')->nullable();
+            $table->double('discount')->default(0);
+            $table->double('vat')->default(0);
+            $table->double('shipping')->default(0);
+            $table->string('status')->default('pending');
             $table->string('payment_method')->default('cash')->nullable();
             $table->timestamps();
         });

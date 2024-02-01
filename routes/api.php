@@ -20,18 +20,21 @@ Route::group(['prefix' => 'v1/user'],function(){
     Route::post('forgetPasswordStepThree', [AuthController::class , 'forgetPasswordStepThree']);
     Route::get('countries', [SettingController::class, 'countries']);
     Route::group(['middleware' => 'auth'],function(){
+
         Route::post('logout', [AuthController::class , 'logout']);
+
         Route::group(['prefix' => 'games'], function(){
             Route::get('spinGameDetails' , [GamesController::class , 'spingamedetails']);
             Route::get('scratchGameDetails' , [GamesController::class , 'scratchgamedetails']);
             Route::get('scratch' , [GamesController::class , 'scratch']);
             Route::post('spin' , [GamesController::class , 'spin']);
         });
+
         Route::group(['prefix' => 'categories'],function(){
             Route::get('/',[CategoriesController::class,'index']);
         });
         Route::group(['prefix' => 'orders'],function(){
-            Route::get('/makeorder',[OrdersController::class,'makeorder']);
+            Route::post('/makeorder',[OrdersController::class,'makeorder']);
         });
         Route::group(['prefix' => 'home'], function() {
             Route::get('/', [HomeController::class, 'index']);
@@ -63,12 +66,14 @@ Route::group(['prefix' => 'v1/user'],function(){
             Route::get('/favourites',[ProductsController::class,'favourites']);
             Route::get('/favourites/togglefavourites/{id}',[ProductsController::class,'togglefavourites']);
         });
+
         Route::group(['prefix' => 'salon'], function(){
             Route::post('bookStepOne', [SalonController::class, 'bookStepOne']);
             Route::post('bookStepTwo', [SalonController::class, 'bookStepTwo']);
             Route::post('bookStepThree', [SalonController::class, 'bookStepThree']);
             Route::post('bookStepFour', [SalonController::class, 'bookStepFour']);
         });
+
     });
 });
 

@@ -11,4 +11,7 @@ return [
     'Cart item is not found' => 'Cart item is not found',
     'Game is not available right now' => 'Game is not available right now',
     'Coupon not found or expired' => 'Coupon not found or expired',
+    'Applied coupon is expired' => 'Applied coupon is expired',
+    'Your cart is empty' => 'Your cart is empty',
+    'Applied coupon is used' => 'Applied coupon is used',
 ];

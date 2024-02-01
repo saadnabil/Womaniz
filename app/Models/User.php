@@ -73,7 +73,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function validcoupons()
     {
-        return $this->hasMany(Coupon::class)->where('expiration_date', '>=', Carbon::now()->toDateString());
+        return $this->hasMany(Coupon::class)->where('expiration_date', '>=', Carbon::now($this->country->timezone)->toDateString());
     }
 
     public function carts(){
