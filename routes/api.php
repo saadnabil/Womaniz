@@ -11,7 +11,6 @@ use App\Http\Controllers\Api\User\ProfileController;
 use App\Http\Controllers\Api\User\SalonController;
 use App\Http\Controllers\Api\User\SettingController;
 use Illuminate\Support\Facades\Route;
-
 Route::group(['prefix' => 'v1/user'],function(){
     Route::post('login', [AuthController::class , 'login']);
     Route::post('register', [AuthController::class , 'register']);
@@ -20,16 +19,13 @@ Route::group(['prefix' => 'v1/user'],function(){
     Route::post('forgetPasswordStepThree', [AuthController::class , 'forgetPasswordStepThree']);
     Route::get('countries', [SettingController::class, 'countries']);
     Route::group(['middleware' => 'auth'],function(){
-
         Route::post('logout', [AuthController::class , 'logout']);
-
         Route::group(['prefix' => 'games'], function(){
             Route::get('spinGameDetails' , [GamesController::class , 'spingamedetails']);
             Route::get('scratchGameDetails' , [GamesController::class , 'scratchgamedetails']);
             Route::get('scratch' , [GamesController::class , 'scratch']);
             Route::post('spin' , [GamesController::class , 'spin']);
         });
-
         Route::group(['prefix' => 'categories'],function(){
             Route::get('/',[CategoriesController::class,'index']);
         });
@@ -40,7 +36,7 @@ Route::group(['prefix' => 'v1/user'],function(){
             Route::get('/', [HomeController::class, 'index']);
         });
         Route::group(['prefix' => 'coupons'], function() {
-            Route::get('/', [CouponsController::class, 'index']);
+            Route::get('/', [CouponsController::class, 'validcoupons']);
         });
         Route::group(['prefix' => 'cart'], function() {
             Route::get('/details', [CartController::class, 'cartDetails']);
@@ -51,7 +47,6 @@ Route::group(['prefix' => 'v1/user'],function(){
             Route::post('/applycoupn', [CartController::class, 'applycoupn']);
             Route::get('/removecoupon', [CartController::class, 'removecoupon']);
         });
-
         Route::group(['prefix' => 'profile'], function() {
             Route::get('/', [ProfileController::class, 'index']);
             Route::get('/policy', [ProfileController::class, 'policy']);
@@ -59,21 +54,18 @@ Route::group(['prefix' => 'v1/user'],function(){
             Route::post('/update', [ProfileController::class, 'update']);
             Route::post('/addlocation', [ProfileController::class, 'addlocation']);
         });
-
         Route::group(['prefix' => 'product'],function(){
             Route::post('/',[ProductsController::class,'index']);
             Route::get('/show/{id}',[ProductsController::class,'show']);
             Route::get('/favourites',[ProductsController::class,'favourites']);
             Route::get('/favourites/togglefavourites/{id}',[ProductsController::class,'togglefavourites']);
         });
-
         Route::group(['prefix' => 'salon'], function(){
             Route::post('bookStepOne', [SalonController::class, 'bookStepOne']);
             Route::post('bookStepTwo', [SalonController::class, 'bookStepTwo']);
             Route::post('bookStepThree', [SalonController::class, 'bookStepThree']);
             Route::post('bookStepFour', [SalonController::class, 'bookStepFour']);
         });
-
     });
 });
 

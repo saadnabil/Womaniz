@@ -15,8 +15,9 @@ use Illuminate\Http\Request;
 class CouponsController extends Controller
 {
     use ApiResponseTrait;
-    public function index(){
-        $user = auth()->user()->load('validcoupons');
-        return $this->sendResponse(CouponResource::collection($user->validcoupons));
+    public function validcoupons(){
+        $user = auth()->user()->load('coupons');
+        $validCoupons = $user->coupons()->where('expiration_date', '>=', Carbon::now($user->country->timezone)->toDateString())->where(['status' => 'pending'])->get();
+        return $this->sendResponse(CouponResource::collection($validCoupons));
     }
 }
