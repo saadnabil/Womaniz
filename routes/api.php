@@ -34,6 +34,7 @@ Route::group(['prefix' => 'v1/user'],function(){
         });
 
         Route::group(['prefix' => 'orders'],function(){
+            Route::get('/',[OrdersController::class,'getOrders']);
             Route::post('/makeorder',[OrdersController::class,'makeorder']);
         });
 

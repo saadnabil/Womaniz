@@ -11,4 +11,8 @@ class Order extends Model
     use HasFactory ,SoftDeletes;
     protected $guarded = [];
     protected $date = ['deleted_at'];
+
+    public function orderDetails(){
+        return $this->hasMany(OrderDetails::class);
+    }
 }

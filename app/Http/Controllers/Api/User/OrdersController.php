@@ -17,6 +17,11 @@ class OrdersController extends Controller
 {
     use ApiResponseTrait;
 
+    public function getOrders(){
+        $user = auth()->user()->load('orders.orderDetails');
+        return response()->json($user);
+    }
+
     public function makeOrder(MakeOrderValidation $request)
     {
         $user = auth()->user()->load(['carts.product', 'appliedcoupon', 'country']);
