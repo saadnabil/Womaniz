@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\User\AddLocationValidation;
+use App\Http\Requests\Api\User\CahngePasswordValidation;
 use App\Http\Requests\Api\User\UpdateProfileValidation;
 use App\Http\Resources\Api\CategoryResource;
 use App\Http\Resources\Api\UserResource;
@@ -11,6 +12,7 @@ use App\Http\Traits\ApiResponseTrait;
 use App\Models\Address;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
@@ -51,6 +53,29 @@ class ProfileController extends Controller
         $data['user_id'] = auth()->user()->id;
         Address::create($data);
         return $this->sendResponse([]);
+    }
+
+    public function changepassword(CahngePasswordValidation $request)
+    {
+        // Validate the request data using the rules defined in the ChangePasswordValidation class
+        $data = $request->validated();
+
+        // Get the currently authenticated user
+        $user = auth()->user();
+
+        // Check if the old password matches the user's current password
+        if (!Hash::check($data['oldpassword'], $user->password)) {
+            // If not, return an error response
+           return $this->sendResponse(['error' => __('messages.Invalid password')], 'fail' , 422);
+        }
+
+        // Update the user's password with the new password
+        $user->update([
+            'password' => Hash::make($data['newpassword']),
+        ]);
+
+        return $this->sendResponse([]);
+
     }
 
 }

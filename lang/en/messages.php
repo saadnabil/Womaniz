@@ -14,4 +14,5 @@ return [
     'Applied coupon is expired' => 'Applied coupon is expired',
     'Your cart is empty' => 'Your cart is empty',
     'Applied coupon is used' => 'Applied coupon is used',
+    'Invalid password' => 'Invalid password'
 ];

@@ -52,6 +52,7 @@ Route::group(['prefix' => 'v1/user'],function(){
             Route::get('/policy', [ProfileController::class, 'policy']);
             Route::get('/security', [ProfileController::class, 'security']);
             Route::post('/update', [ProfileController::class, 'update']);
+            Route::post('/changepassword', [ProfileController::class, 'changepassword']);
             Route::post('/addlocation', [ProfileController::class, 'addlocation']);
         });
         Route::group(['prefix' => 'product'],function(){
