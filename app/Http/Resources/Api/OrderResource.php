@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Api;
 
+use App\Models\OrderDetails;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class OrderResource extends JsonResource
@@ -23,6 +24,7 @@ class OrderResource extends JsonResource
             'shipping' => $this->shipping,
             'status' => $this->status,
             'payment_method' => $this->payment_method,
+            'order_details' => OrderDetailsResource::collection($this->orderDetails),
         ];
     }
 }

@@ -18,9 +18,14 @@ class OrdersController extends Controller
 {
     use ApiResponseTrait;
 
-    public function getOrders(){
-        $user = auth()->user()->load('orders.orderDetails','orders.coupon');
-        return $this->sendResponse(OrderResource::collection($user->orders));
+    public function pastorders(){
+        $user = auth()->user()->load('orders.orderDetails.product','orders.coupon');
+        return $this->sendResponse(resource_collection(OrderResource::collection($user->orders()->where('status','delivered')->simplepaginate())));
+    }
+
+    public function currentorders(){
+        $user = auth()->user()->load('orders.orderDetails.product','orders.coupon');
+        return $this->sendResponse(resource_collection(OrderResource::collection($user->orders()->where('status','!=','delivered')->simplepaginate())));
     }
 
     public function makeOrder(MakeOrderValidation $request)
