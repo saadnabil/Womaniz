@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\User\MakeOrderValidation;
 use App\Http\Resources\Api\CategoryResource;
+use App\Http\Resources\Api\OrderResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Brand;
 use App\Models\Category;
@@ -18,8 +19,8 @@ class OrdersController extends Controller
     use ApiResponseTrait;
 
     public function getOrders(){
-        $user = auth()->user()->load('orders.orderDetails');
-        return response()->json($user);
+        $user = auth()->user()->load('orders.orderDetails','orders.coupon');
+        return $this->sendResponse(OrderResource::collection($user->orders));
     }
 
     public function makeOrder(MakeOrderValidation $request)

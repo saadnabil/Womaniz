@@ -15,4 +15,8 @@ class Order extends Model
     public function orderDetails(){
         return $this->hasMany(OrderDetails::class);
     }
+
+    public function coupon(){
+        return $this->belongsTo(Coupon::class)->withTrashed();
+    }
 }
