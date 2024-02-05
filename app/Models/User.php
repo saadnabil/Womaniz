@@ -81,6 +81,10 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsTo(Coupon::class ,'coupon_id');
     }
 
+    public function addresses(){
+        return $this->hasMany(Address::class);
+    }
+
     public function cartData(){
         $user = $this->load(['carts.product','appliedcoupon']);
         $totalSub = 0 ;

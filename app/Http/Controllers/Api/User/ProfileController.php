@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\User\AddLocationValidation;
 use App\Http\Requests\Api\User\CahngePasswordValidation;
 use App\Http\Requests\Api\User\UpdateProfileValidation;
+use App\Http\Resources\Api\AddressResource;
 use App\Http\Resources\Api\CategoryResource;
 use App\Http\Resources\Api\UserResource;
 use App\Http\Traits\ApiResponseTrait;
@@ -30,6 +31,12 @@ class ProfileController extends Controller
         $user->update($data);
         return $this->sendResponse([]);
     }
+
+    public function addresses(){
+        $user = auth()->user()->load('addresses');
+        return $this->sendResponse(AddressResource::collection($user->addresses));
+    }
+
 
     public function policy(){
         $lang = app()->getLocale();
