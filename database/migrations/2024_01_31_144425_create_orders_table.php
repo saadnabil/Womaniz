@@ -27,6 +27,7 @@ return new class extends Migration
             $table->double('shipping')->default(0);
             $table->string('status')->default('pending');
             $table->string('payment_method')->default('cash')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
