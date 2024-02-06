@@ -78,7 +78,9 @@ class OrdersController extends Controller
         $user->carts()->delete();
 
         // Update coupon status to 'used'
-        $user->appliedcoupon->update(['status' => 'used']);
+        if($user->appliedcoupon != null){
+            $user->appliedcoupon->update(['status' => 'used']);
+        }
 
         // Reset user's coupon_id
         $user->update(['coupon_id' => null]);
