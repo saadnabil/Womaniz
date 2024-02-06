@@ -14,5 +14,8 @@ return [
     'Applied coupon is expired' => 'Applied coupon is expired',
     'Your cart is empty' => 'Your cart is empty',
     'Applied coupon is used' => 'Applied coupon is used',
-    'Invalid password' => 'Invalid password'
+    'Invalid password' => 'Invalid password',
+    'Address is not found or not belongs to this user' => 'Address is not found or not belongs to this user',
+    'Card is not found or not belongs to this user' => 'Card is not found or not belongs to this user',
+    'Payment card id is not required when payment method is visa' => 'Payment card id is not required when payment method is visa',
 ];

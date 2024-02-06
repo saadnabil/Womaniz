@@ -2,6 +2,7 @@
 
 namespace App\Rules;
 
+use App\Models\Address;
 use Illuminate\Contracts\Validation\Rule;
 
 class CheckAddressBelongsToUser implements Rule
@@ -25,8 +26,13 @@ class CheckAddressBelongsToUser implements Rule
      */
     public function passes($attribute, $value)
     {
-        //
-        dd($value);
+        $address = Address::where([
+            'id' => $value,
+            'user_id' => auth()->user()->id,
+        ])->first();
+        if($address != null){
+            return true;
+        }
     }
 
     /**
@@ -36,6 +42,6 @@ class CheckAddressBelongsToUser implements Rule
      */
     public function message()
     {
-        return 'The validation error message.';
+        return __('messages.Address is not found or not belongs to this user');
     }
 }

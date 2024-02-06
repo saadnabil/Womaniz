@@ -5,7 +5,7 @@ namespace App\Rules;
 use App\Models\PaymentCard;
 use Illuminate\Contracts\Validation\Rule;
 
-class CheckCardBelongsToUser implements Rule
+class NotRequiredPaymentCardId implements Rule
 {
     /**
      * Create a new rule instance.
@@ -27,13 +27,11 @@ class CheckCardBelongsToUser implements Rule
     public function passes($attribute, $value)
     {
         //
-        $card = PaymentCard::where([
-            'id' => $value,
-            'user_id' => auth()->user()->id,
-        ])->first();
-        if($card != null){
-            return true;
+        $val = '';
+        if(request('payment_method') == 'cash'    &&  request()->has('payment_card_id')  ){
+            return false;
         }
+        return true;
 
     }
 
@@ -44,6 +42,6 @@ class CheckCardBelongsToUser implements Rule
      */
     public function message()
     {
-        return __('messages.Card is not found or not belongs to this user');
+        return __('messages.Payment card id is not required when payment method is visa');
     }
 }
