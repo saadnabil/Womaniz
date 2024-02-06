@@ -44,11 +44,7 @@ class OrdersController extends Controller
         $isCouponValid = checkValidAppliedCouponBeforeSubmitOrder($user->appliedcoupon, $user->country->timezone);
 
         if (!$isCouponValid) {
-            return $this->sendResponse(['error' => __('messages.Applied coupon is expired')], 'fail', 400);
-        }
-
-        if ($user->appliedcoupon->status == 'used') {
-            return $this->sendResponse(['error' => __('messages.Applied coupon is used')], 'fail', 400);
+            return $this->sendResponse(['error' => __('messages.Coupon is not valid')], 'fail', 400);
         }
 
         $cartData = $user->cartData();

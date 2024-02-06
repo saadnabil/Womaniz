@@ -35,7 +35,10 @@ function generate_otp_function(){
 }
 
 function checkValidAppliedCouponBeforeSubmitOrder($coupon , $timezone){
-    if ($coupon->expiration_date >= Carbon::now($timezone)->format('Y-m-d')) {
+    if($coupon == null){
+        return true;
+    }
+    if ($coupon->expiration_date >= Carbon::now($timezone)->format('Y-m-d') && $coupon->status == 'pending') {
         return true;
     } else {
        return false;
