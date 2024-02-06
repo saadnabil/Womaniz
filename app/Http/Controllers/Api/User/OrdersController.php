@@ -67,7 +67,7 @@ class OrdersController extends Controller
         foreach ($cartData['details'] as $item) {
             OrderDetails::create([
                 'order_id' => $order->id,
-                'produc_id' => $item->product->id,
+                'product_id' => $item->product->id,
                 'quantity' => $item->quantity,
                 'price' => $item->product->price,
                 'price_after_sale' => $item->product->price_after_sale,
