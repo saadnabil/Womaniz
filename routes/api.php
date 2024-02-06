@@ -6,12 +6,14 @@ use App\Http\Controllers\Api\User\CouponsController;
 use App\Http\Controllers\Api\User\GamesController;
 use App\Http\Controllers\Api\User\HomeController;
 use App\Http\Controllers\Api\User\OrdersController;
+use App\Http\Controllers\Api\User\PaymentCardsController;
 use App\Http\Controllers\Api\User\ProductsController;
 use App\Http\Controllers\Api\User\ProfileController;
 use App\Http\Controllers\Api\User\SalonController;
 use App\Http\Controllers\Api\User\SettingController;
 use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'v1/user'],function(){
+
     Route::post('login', [AuthController::class , 'login']);
     Route::post('register', [AuthController::class , 'register']);
     Route::post('forgetPasswordStepOne', [AuthController::class , 'forgetPasswordStepOne']);
@@ -65,6 +67,10 @@ Route::group(['prefix' => 'v1/user'],function(){
             Route::post('/changepassword', [ProfileController::class, 'changepassword']);
             Route::get('/addresses', [ProfileController::class, 'addresses']);
             Route::post('/addlocation', [ProfileController::class, 'addlocation']);
+        });
+
+        Route::group(['prefix' => 'paymentcards'] ,function(){
+            Route::get('/', [PaymentCardsController::class, 'index']);
         });
 
         Route::group(['prefix' => 'product'],function(){

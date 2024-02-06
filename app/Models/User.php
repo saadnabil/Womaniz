@@ -89,6 +89,10 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Address::class);
     }
 
+    public function paymentcards(){
+        return $this->hasMany(PaymentCard::class);
+    }
+
     public function cartData(){
         $user = $this->load(['carts.product','appliedcoupon']);
         $totalSub = 0 ;
