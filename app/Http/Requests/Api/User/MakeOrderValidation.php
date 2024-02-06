@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Api\User;
 
 use App\Http\Requests\AbstractFormRequest;
+use App\Rules\CheckAddressBelongsToUser;
 use Illuminate\Foundation\Http\FormRequest;
 
 class MakeOrderValidation extends AbstractFormRequest
@@ -25,7 +26,7 @@ class MakeOrderValidation extends AbstractFormRequest
     public function rules()
     {
         return [
-            'address_id' => ['required','string', 'max:50'],
+            'address_id' => ['required','string', 'max:50', new CheckAddressBelongsToUser],
             'payment_method' => ['required', 'in:cash,visa'],
             'payment_card_id' => ['required_if:payment_method,visa'],
         ];
