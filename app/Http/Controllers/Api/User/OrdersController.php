@@ -56,7 +56,7 @@ class OrdersController extends Controller
             'country_id' => $user->country_id,
             'total' => $cartData['total'],
             'totalsub' => $cartData['totalSub'],
-            'payment_card_id' => $data['payment_card_id'],
+            'payment_card_id' => $data['payment_card_id'] ?? null,
             'address_id' => $data['address_id'],
             'discount' => $cartData['discount'],
             'vat' => $cartData['vat'],
