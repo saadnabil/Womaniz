@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\Api\User\AddressesController;
 use App\Http\Controllers\Api\User\AuthController;
 use App\Http\Controllers\Api\User\CartController;
 use App\Http\Controllers\Api\User\CategoriesController;
@@ -65,12 +67,20 @@ Route::group(['prefix' => 'v1/user'],function(){
             Route::get('/security', [ProfileController::class, 'security']);
             Route::post('/update', [ProfileController::class, 'update']);
             Route::post('/changepassword', [ProfileController::class, 'changepassword']);
-            Route::get('/addresses', [ProfileController::class, 'addresses']);
-            Route::post('/addlocation', [ProfileController::class, 'addlocation']);
+        });
+
+        Route::group(['prefix' => 'addresses'], function() {
+            Route::get('/', [AddressesController::class, 'fetch']);
+            Route::post('/add', [AddressesController::class, 'add']);
+            Route::post('/update/{id}', [AddressesController::class, 'update']);
+
+
         });
 
         Route::group(['prefix' => 'paymentcards'] ,function(){
             Route::get('/', [PaymentCardsController::class, 'index']);
+            Route::post('/add', [PaymentCardsController::class, 'add']);
+            Route::get('/delete/{id}', [PaymentCardsController::class, 'delete']);
         });
 
         Route::group(['prefix' => 'product'],function(){

@@ -5,7 +5,7 @@ namespace App\Http\Requests\Api\User;
 use App\Http\Requests\AbstractFormRequest;
 use Illuminate\Foundation\Http\FormRequest;
 
-class AddLocationValidation extends AbstractFormRequest
+class AddCardValidation extends AbstractFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,9 +25,11 @@ class AddLocationValidation extends AbstractFormRequest
     public function rules()
     {
         return [
-            'label' => ['required','string', 'max:50'],
-            'long' => ['required', 'string', 'max:100'],
-            'lat' => ['required', 'string', 'max:100'],
+            'card_number' => ['required','numeric', 'digits:16'],
+            'cardholder_name' => ['required', 'string', 'max:100'],
+            'expiration_month' => ['required','numeric', 'string', 'min:1','max:12'],
+            'expiration_year' => ['required', 'numeric', 'digits:4'],
+            'is_default' => ['required','in:0,1'],
         ];
     }
 }
