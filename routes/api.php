@@ -1,5 +1,4 @@
 <?php
-
 use App\Http\Controllers\Api\User\AddressesController;
 use App\Http\Controllers\Api\User\AuthController;
 use App\Http\Controllers\Api\User\CartController;
