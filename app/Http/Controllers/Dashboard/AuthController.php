@@ -25,4 +25,9 @@ class AuthController extends Controller
         $admin['token'] = $token;
         return $this->sendResponse(new AdminResource($admin));
     }
+
+    public function logout(){
+        auth()->guard('admin')->logout();
+        return $this->sendResponse([]);
+    }
 }

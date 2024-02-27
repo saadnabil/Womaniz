@@ -10,6 +10,10 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 
+
 Route::group(['prefix' => 'v1/dashboard'], function(){
         Route::post('login' ,[AuthController::class, 'login'] );
+        Route::group(['middleware' => 'auth:admin'],function(){
+            Route::post('logout' ,[AuthController::class, 'logout'] );
+        });
 });
