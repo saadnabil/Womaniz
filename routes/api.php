@@ -22,9 +22,7 @@ Route::group(['prefix' => 'v1/user'],function(){
     Route::post('forgetPasswordStepThree', [AuthController::class , 'forgetPasswordStepThree']);
     Route::get('countries', [SettingController::class, 'countries']);
     Route::group(['middleware' => 'auth'],function(){
-
         Route::post('logout', [AuthController::class , 'logout']);
-
         Route::group(['prefix' => 'games'], function(){
             Route::get('spinGameDetails' , [GamesController::class , 'spingamedetails']);
             Route::get('scratchGameDetails' , [GamesController::class , 'scratchgamedetails']);
@@ -72,8 +70,6 @@ Route::group(['prefix' => 'v1/user'],function(){
             Route::get('/', [AddressesController::class, 'fetch']);
             Route::post('/add', [AddressesController::class, 'add']);
             Route::post('/update/{id}', [AddressesController::class, 'update']);
-
-
         });
 
         Route::group(['prefix' => 'paymentcards'] ,function(){

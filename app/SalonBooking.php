@@ -14,5 +14,4 @@ class SalonBooking extends Model
     public function services(){
         return $this->hasMany(SalonBookingService::class);
     }
-
 }

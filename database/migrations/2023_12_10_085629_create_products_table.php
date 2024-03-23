@@ -70,6 +70,7 @@ return new class extends Migration
 
             $table->integer('chain_length')->nullable();
 
+            $table->foreignId('brand_id')->nullable()->constrained('brands')->onDelete('cascade')->onUpdate('cascade');
 
 
             $table->softDeletes();

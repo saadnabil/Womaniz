@@ -1,6 +1,5 @@
 <?php
 namespace App\Services\User;
-
 use App\Http\Resources\Api\UserResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Otp;

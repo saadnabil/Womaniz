@@ -12,6 +12,7 @@ class Product extends Model
     protected $guarded = [];
     protected $date = ['deleted_at'];
 
+
     public function getNameAttribute(){
         $lang = app()->getLocale();
         if($lang == 'en'){
@@ -83,5 +84,7 @@ class Product extends Model
     public function country(){
         return $this->belongsTo(Country::class);
     }
+
+
 
 }
