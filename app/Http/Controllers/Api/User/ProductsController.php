@@ -18,7 +18,7 @@ class ProductsController extends Controller
     public function index(GetProductsValidation $request){
         $data = $request->validated();
         $category = Category::with('products.images','products.variants.size','products.country')->where('id', $data['category'])->first();
-        return $this->sendResponse(resource_collection(ProductResource::collection($category->products()->where('country_id' , auth()->user()->country_id)->simplepaginate())));
+        return $this->sendResponse(resource_collection(ProductResource::collection($category->products()->where('country_id' , auth()->user()->country_id)->latest()->simplepaginate())));
     }
     public function show($id){
         $product = Product::with('images','variants.size')->find($id);
