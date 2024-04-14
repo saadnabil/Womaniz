@@ -17,7 +17,7 @@ class HandleLang
     public function handle(Request $request, Closure $next)
     {
         $lang = request()->header('lang') ?? session("lang") ?? "en";
-        $lang = in_array($lang, ['ar' , 'en',]) ? $lang : 'en';
+        $lang = in_array($lang, ['ar' , 'en']) ? $lang : 'en';
         app()->setLocale($lang);
         return $next($request);
     }
