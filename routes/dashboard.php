@@ -14,9 +14,9 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
         Route::post('logout' ,[AuthController::class, 'logout']);
         Route::resource('products' , ProductsController::class)->only('store');
         Route::resource('categories' , CategoriesController::class)->only('index');
-        Route::resource('admins', AdminsController::class)->only('index','store','update');
-        Route::post('admins/delete', [AdminsController::class, 'delete']);
         Route::get('admins/filter', [AdminsController::class, 'search']);
+        Route::resource('admins', AdminsController::class)->only('index','store','update','show');
+        Route::post('admins/delete', [AdminsController::class, 'delete']);
         Route::get('sizes', [SizesController::class , 'index']);
     });
 });
