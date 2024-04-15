@@ -12,6 +12,7 @@ function resource_collection($resource): array
 }
 
 
+
 function langs(){
     return ['en', 'ar'];
 }

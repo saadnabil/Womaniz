@@ -27,6 +27,7 @@ class AdminResource extends JsonResource
                 'address' => $this->address,
                 'status' => $this->status,
                 'country' => $this->country->country,
+                'category' => 'Accounts’ management',
             ]
         ];
         if($this->token){
