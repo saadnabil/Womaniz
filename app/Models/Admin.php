@@ -20,4 +20,9 @@ class Admin extends User  implements ShouldQueue , JWTSubject
 
     protected $guard = 'admin';
 
+
+    public function country(){
+        return $this->belongsTo(Country::class);
+    }
+
 }

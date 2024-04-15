@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Dashboard;
 
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class AdminResource extends JsonResource
@@ -16,9 +17,16 @@ class AdminResource extends JsonResource
     {
         $data = [
             'admin' => [
+                'id' => $this->id,
                 'name' => $this->name,
                 'email' => $this->email,
-                'image' => $this->image ? url('storage/'. $this->image) : null,
+                'image' => $this->image ? url('storage/'. $this->image) : url('avatar.png'),
+                'phone' => $this->phone,
+                'age' => Carbon::parse($this->birthdate)->diffInYears(Carbon::now()) ,
+                'country' => $this->country_id,
+                'address' => $this->address,
+                'status' => $this->status,
+                'country' => $this->country->country,
             ]
         ];
         if($this->token){

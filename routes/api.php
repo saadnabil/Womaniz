@@ -14,7 +14,6 @@ use App\Http\Controllers\Api\User\SalonController;
 use App\Http\Controllers\Api\User\SettingController;
 use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'v1/user'],function(){
-
     Route::post('login', [AuthController::class , 'login']);
     Route::post('register', [AuthController::class , 'register']);
     Route::post('forgetPasswordStepOne', [AuthController::class , 'forgetPasswordStepOne']);
@@ -29,25 +28,20 @@ Route::group(['prefix' => 'v1/user'],function(){
             Route::get('scratch' , [GamesController::class , 'scratch']);
             Route::post('spin' , [GamesController::class , 'spin']);
         });
-
         Route::group(['prefix' => 'categories'],function(){
             Route::get('/',[CategoriesController::class,'index']);
         });
-
         Route::group(['prefix' => 'orders'],function(){
             Route::get('/past',[OrdersController::class,'pastorders']);
             Route::get('/current',[OrdersController::class,'currentorders']);
             Route::post('/makeorder',[OrdersController::class,'makeorder']);
         });
-
         Route::group(['prefix' => 'home'], function() {
             Route::get('/', [HomeController::class, 'index']);
         });
-
         Route::group(['prefix' => 'coupons'], function() {
             Route::get('/', [CouponsController::class, 'validcoupons']);
         });
-
         Route::group(['prefix' => 'cart'], function() {
             Route::get('/details', [CartController::class, 'cartDetails']);
             Route::get('/minusQuantity/{cartId}', [CartController::class, 'minusQuantity']);
@@ -57,7 +51,6 @@ Route::group(['prefix' => 'v1/user'],function(){
             Route::post('/applycoupn', [CartController::class, 'applycoupn']);
             Route::get('/removecoupon', [CartController::class, 'removecoupon']);
         });
-
         Route::group(['prefix' => 'profile'], function() {
             Route::get('/', [ProfileController::class, 'index']);
             Route::get('/policy', [ProfileController::class, 'policy']);
@@ -65,13 +58,11 @@ Route::group(['prefix' => 'v1/user'],function(){
             Route::post('/update', [ProfileController::class, 'update']);
             Route::post('/changepassword', [ProfileController::class, 'changepassword']);
         });
-
         Route::group(['prefix' => 'addresses'], function() {
             Route::get('/', [AddressesController::class, 'fetch']);
             Route::post('/add', [AddressesController::class, 'add']);
             Route::post('/update/{id}', [AddressesController::class, 'update']);
         });
-
         Route::group(['prefix' => 'paymentcards'] ,function(){
             Route::get('/', [PaymentCardsController::class, 'index']);
             Route::post('/add', [PaymentCardsController::class, 'add']);
