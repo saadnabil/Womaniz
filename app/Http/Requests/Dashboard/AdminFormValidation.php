@@ -24,6 +24,7 @@ class AdminFormValidation extends AbstractFormRequest
      */
     public function rules()
     {
+        $id = $this->route('admin')->id ?? null;
         if(request()->isMethod('post')){
             return [
                 'name' => ['required' , 'string' ,'max:255'],
@@ -41,7 +42,7 @@ class AdminFormValidation extends AbstractFormRequest
         }else{
             return [
                 'name' => ['required' , 'string' ,'max:255'],
-                'email' => ['required' , 'email' ,'unique:admins,email'],
+                'email' => ['required' , 'email' ,'unique:admins,email,'.$id],
                 'password' => ['nullable' , 'string'],
                 'birthdate' => ['required' , 'date' ,'date_format:Y-m-d'],
                 'country_id' => ['required' , 'numeric'],
