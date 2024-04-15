@@ -15,7 +15,6 @@ class CreateSuperAdmin extends Seeder
      */
     public function run()
     {
-        //
         Admin::create([
             'name' => 'Super Admin',
             'email' => 'admin@admin.com',
@@ -23,7 +22,7 @@ class CreateSuperAdmin extends Seeder
             'country_id' => 1,
             'address' => 'Address',
             'phone' => '+201143707240',
-            'birthdate' => '1995-05-03'
+            'birthdate' => '1995-05-0'
         ]);
     }
 }

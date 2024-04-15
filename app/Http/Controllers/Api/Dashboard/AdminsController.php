@@ -53,28 +53,32 @@ class AdminsController extends Controller
         return $this->sendResponse([], 'success' , 200);
     }
 
-    public function search(AdminSearchValidation $request){
-        $data = $request->validated();
-        $search = $data['search'];
-        if(isset($data['type'])){
-            $type = $data['type'];
-            if($type == 'status'){
-                $admins = Admin::where('country_id', auth()->user()->country_id)->
-                       where('status', request('search'))->
-                       simplePaginate();
-                return $this->sendResponse(resource_collection(AdminResource::collection($admins)));
-            }
+    public function search(){
+
+        $admins = Admin::where('country_id', auth()->user()->country_id);
+        if(request('search')){
+            $admins = $admins->where(function($q){
+
+                $q->where('name', 'like', '%'.request('search').'%')
+                ->orwhere('email', 'like', '%'.request('search').'%')
+                ->orwhere('birthdate', 'like', '%'.request('search').'%')
+                ->orwhere('address', 'like', '%'.request('search').'%')
+                ->orwhere('phone', 'like', '%'.request('search').'%')
+                ->orwhere('status', 'like', '%'.request('search').'%');
+
+            });
         }
-        $admins = Admin::where('country_id' , auth()->user()->country_id)
-                        ->where(function($query) use($search){
-                            $query->where('name', 'like', '%'.$search.'%')
-                                    ->orwhere('email', 'like', '%'.$search.'%')
-                                    ->orwhere('birthdate', 'like', '%'.$search.'%')
-                                    ->orwhere('address', 'like', '%'.$search.'%')
-                                    ->orwhere('phone', 'like', '%'.$search.'%')
-                                    ->orwhere('status', 'like', '%'.$search.'%');
-                    })->latest()->simplePaginate();
+
+        if(request('status')){
+            $admins = $admins->where('status' ,request('status'));
+        }
+
+        $admins = $admins->simplePaginate();
         return $this->sendResponse(resource_collection(AdminResource::collection($admins)));
     }
 
 }
+
+
+
+
