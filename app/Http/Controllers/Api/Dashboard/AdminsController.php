@@ -56,6 +56,7 @@ class AdminsController extends Controller
     public function search(){
 
         $admins = Admin::where('country_id', auth()->user()->country_id);
+
         if(request('search')){
             $admins = $admins->where(function($q){
 
