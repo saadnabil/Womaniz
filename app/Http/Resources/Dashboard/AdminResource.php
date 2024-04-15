@@ -16,7 +16,6 @@ class AdminResource extends JsonResource
     public function toArray($request)
     {
         $data = [
-            'admin' => [
                 'id' => $this->id,
                 'name' => $this->name,
                 'email' => $this->email,
@@ -28,7 +27,6 @@ class AdminResource extends JsonResource
                 'status' => $this->status,
                 'country' => $this->country->country,
                 'category' => 'Accounts’ management',
-            ]
         ];
         if($this->token){
             $data['token'] = $this->token;
