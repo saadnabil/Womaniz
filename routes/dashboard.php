@@ -16,6 +16,7 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
         Route::resource('categories' , CategoriesController::class)->only('index');
         Route::resource('admins', AdminsController::class)->only('index','store','update','show');
         Route::post('admins/delete', [AdminsController::class, 'delete']);
+        Route::post('admins/search', [AdminsController::class, 'search']);
         Route::get('sizes', [SizesController::class , 'index']);
     });
 });

@@ -5,6 +5,7 @@ use App\Helpers\FileHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\AdminDeleteValidation;
 use App\Http\Requests\Dashboard\AdminFormValidation;
+use App\Http\Requests\Dashboard\AdminSearchValidation;
 use App\Http\Resources\Dashboard\AdminResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Admin;
@@ -50,6 +51,30 @@ class AdminsController extends Controller
         $data = $request->validated();
         Admin::whereIn('id',$data['ids'])->delete();
         return $this->sendResponse([], 'success' , 200);
+    }
+
+    public function search(AdminSearchValidation $request){
+        $data = $request->validated();
+        $search = $data['search'];
+        if(isset($data['type'])){
+            $type = $data['type'];
+            if($type == 'status'){
+                $admins = Admin::where('country_id', auth()->user()->country_id)->
+                       where('status', request('search'))->
+                       simplePaginate();
+                return $this->sendResponse(resource_collection(AdminResource::collection($admins)));
+            }
+        }
+        $admins = Admin::where('country_id' , auth()->user()->country_id)
+                        ->where(function($query) use($search){
+                            $query->where('name', 'like', '%'.$search.'%')
+                                    ->orwhere('email', 'like', '%'.$search.'%')
+                                    ->orwhere('birthdate', 'like', '%'.$search.'%')
+                                    ->orwhere('address', 'like', '%'.$search.'%')
+                                    ->orwhere('phone', 'like', '%'.$search.'%')
+                                    ->orwhere('status', 'like', '%'.$search.'%');
+                    })->latest()->simplePaginate();
+        return $this->sendResponse(resource_collection(AdminResource::collection($admins)));
     }
 
 }
