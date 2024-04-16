@@ -22,9 +22,9 @@ class UsersController extends Controller
         return $this->sendResponse(resource_collection(UserResource::collection($users)));
     }
 
-    public function show(Admin $admin){
-        $admin->load('country');
-        return $this->sendResponse(new AdminResource($admin));
+    public function show(User $user){
+        $user->load('country','city');
+        return $this->sendResponse(new UserResource($user));
     }
 
     public function store(AdminFormValidation $request){
