@@ -74,6 +74,13 @@ class UsersController extends Controller
         return $this->sendResponse(resource_collection(UserResource::collection($users)));
     }
 
+    public function switchstatus(User $user){
+        $user->update([
+            'status' => $user->status == 0 ? 1 : 0,
+        ]);
+        return $this->sendResponse([]);
+    }
+
 }
 
 

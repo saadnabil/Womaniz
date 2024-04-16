@@ -18,6 +18,7 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
         Route::get('admins/filter', [AdminsController::class, 'search']);
         Route::resource('admins', AdminsController::class)->only('index','store','update','show');
         Route::get('users/filter', [UsersController::class, 'search']);
+        Route::get('users/{user}/switchstatus', [UsersController::class, 'switchstatus']);
         Route::resource('users', UsersController::class)->only('index','store','update','show');
         Route::post('users/delete', [UsersController::class, 'delete']);
         Route::post('admins/delete', [AdminsController::class, 'delete']);
