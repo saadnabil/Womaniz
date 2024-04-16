@@ -80,7 +80,10 @@ class UsersController extends Controller
         $user->update([
             'status' => $user->status == 0 ? 1 : 0,
         ]);
-        return $this->sendResponse([]);
+        $data = [
+            'status' => $user->status,
+        ];
+        return $this->sendResponse($data);
     }
 }
 
