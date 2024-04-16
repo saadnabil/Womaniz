@@ -20,6 +20,7 @@ class AddressResource extends JsonResource
             'label' => $this->label,
             'long' => $this->long,
             'lat' => $this->lat ,
+            'description' => $this->description,
         ];
         return $data;
     }
