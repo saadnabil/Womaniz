@@ -58,6 +58,10 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsTo(Country::class);
     }
 
+    public function city(){
+        return $this->belongsTo(City::class)->withTrashed();
+    }
+
     public function scratchgameusers(){
         return $this->hasMany(ScratchGameUser::class);
     }
