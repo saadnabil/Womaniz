@@ -59,18 +59,16 @@ class AdminsController extends Controller
 
         if(request('search')){
             $admins = $admins->where(function($q){
-
                 $q->where('name', 'like', '%'.request('search').'%')
                 ->orwhere('email', 'like', '%'.request('search').'%')
                 ->orwhere('birthdate', 'like', '%'.request('search').'%')
                 ->orwhere('address', 'like', '%'.request('search').'%')
                 ->orwhere('phone', 'like', '%'.request('search').'%')
                 ->orwhere('status', 'like', '%'.request('search').'%');
-
             });
         }
 
-        if(request('status')){
+        if(request()->has('status')){
             $admins = $admins->where('status' ,request('status'));
         }
 
