@@ -5,18 +5,36 @@ use App\Helpers\FileHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\DeleteValidation;
 use App\Http\Requests\Dashboard\UserFormValidation;
-use App\Http\Resources\Dashboard\AdminResource;
 use App\Http\Resources\Dashboard\UserResource;
 use App\Http\Traits\ApiResponseTrait;
-use App\Models\Admin;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-
 class UsersController extends Controller
 {
     use ApiResponseTrait;
     public function index(){
         $users = User::with('country','city','addresses')->latest()->simplepaginate();
+        return $this->sendResponse(resource_collection(UserResource::collection($users)));
+    }
+
+    public function search(){
+        $users = User::with('country','city','addresses')->where('country_id', auth()->user()->country_id)->latest();
+        if(request('search')){
+            $users = $users->where(function($q){
+                $q->where('name', 'like', '%'.request('search').'%')
+                ->orwhere('email', 'like', '%'.request('search').'%')
+                ->orwhere('birthdate', 'like', '%'.request('search').'%')
+                ->orwhere('phone', 'like', '%'.request('search').'%')
+                ->orwhere('status', 'like', '%'.request('search').'%');
+            });
+        }
+        if(request()->has('status')){
+            $users = $users->where('status' ,request('status'));
+        }
+        if(request()->has('cities')){
+            $users = $users->whereIn('city_id' ,request('cities'));
+        }
+        $users = $users->simplePaginate();
         return $this->sendResponse(resource_collection(UserResource::collection($users)));
     }
 
@@ -53,26 +71,7 @@ class UsersController extends Controller
         return $this->sendResponse([], 'success' , 200);
     }
 
-    public function search(){
-        $users = User::with('addresses')->where('country_id', auth()->user()->country_id);
-        if(request('search')){
-            $users = $users->where(function($q){
-                $q->where('name', 'like', '%'.request('search').'%')
-                ->orwhere('email', 'like', '%'.request('search').'%')
-                ->orwhere('birthdate', 'like', '%'.request('search').'%')
-                ->orwhere('phone', 'like', '%'.request('search').'%')
-                ->orwhere('status', 'like', '%'.request('search').'%');
-            });
-        }
-        if(request()->has('status')){
-            $users = $users->where('status' ,request('status'));
-        }
-        if(request()->has('cities')){
-            $users = $users->whereIn('city_id' ,request('cities'));
-        }
-        $users = $users->simplePaginate();
-        return $this->sendResponse(resource_collection(UserResource::collection($users)));
-    }
+
 
     public function switchstatus(User $user){
         $user->update([
@@ -80,7 +79,6 @@ class UsersController extends Controller
         ]);
         return $this->sendResponse([]);
     }
-
 }
 
 

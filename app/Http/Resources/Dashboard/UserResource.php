@@ -23,7 +23,6 @@ class UserResource extends JsonResource
             'phone' => $this->phone,
             'age' => Carbon::parse($this->birthdate)->diffInYears(Carbon::now()),
             'country' => $this->country_id,
-            'address' => $this->address,
             'status' => $this->status,
             'country' => $this->country->country,
             'city' => $this->city != null ?  $this->city->name : null,
