@@ -31,7 +31,6 @@ class UserFormValidation extends AbstractFormRequest
                 'email' => ['required' , 'email' ,'unique:users,email'],
                 'password' => ['required' , 'string'],
                 'birthdate' => ['required' , 'date' ,'date_format:Y-m-d'],
-                'country_id' => ['required' , 'numeric'],
                 'city_id' => ['required' , 'numeric'],
                 'phone' => ['required' , 'string' ],
                 'image' => ['nullable', 'image' , 'mimes:png,jpg,jpeg,gif,svg'],
