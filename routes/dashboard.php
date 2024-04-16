@@ -12,7 +12,7 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
     Route::post('login' ,[AuthController::class, 'login'] );
     Route::group(['middleware' => 'auth:admin'],function(){
         Route::get('data', [DataController::class, 'index']);
-        Route::get('data/{country}/cities', [DataController::class, 'cities']);
+        Route::get('data/cities', [DataController::class, 'cities']);
         Route::post('logout' ,[AuthController::class, 'logout']);
         Route::resource('products' , ProductsController::class)->only('store');
         Route::resource('categories' , CategoriesController::class)->only('index');
