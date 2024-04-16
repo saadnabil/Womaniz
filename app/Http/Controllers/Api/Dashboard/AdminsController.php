@@ -65,7 +65,6 @@ class AdminsController extends Controller
                 ->orwhere('address', 'like', '%'.request('search').'%')
                 ->orwhere('phone', 'like', '%'.request('search').'%')
                 ->orwhere('status', 'like', '%'.request('search').'%');
-
             });
         }
 
