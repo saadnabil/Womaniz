@@ -3,13 +3,11 @@ namespace App\Http\Controllers\Api\Dashboard;
 
 use App\Helpers\FileHelper;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Dashboard\AdminDeleteValidation;
 use App\Http\Requests\Dashboard\AdminFormValidation;
-use App\Http\Requests\Dashboard\AdminSearchValidation;
+use App\Http\Requests\Dashboard\DeleteValidation;
 use App\Http\Resources\Dashboard\AdminResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Admin;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AdminsController extends Controller
@@ -47,9 +45,11 @@ class AdminsController extends Controller
         return $this->sendResponse([], 'success' , 200);
     }
 
-    public function delete(AdminDeleteValidation $request){
+    public function delete(DeleteValidation $request){
         $data = $request->validated();
+        $images = Admin::whereIn('id',$data['ids'])->pluck('image')->toarray();
         Admin::whereIn('id',$data['ids'])->delete();
+        FileHelper::delete_files($images);
         return $this->sendResponse([], 'success' , 200);
     }
 

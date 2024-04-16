@@ -3,79 +3,75 @@ namespace App\Http\Controllers\Api\Dashboard;
 
 use App\Helpers\FileHelper;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Dashboard\AdminDeleteValidation;
-use App\Http\Requests\Dashboard\AdminFormValidation;
-use App\Http\Requests\Dashboard\AdminSearchValidation;
+use App\Http\Requests\Dashboard\DeleteValidation;
+use App\Http\Requests\Dashboard\UserFormValidation;
 use App\Http\Resources\Dashboard\AdminResource;
 use App\Http\Resources\Dashboard\UserResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Admin;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
     use ApiResponseTrait;
     public function index(){
-        $users = User::with('country','city')->latest()->simplepaginate();
+        $users = User::with('country','city','addresses')->latest()->simplepaginate();
         return $this->sendResponse(resource_collection(UserResource::collection($users)));
     }
 
     public function show(User $user){
-        $user->load('country','city');
+        $user->load('country','city','addresses');
         return $this->sendResponse(new UserResource($user));
     }
 
-    public function store(AdminFormValidation $request){
+    public function store(UserFormValidation $request){
         $data = $request->validated();
         if(isset($data['image'])){
-            $data['image'] = FileHelper::upload_file('admins', $data['image']);
+            $data['image'] = FileHelper::upload_file('users', $data['image']);
         }
         $data['password'] = Hash::make($data['password']);
-        unset($data['jobs']);
-        Admin::create($data);
+        User::create($data);
         return $this->sendResponse([], 'success' , 200);
     }
 
-    public function update(AdminFormValidation $request, Admin $admin){
+    public function update(UserFormValidation $request, User $user){
         $data = $request->validated();
         if(isset($data['image'])){
-            $data['image'] = FileHelper::update_file('admins', $data['image'], $admin->image );
+            $data['image'] = FileHelper::update_file('users', $data['image'], $user->image );
         }
         $data['password'] = Hash::make($data['password']);
-        unset($data['jobs']);
-        $admin->update($data);
+        $user->update($data);
         return $this->sendResponse([], 'success' , 200);
     }
 
-    public function delete(AdminDeleteValidation $request){
+    public function delete(DeleteValidation $request){
         $data = $request->validated();
-        Admin::whereIn('id',$data['ids'])->delete();
+        $images = User::whereIn('id',$data['ids'])->pluck('image')->toarray();
+        User::whereIn('id',$data['ids'])->delete();
+        FileHelper::delete_files($images);
         return $this->sendResponse([], 'success' , 200);
     }
 
     public function search(){
-
-        $admins = Admin::where('country_id', auth()->user()->country_id);
-
+        $users = User::with('addresses')->where('country_id', auth()->user()->country_id);
         if(request('search')){
-            $admins = $admins->where(function($q){
+            $users = $users->where(function($q){
                 $q->where('name', 'like', '%'.request('search').'%')
                 ->orwhere('email', 'like', '%'.request('search').'%')
                 ->orwhere('birthdate', 'like', '%'.request('search').'%')
-                ->orwhere('address', 'like', '%'.request('search').'%')
                 ->orwhere('phone', 'like', '%'.request('search').'%')
                 ->orwhere('status', 'like', '%'.request('search').'%');
             });
         }
-
         if(request()->has('status')){
-            $admins = $admins->where('status' ,request('status'));
+            $users = $users->where('status' ,request('status'));
         }
-
-        $admins = $admins->simplePaginate();
-        return $this->sendResponse(resource_collection(AdminResource::collection($admins)));
+        if(request()->has('cities')){
+            $users = $users->whereIn('city_id' ,request('cities'));
+        }
+        $users = $users->simplePaginate();
+        return $this->sendResponse(resource_collection(UserResource::collection($users)));
     }
 
 }

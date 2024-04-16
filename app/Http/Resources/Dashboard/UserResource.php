@@ -16,17 +16,18 @@ class UserResource extends JsonResource
     public function toArray($request)
     {
         $data = [
-                'id' => $this->id,
-                'name' => $this->name,
-                'email' => $this->email,
-                'image' => $this->image ? url('storage/'. $this->image) : url('avatar.png'),
-                'phone' => $this->phone,
-                'age' => Carbon::parse($this->birthdate)->diffInYears(Carbon::now()),
-                'country' => $this->country_id,
-                'address' => $this->address,
-                'status' => $this->status,
-                'country' => $this->country->country,
-                'city' => $this->city != null ?  $this->city->name : null,
+            'id' => $this->id,
+            'name' => $this->name,
+            'email' => $this->email,
+            'image' => $this->image ? url('storage/'. $this->image) : url('avatar.png'),
+            'phone' => $this->phone,
+            'age' => Carbon::parse($this->birthdate)->diffInYears(Carbon::now()),
+            'country' => $this->country_id,
+            'address' => $this->address,
+            'status' => $this->status,
+            'country' => $this->country->country,
+            'city' => $this->city != null ?  $this->city->name : null,
+            'addresses' => AddressResource::collection($this->addresses),
         ];
         return $data;
     }

@@ -5,7 +5,7 @@ namespace App\Http\Requests\Dashboard;
 use App\Http\Requests\AbstractFormRequest;
 use Illuminate\Foundation\Http\FormRequest;
 
-class AdminDeleteValidation extends AbstractFormRequest
+class DeleteValidation extends AbstractFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
