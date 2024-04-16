@@ -25,7 +25,10 @@ class UsersController extends Controller
                 ->orwhere('email', 'like', '%'.request('search').'%')
                 ->orwhere('birthdate', 'like', '%'.request('search').'%')
                 ->orwhere('phone', 'like', '%'.request('search').'%')
-                ->orwhere('status', 'like', '%'.request('search').'%');
+                ->orwhere('status', 'like', '%'.request('search').'%')
+                ->orWhereHas('addresses', function($query){
+                    $query->where('description',  '%'.request('search').'%');
+                });
             });
         }
         if(request()->has('status')){

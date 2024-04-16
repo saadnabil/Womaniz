@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 class AdminsController extends Controller
 {
     use ApiResponseTrait;
+
     public function index(){
         $admins = Admin::with('country')->where('country_id', auth()->user()->country_id)->latest()->simplepaginate();
         return $this->sendResponse(resource_collection(AdminResource::collection($admins)));
@@ -64,6 +65,7 @@ class AdminsController extends Controller
                 ->orwhere('address', 'like', '%'.request('search').'%')
                 ->orwhere('phone', 'like', '%'.request('search').'%')
                 ->orwhere('status', 'like', '%'.request('search').'%');
+
             });
         }
 
