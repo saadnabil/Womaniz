@@ -41,9 +41,9 @@ class DataController extends Controller
         return $this->sendResponse($data);
     }
 
-    public function cities(Country $country){
-        $cities = $country->cities;
-        return $this->sendResponse($cities);
+    public function cities(){
+        $country = auth()->user()->country->load('cities');
+        return $this->sendResponse($country->cities);
     }
 
 
