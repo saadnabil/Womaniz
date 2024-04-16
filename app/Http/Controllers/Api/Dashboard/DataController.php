@@ -40,4 +40,11 @@ class DataController extends Controller
         ];
         return $this->sendResponse($data);
     }
+
+    public function cities(Country $country){
+        $cities = $country->cities;
+        return $this->sendResponse($cities);
+    }
+
+
 }
