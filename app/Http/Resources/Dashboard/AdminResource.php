@@ -22,6 +22,7 @@ class AdminResource extends JsonResource
                 'image' => $this->image ? url('storage/'. $this->image) : url('avatar.png'),
                 'phone' => $this->phone,
                 'age' => Carbon::parse($this->birthdate)->diffInYears(Carbon::now()) ,
+                'birthdate' => $this->birthdate,
                 'country' => $this->country_id,
                 'address' => $this->address,
                 'status' => $this->status,
