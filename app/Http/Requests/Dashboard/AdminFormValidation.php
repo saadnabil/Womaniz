@@ -35,7 +35,7 @@ class AdminFormValidation extends AbstractFormRequest
                 'address' => ['required' , 'string'],
                 'phone' => ['required' , 'string' ],
                 'status' => ['required' , 'numeric' , 'in:1,0'],
-                'image' => ['nullable', 'image' , 'mimes:png,jpg,jpeg,gif,svg'],
+                'image' => ['required', 'image' , 'mimes:png,jpg,jpeg,gif,svg'],
                 'jobs' => ['required', 'array'],
                 'jobs.*' => ['numeric','min:1' , 'max:5'],
             ];
