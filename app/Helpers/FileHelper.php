@@ -35,7 +35,9 @@ class FileHelper
 
     public static function delete_files(array $filesToDelete){
         foreach ($filesToDelete as $file) {
-            Storage::delete($file);
+            if($file == null) return;
+                Storage::delete($file);
+            return true;
         }
         return true;
     }
