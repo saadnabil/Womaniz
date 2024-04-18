@@ -22,7 +22,7 @@ class CreateSuperAdmin extends Seeder
             'country_id' => 1,
             'address' => 'Address',
             'phone' => '+201143707240',
-            'birthdate' => '1995-05-0'
+            'birthdate' => '1995-05-05'
         ]);
     }
 }
