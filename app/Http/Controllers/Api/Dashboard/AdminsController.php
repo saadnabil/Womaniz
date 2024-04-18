@@ -50,6 +50,7 @@ class AdminsController extends Controller
         $data = $request->validated();
         $images = Admin::whereIn('id',$data['ids'])->pluck('image')->toarray();
         Admin::whereIn('id',$data['ids'])->delete();
+        dd($data['ids']);
         FileHelper::delete_files($images);
         return $this->sendResponse([], 'success' , 200);
     }
