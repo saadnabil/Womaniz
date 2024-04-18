@@ -12,9 +12,15 @@ use Illuminate\Support\Facades\Hash;
 class UsersController extends Controller
 {
     use ApiResponseTrait;
+
     public function index(){
         $users = User::with('country','city','addresses')->latest()->simplepaginate();
         return $this->sendResponse(resource_collection(UserResource::collection($users)));
+    }
+
+    public function fulldataexport(){
+        $admins = User::with('country','city','addresses')->where('country_id', auth()->user()->country_id)->latest()->get();
+        return $this->sendResponse(UserResource::collection($admins));
     }
 
     public function search(){
@@ -87,6 +93,8 @@ class UsersController extends Controller
         ];
         return $this->sendResponse($data);
     }
+
+
 }
 
 

@@ -55,7 +55,7 @@ class AdminsController extends Controller
     }
 
     public function search(){
-        $admins = Admin::where('country_id', auth()->user()->country_id)->latest();
+        $admins = Admin::with('country')->where('country_id', auth()->user()->country_id)->latest();
         if(request('search')){
             $admins = $admins->where(function($q){
                 $q->where('name', 'like', '%'.request('search').'%')
@@ -66,13 +66,17 @@ class AdminsController extends Controller
                 ->orwhere('status', 'like', '%'.request('search').'%');
             });
         }
-
         if(request()->has('status')){
             $admins = $admins->where('status' ,request('status'));
         }
 
         $admins = $admins->simplePaginate();
         return $this->sendResponse(resource_collection(AdminResource::collection($admins)));
+    }
+
+    public function fulldataexport(){
+        $admins = Admin::with('country')->where('country_id', auth()->user()->country_id)->latest()->get();
+        return $this->sendResponse(AdminResource::collection($admins));
     }
 
 }
