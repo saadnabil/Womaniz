@@ -46,5 +46,21 @@ class DataController extends Controller
         return $this->sendResponse($country->cities);
     }
 
+    public function policy(){
+        $lang = app()->getLocale();
+        $policy = json_decode(setting('policy') , true);
+        return $this->sendResponse([
+            'policy' => $policy[$lang],
+        ]);
+    }
+
+    public function security(){
+        $lang = app()->getLocale();
+        $policy = json_decode(setting('security') , true);
+        return $this->sendResponse([
+            'security' => $policy[$lang],
+        ]);
+    }
+
 
 }

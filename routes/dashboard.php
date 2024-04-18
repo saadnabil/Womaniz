@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Dashboard\DataController;
 use App\Http\Controllers\Api\Dashboard\ProductsController;
 use App\Http\Controllers\Api\Dashboard\SizesController;
 use App\Http\Controllers\Api\Dashboard\UsersController;
+use App\Http\Controllers\Api\Dashboard\VendorsController;
 use App\Http\Controllers\Dashboard\AuthController;
 use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'v1/dashboard'], function(){
@@ -26,5 +27,8 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
         Route::post('users/delete', [UsersController::class, 'delete']);
         Route::post('admins/delete', [AdminsController::class, 'delete']);
         Route::get('sizes', [SizesController::class , 'index']);
+        Route::resource('vendors',VendorsController::class);
     });
+    Route::get('data/policy', [DataController::class, 'policy']);
+    Route::get('data/security', [DataController::class, 'security']);
 });
