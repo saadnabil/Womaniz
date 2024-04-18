@@ -49,7 +49,7 @@ class AdminsController extends Controller
     public function delete(DeleteValidation $request){
         $data = $request->validated();
         $images = Admin::whereIn('id',$data['ids'])->pluck('image')->toarray();
-        $rows = Admin::whereIn('id',$data['ids'])->delete();
+        Admin::whereIn('id',$data['ids'])->delete();
         FileHelper::delete_files($images);
         return $this->sendResponse([], 'success' , 200);
     }
