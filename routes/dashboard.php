@@ -30,6 +30,7 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
         Route::get('vendors/filter', [VendorsController::class, 'search']);
         Route::get('vendors/fulldata/export', [VendorsController::class, 'fulldataexport']);
         Route::post('vendors/delete', [VendorsController::class, 'delete']);
+        Route::get('vendors/{vendor}/switchstatus', [VendorsController::class, 'switchstatus']);
         Route::resource('vendors',VendorsController::class)->only('index','store','update','show');
 
     });

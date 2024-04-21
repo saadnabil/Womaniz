@@ -5,7 +5,6 @@ use App\Helpers\FileHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\DeleteValidation;
 use App\Http\Requests\Dashboard\VendorFormValidation;
-use App\Http\Resources\Dashboard\UserResource;
 use App\Http\Resources\Dashboard\VendorResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Vendor;
@@ -65,6 +64,7 @@ class VendorsController extends Controller
                 $query->whereIn('category_id',request('categories'));
             });
         }
+
         $vendors = $vendors->simplePaginate();
         return $this->sendResponse(resource_collection(VendorResource::collection($vendors)));
     }
@@ -85,6 +85,16 @@ class VendorsController extends Controller
     public function fulldataexport(){
         $vendors = Vendor::with('categories')->where('country_id', auth()->user()->country_id)->latest()->get();
         return $this->sendResponse(VendorResource::collection($vendors));
+    }
+
+    public function switchstatus(Vendor $vendor){
+        $vendor->update([
+            'status' => $vendor->status == 0 ? 1 : 0,
+        ]);
+        $data = [
+            'status' => $vendor->status,
+        ];
+        return $this->sendResponse($data);
     }
 
 }
