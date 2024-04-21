@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Api\Dashboard;
 use App\Helpers\FileHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\AdminValidation;
+use App\Http\Resources\Api\CategoryResource;
 use App\Http\Resources\Dashboard\AdminResource;
+use App\Http\Resources\Dashboard\VendorCategoryResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Admin;
+use App\Models\Category;
 use App\Models\Country;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -38,6 +41,11 @@ class DataController extends Controller
                 'title' =>  'Orders and Discounts’ management',
             ],
         ];
+        $categories = Category::where([
+            'parent_id' => null,
+            'type' => 'app_category'
+        ])->get();
+        $data['maincategories'] = $this->sendResponse(VendorCategoryResource::collection($categories));
         return $this->sendResponse($data);
     }
 
@@ -61,6 +69,4 @@ class DataController extends Controller
             'security' => $policy[$lang],
         ]);
     }
-
-
 }
