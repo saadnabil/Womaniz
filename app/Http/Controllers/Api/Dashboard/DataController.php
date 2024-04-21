@@ -45,7 +45,7 @@ class DataController extends Controller
             'parent_id' => null,
             'type' => 'app_category'
         ])->get();
-        $data['maincategories'] = $this->sendResponse(VendorCategoryResource::collection($categories));
+        $data['maincategories'] = VendorCategoryResource::collection($categories);
         return $this->sendResponse($data);
     }
 
