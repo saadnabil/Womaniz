@@ -27,6 +27,7 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
         Route::post('users/delete', [UsersController::class, 'delete']);
         Route::post('admins/delete', [AdminsController::class, 'delete']);
         Route::get('sizes', [SizesController::class , 'index']);
+        Route::get('vendors/filter', [VendorsController::class, 'search']);
         Route::get('vendors/fulldata/export', [VendorsController::class, 'fulldataexport']);
         Route::post('vendors/delete', [VendorsController::class, 'delete']);
         Route::resource('vendors',VendorsController::class)->only('index','store','update','show');

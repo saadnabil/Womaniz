@@ -30,6 +30,7 @@ class VendorResource extends JsonResource
             'account_number' => $this->account_number,
             'swift_number' => $this->swift_number,
             'iban_number' => $this->iban_number	,
+            'status' => $this->status,
 
         ];
         if($this->categories){
