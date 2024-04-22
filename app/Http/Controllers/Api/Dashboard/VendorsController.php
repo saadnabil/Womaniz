@@ -37,6 +37,33 @@ class VendorsController extends Controller
         return $this->sendResponse([], 'success' , 200);
     }
 
+    public function update(VendorFormValidation $request, Vendor $vendor){
+        $data = $request->validated();
+        //reset categories
+        VendorWorkCategory::where(['vendor_id' => $vendor->id])->delete();
+        //reset categories
+        $workCategories = $data['categories'];
+        unset($data['categories']);
+        if(isset($data['image'])){
+            $data['image'] = FileHelper::update_file('vendors', $data['image'], $vendor->image);
+        }
+        if(isset($data['password'])){
+            $data['password'] = Hash::make($data['password']);
+        }
+        $data ['bank_account_name'] = isset($data['bank_account_name']) ?$data['bank_account_name'] : null;
+        $data ['account_number'] = isset($data['account_number']) ? $data['account_number'] : null;
+        $data ['swift_number'] = isset($data['swift_number']) ? $data['swift_number'] : null;
+        $data ['iban_number'] = isset($data['iban_number']) ? $data['iban_number']  : null;
+        $vendor->update($data);
+        foreach($workCategories as $category){
+            VendorWorkCategory::create([
+                'category_id' => $category,
+                'vendor_id' => $vendor->id
+            ]);
+        }
+        return $this->sendResponse([], 'success' , 200);
+    }
+
     public function search(){
         $vendors = Vendor::with('categories')->where('country_id', auth()->user()->country_id)->latest();
         if(request('search')){
