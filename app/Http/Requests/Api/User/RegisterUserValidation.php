@@ -34,7 +34,7 @@ class RegisterUserValidation extends AbstractFormRequest
             'confirmpassword' => ['required', 'string' ,'min:8', 'same:password'],
             'country_id' => ['required', 'numeric','in:'.$countryIds],
             'otp' => ['nullable', 'digits:4'],
-            'gender' => ['required', 'string', 'in:Femail,Male,Other'],
+            'gender' => ['required', 'string', 'in:Female,Male,Other'],
         ];
     }
 }
