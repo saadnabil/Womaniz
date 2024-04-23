@@ -94,7 +94,6 @@ class UsersController extends Controller
         return $this->sendResponse($data);
     }
 
-
 }
 
 

@@ -20,6 +20,7 @@ class UserResource extends JsonResource
                 'email' => $this->email,
                 'birthdate' => $this->birthdate,
                 'phone' => $this->phone,
+                'gender' => __('messages.'.$this->gender),
                 'country' => $this->country->country,
                 'image' => $this->image ?  url('storage/'.$this->image) : null,
                 'country_id' => $this->country_id,
