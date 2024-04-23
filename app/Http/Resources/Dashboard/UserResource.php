@@ -27,6 +27,7 @@ class UserResource extends JsonResource
             'status' => $this->status,
             'country' => $this->country->country,
             'city' => $this->city != null ?  $this->city->name : null,
+            'gender' => __('messages.'.$this->gender),
             'addresses' => AddressResource::collection($this->addresses),
         ];
         return $data;
