@@ -34,6 +34,7 @@ class UserFormValidation extends AbstractFormRequest
                 'city_id' => ['required' , 'numeric'],
                 'phone' => ['required' , 'string' ],
                 'image' => ['nullable', 'image' , 'mimes:png,jpg,jpeg,gif,svg'],
+                'gender' => ['required', 'string', 'in:Female,Male,Other'],
             ];
         }else{
             return [
@@ -45,6 +46,7 @@ class UserFormValidation extends AbstractFormRequest
                 'phone' => ['required' , 'string' ],
                 'status' => ['required' , 'numeric' , 'in:1,0'],
                 'image' => ['nullable', 'image' , 'mimes:png,jpg,jpeg,gif,svg'],
+                'gender' => ['required', 'string', 'in:Female,Male,Other'],
             ];
         }
 
