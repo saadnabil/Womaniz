@@ -39,7 +39,7 @@ class UserFormValidation extends AbstractFormRequest
             return [
                 'name' => ['required' , 'string' ,'max:255'],
                 'email' => ['required' , 'email' ,'unique:users,email,'.$id],
-                'password' => ['required' , 'string'],
+                'password' => ['nullable' , 'string'],
                 'birthdate' => ['required' , 'date' ,'date_format:Y-m-d'],
                 'phone' => ['required' , 'string' ],
                 'status' => ['required' , 'numeric' , 'in:1,0'],

@@ -33,6 +33,7 @@ class VendorResource extends JsonResource
             'status' => $this->status,
 
         ];
+
         if($this->categories){
             $data['categories'] = VendorCategoryResource::collection($this->categories);
         }
