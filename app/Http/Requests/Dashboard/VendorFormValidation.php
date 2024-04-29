@@ -49,7 +49,7 @@ class VendorFormValidation extends AbstractFormRequest
                 'name' => ['required' , 'string' ,'max:255'],
                 'contact_name' => ['required' , 'string' ,'max:255'],
                 'email' => ['required' , 'email' ,'unique:vendors,email,'. $id],
-                'password' => ['required' , 'string'],
+                'password' => ['nullable' , 'string'],
                 'phone' => ['required' , 'string' ],
                 'image' => ['nullable', 'image' , 'mimes:png,jpg,jpeg,gif,svg'],
                 'hq_address' => ['required' , 'string'],
