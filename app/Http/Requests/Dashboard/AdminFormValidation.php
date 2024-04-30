@@ -27,13 +27,13 @@ class AdminFormValidation extends AbstractFormRequest
         $id = $this->route('admin')->id ?? null;
         if(request()->isMethod('post')){
             return [
-                'name' => ['required' , 'string' ,'max:255'],
+                'name' => ['required' , 'string' ,'max:250'],
                 'email' => ['required' , 'email' ,'unique:admins,email'],
-                'password' => ['required' , 'string'],
+                'password' => ['required' , 'string','max:20','min:8'],
                 'birthdate' => ['required' , 'date' ,'date_format:Y-m-d'],
                 'country_id' => ['required' , 'numeric'],
-                'address' => ['required' , 'string'],
-                'phone' => ['required' , 'string' ],
+                'address' => ['required' , 'string','max:250'],
+                'phone' => ['required' , 'string','max:9' ],
                 'status' => ['required' , 'numeric' , 'in:1,0'],
                 'image' => ['required', 'image' , 'mimes:png,jpg,jpeg,gif,svg'],
                 'jobs' => ['required', 'array'],
@@ -43,11 +43,11 @@ class AdminFormValidation extends AbstractFormRequest
             return [
                 'name' => ['required' , 'string' ,'max:255'],
                 'email' => ['required' , 'email' ,'unique:admins,email,'.$id],
-                'password' => ['nullable' , 'string'],
+                'password' => ['nullable' , 'string','max:20','min:8'],
                 'birthdate' => ['required' , 'date' ,'date_format:Y-m-d'],
                 'country_id' => ['required' , 'numeric'],
-                'address' => ['required' , 'string'],
-                'phone' => ['required' , 'string' ],
+                'address' => ['required' , 'string','max:250'],
+                'phone' => ['required' , 'string' ,'max:9'],
                 'status' => ['required' , 'numeric' , 'in:1,0'],
                 'image' => ['nullable', 'image' , 'mimes:png,jpg,jpeg,gif,svg'],
                 'jobs' => ['nullable', 'array'],
