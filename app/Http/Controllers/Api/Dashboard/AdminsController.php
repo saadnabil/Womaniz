@@ -40,7 +40,9 @@ class AdminsController extends Controller
         if(isset($data['image'])){
             $data['image'] = FileHelper::update_file('admins', $data['image'], $admin->image );
         }
-        $data['password'] = Hash::make($data['password']);
+        if(isset($data['password'])){
+            $data['password'] = Hash::make($data['password']);
+        }
         unset($data['jobs']);
         $admin->update($data);
         return $this->sendResponse([], 'success' , 200);

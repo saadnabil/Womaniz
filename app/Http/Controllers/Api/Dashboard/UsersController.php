@@ -68,7 +68,9 @@ class UsersController extends Controller
         if(isset($data['image'])){
             $data['image'] = FileHelper::update_file('users', $data['image'], $user->image );
         }
-        $data['password'] = Hash::make($data['password']);
+        if(isset($data['password'])){
+            $data['password'] = Hash::make($data['password']);
+        }
         $data['country_id'] = auth()->user()->country_id;
         $user->update($data);
         return $this->sendResponse([], 'success' , 200);
