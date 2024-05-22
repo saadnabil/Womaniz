@@ -8,6 +8,7 @@ use App\Http\Requests\Dashboard\DeleteValidation;
 use App\Http\Resources\Dashboard\AdminResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Admin;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AdminsController extends Controller

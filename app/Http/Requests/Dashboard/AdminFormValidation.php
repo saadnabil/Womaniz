@@ -16,7 +16,6 @@ class AdminFormValidation extends AbstractFormRequest
     {
         return true;
     }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -54,6 +53,5 @@ class AdminFormValidation extends AbstractFormRequest
                 'jobs.*' => ['numeric', 'min:1' , 'max:5'],
             ];
         }
-
     }
 }

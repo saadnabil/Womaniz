@@ -32,7 +32,7 @@ class VendorFormValidation extends AbstractFormRequest
                 'email' => ['required' , 'email' ,'unique:vendors,email'],
                 'password' => ['required' , 'string'],
                 'phone' => ['required' , 'string' ],
-                'image' => ['nullable', 'image' , 'mimes:png,jpg,jpeg,gif,svg'],
+                'image' => ['required', 'image' , 'mimes:png,jpg,jpeg,gif,svg'],
                 'hq_address' => ['required' , 'string'],
                 'shipping_address' => ['required' , 'string'],
                 'commission' => ['required' , 'numeric', 'min:0','max:100'],
