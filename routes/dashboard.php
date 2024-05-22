@@ -19,7 +19,6 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
         Route::resource('categories' , CategoriesController::class)->only('index');
         Route::get('admins/fulldata/export', [AdminsController::class, 'fulldataexport']);
         Route::resource('admins', AdminsController::class)->only('index','store','update','show');
-        Route::get('users/filter', [UsersController::class, 'search']);
         Route::get('users/{user}/switchstatus', [UsersController::class, 'switchstatus']);
         Route::get('users/fulldata/export', [UsersController::class, 'fulldataexport']);
         Route::resource('users', UsersController::class)->only('index','store','update','show');

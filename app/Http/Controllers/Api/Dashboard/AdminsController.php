@@ -16,7 +16,22 @@ class AdminsController extends Controller
     use ApiResponseTrait;
 
     public function index(){
-        $admins = Admin::with('country')->where('country_id', auth()->user()->country_id)->latest()->simplepaginate();
+        $admins = Admin::with('country')->where('country_id', auth()->user()->country_id)->latest();
+        if(request('search')){
+            $admins = $admins->where(function($q){
+                $q->where('name', 'like', '%'.request('search').'%')
+                ->orwhere('email', 'like', '%'.request('search').'%')
+                ->orwhere('birthdate', 'like', '%'.request('search').'%')
+                ->orwhere('address', 'like', '%'.request('search').'%')
+                ->orwhere('phone', 'like', '%'.request('search').'%')
+                ->orwhere('status', 'like', '%'.request('search').'%');
+            });
+        }
+        if(request()->has('status')){
+            $admins = $admins->where('status' ,request('status'));
+        }
+
+        $admins = $admins->simplePaginate();
         return $this->sendResponse(resource_collection(AdminResource::collection($admins)));
     }
 
@@ -59,25 +74,7 @@ class AdminsController extends Controller
         return $this->sendResponse([], 'success' , 200);
     }
 
-    public function search(){
-        $admins = Admin::with('country')->where('country_id', auth()->user()->country_id)->latest();
-        if(request('search')){
-            $admins = $admins->where(function($q){
-                $q->where('name', 'like', '%'.request('search').'%')
-                ->orwhere('email', 'like', '%'.request('search').'%')
-                ->orwhere('birthdate', 'like', '%'.request('search').'%')
-                ->orwhere('address', 'like', '%'.request('search').'%')
-                ->orwhere('phone', 'like', '%'.request('search').'%')
-                ->orwhere('status', 'like', '%'.request('search').'%');
-            });
-        }
-        if(request()->has('status')){
-            $admins = $admins->where('status' ,request('status'));
-        }
 
-        $admins = $admins->simplePaginate();
-        return $this->sendResponse(resource_collection(AdminResource::collection($admins)));
-    }
 
     public function fulldataexport(){
         $admins = Admin::with('country')->where('country_id', auth()->user()->country_id)->latest()->get();
