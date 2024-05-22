@@ -31,6 +31,8 @@ class AdminsController extends Controller
             $data['image'] = FileHelper::upload_file('admins', $data['image']);
         }
         $data['password'] = Hash::make($data['password']);
+        $data['password'] = Hash::make($data['password']);
+        $data['country_id'] = auth()->user()->country_id;
         unset($data['jobs']);
         Admin::create($data);
         return $this->sendResponse([], 'success' , 200);
