@@ -17,7 +17,6 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
         Route::post('logout' ,[AuthController::class, 'logout']);
         Route::resource('products' , ProductsController::class)->only('store');
         Route::resource('categories' , CategoriesController::class)->only('index');
-        Route::get('admins/filter', [AdminsController::class, 'search']);
         Route::get('admins/fulldata/export', [AdminsController::class, 'fulldataexport']);
         Route::resource('admins', AdminsController::class)->only('index','store','update','show');
         Route::get('users/filter', [UsersController::class, 'search']);
