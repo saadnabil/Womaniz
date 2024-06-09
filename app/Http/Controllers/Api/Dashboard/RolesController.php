@@ -12,10 +12,10 @@ class RolesController extends Controller
     use ApiResponseTrait;
     public function __construct()
     {
-        // $this->middleware('permission:role-list', ['only' => ['index']]);
-        // $this->middleware('permission:role-add', ['only' => ['store']]);
-        // $this->middleware('permission:role-edit', ['only' => ['update']]);
-        // $this->middleware('permission:role-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:role-list', ['only' => ['index']]);
+        $this->middleware('permission:role-add', ['only' => ['store']]);
+        $this->middleware('permission:role-edit', ['only' => ['update']]);
+        $this->middleware('permission:role-delete', ['only' => ['destroy']]);
     }
     /**
      * Display a listing of the resource.
