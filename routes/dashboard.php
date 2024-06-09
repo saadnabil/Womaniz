@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'v1/dashboard'], function(){
     Route::post('login' ,[AuthController::class, 'login']);
     Route::group(['middleware' => 'auth:admin'],function(){
+
         Route::get('data', [DataController::class, 'index']);
         Route::get('data/cities', [DataController::class, 'cities']);
         Route::resource('products' , ProductsController::class)->only('store');
