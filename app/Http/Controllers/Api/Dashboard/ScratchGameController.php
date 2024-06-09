@@ -12,6 +12,12 @@ class ScratchGameController extends Controller
 {
     use ApiResponseTrait;
 
+    public function __construct()
+    {
+        $this->middleware('permission:scratch-game-information', ['only' => ['scratchInformation']]);
+        $this->middleware('permission:scratch-game-information-update', ['only' => ['updateDiscountValue']]);
+    }
+
     public function scratchInformation(ScratchService $scratchService){
         $scratchInformation = $scratchService->scratchInformation();
         return $this->sendResponse(new ScratchGameResource($scratchInformation));

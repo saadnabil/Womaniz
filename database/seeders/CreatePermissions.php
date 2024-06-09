@@ -58,15 +58,7 @@ class CreatePermissions extends Seeder
                 'role-show',
                 'role-delete',
             ],
-            'permissions' => [
-                'permission-list',
-                'permission-create',
-                'permission-edit',
-                'permission-show',
-                'permission-delete',
-            ],
         ];
-
         foreach ($permissiongroups as $groupname => $permissiongroup) {
             foreach($permissiongroup as $permission){
                 Permission::firstOrCreate(

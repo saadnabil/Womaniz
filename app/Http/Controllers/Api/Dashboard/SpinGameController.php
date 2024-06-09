@@ -16,6 +16,12 @@ class SpinGameController extends Controller
 {
     use ApiResponseTrait;
 
+    public function __construct()
+    {
+        $this->middleware('permission:spin-game-information', ['only' => ['spinInformation']]);
+        $this->middleware('permission:spin-game-information-update', ['only' => ['spinInformationUpdate']]);
+    }
+
     public function spinInformation(SpinService $spinService){
         $spingame = $spinService->spinInformation();
         return $this->sendResponse(new SpinGameResource($spingame));

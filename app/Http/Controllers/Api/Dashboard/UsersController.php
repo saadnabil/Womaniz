@@ -15,10 +15,22 @@ class UsersController extends Controller
 {
     use ApiResponseTrait;
     protected $userService;
+
     public function __construct(UserService $userService)
     {
         $this->userService = $userService;
+
+        $this->middleware('permission:user-list', ['only' => ['index']]);
+        $this->middleware('permission:user-create', ['only' => ['store']]);
+        $this->middleware('permission:user-edit', ['only' => ['update']]);
+        $this->middleware('permission:user-show', ['only' => ['show']]);
+        $this->middleware('permission:user-delete', ['only' => ['delete']]);
+        $this->middleware('permission:user-export', ['only' => ['fulldataexport']]);
+        $this->middleware('permission:user-change-status', ['only' => ['switchstatus']]);
     }
+
+
+
 
     public function index(){
         $search = request()->has('search') ? request('search') : null;

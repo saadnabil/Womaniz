@@ -21,7 +21,16 @@ class AdminsController extends Controller
     public function __construct(AdminService $adminService)
     {
         $this->adminService = $adminService;
+
+        $this->middleware('permission:admin-list', ['only' => ['index']]);
+        $this->middleware('permission:admin-create', ['only' => ['store']]);
+        $this->middleware('permission:admin-edit', ['only' => ['update']]);
+        $this->middleware('permission:admin-show', ['only' => ['show']]);
+        $this->middleware('permission:admin-delete', ['only' => ['delete']]);
+        $this->middleware('permission:admin-export', ['only' => ['fulldataexport']]);
+        $this->middleware('permission:admin-change-status', ['only' => ['switchstatus']]);
     }
+
 
     public function index(){
         $search = request()->has('search') ? request('search') : null;
