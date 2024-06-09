@@ -23,6 +23,8 @@ class AuthController extends Controller
         }
         $admin = Auth::guard('admin')->user();
         $admin['token'] = $token;
+        /**Eager loading for roles and permissions*/
+        $admin = $admin->load('roles.permissions');
         return $this->sendResponse(new AdminResource($admin));
     }
 

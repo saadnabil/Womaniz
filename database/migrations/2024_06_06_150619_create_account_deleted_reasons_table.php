@@ -13,8 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->foreignId('country_id')->nullable()->constrained('countries')->onDelete('cascade')->onUpdate('cascade');
+        Schema::create('account_deleted_reasons', function (Blueprint $table) {
+            $table->id();
+            $table->text('reason_en')->nullable();
+            $table->text('reason_ar')->nullable();
+            $table->softDeletes();
+            $table->timestamps();
         });
     }
 
@@ -25,9 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign(['country_id']);
-            $table->dropColumn('country_id');
-        });
+        Schema::dropIfExists('account_deleted_reasons');
     }
 };

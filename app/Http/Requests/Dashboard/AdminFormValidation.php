@@ -34,6 +34,7 @@ class AdminFormValidation extends AbstractFormRequest
                 'phone' => ['required' , 'string','max:250' ],
                 'status' => ['required' , 'numeric' , 'in:1,0'],
                 'image' => ['required', 'image' , 'mimes:png,jpg,jpeg,gif,svg'],
+                'role' => ['required','string'],
                 'jobs' => ['required', 'array'],
                 'jobs.*' => ['numeric','min:1' , 'max:5'],
             ];
@@ -47,6 +48,7 @@ class AdminFormValidation extends AbstractFormRequest
                 'phone' => ['required' , 'string' ,'max:250'],
                 'status' => ['required' , 'numeric' , 'in:1,0'],
                 'image' => ['nullable', 'image' , 'mimes:png,jpg,jpeg,gif,svg'],
+                'role' => ['required','string'],
                 'jobs' => ['nullable', 'array'],
                 'jobs.*' => ['numeric', 'min:1' , 'max:5'],
             ];

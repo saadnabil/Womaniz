@@ -30,7 +30,6 @@ class Product extends Model
     }
 
 
-
     public function getFitSizeDescAttribute(){
         $lang = app()->getLocale();
         if($lang == 'en'){

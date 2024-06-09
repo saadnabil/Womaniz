@@ -57,6 +57,7 @@ Route::group(['prefix' => 'v1/user'],function(){
             Route::get('/security', [ProfileController::class, 'security']);
             Route::post('/update', [ProfileController::class, 'update']);
             Route::post('/changepassword', [ProfileController::class, 'changepassword']);
+            Route::post('/account/delete', [ProfileController::class, 'deleteAccount']);
         });
         Route::group(['prefix' => 'addresses'], function() {
             Route::get('/', [AddressesController::class, 'fetch']);

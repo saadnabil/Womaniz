@@ -32,31 +32,40 @@ class CreateCouponsScratchGames extends Command
      */
     public function handle()
     {
-        // return Command::SUCCESS;
-        info('success');
         $countries = Country::with('users')->get();
         foreach($countries as $country){
+
             $date = Carbon::now($country->timezone);
+
+            /*get scratch game for today*/
             $todayscratchgame = ScratchGame::where([
                 'date' => $date->format('Y-m-d'),
                 'country_id' => $country->id
             ])->first();
+
+            /*create a new one if time is 12:00 am*/
             if(!$todayscratchgame){
+
+                /*get scratch game discount*/
+                $scratchSystemDiscount = getScratchGameDiscount($country);
+
                 $scratchgame = ScratchGame::create([
                     'code' => strtoupper(Str::random(5)),
-                    'discount' => 30,
+                    'discount' => (int)$scratchSystemDiscount,
                     'country_id' => $country->id,
                     'date' => $date->format('Y-m-d'),
                 ]);
+
                 foreach($country->users as $user){
                     ScratchGameUser::create([
                         'user_id' => $user->id,
                         'scratch_game_id' => $scratchgame->id,
                         'date' => $date->format('Y-m-d'),
-                        'expiration_date' => $date->addDays(3)->format('Y-m-d'),
+                        'expiration_date' => $date->copy()->addDays(3)->format('Y-m-d'),
                         'open_cell_index' => 0,
                     ]);
                 }
+
             }
         }
     }

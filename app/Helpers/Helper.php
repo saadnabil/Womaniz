@@ -1,10 +1,15 @@
 <?php
 
 use App\Http\Resources\Api\CartResource;
+use App\Models\Country;
 use App\Models\Otp;
 use Carbon\Carbon;
-use DateInterval;
-use DatePeriod;
+// use DateInterval;
+// use DatePeriod;
+
+function getScratchGameDiscount($country){
+    return isset(json_decode(setting('scratch_discount'),true)[$country->country]) ? json_decode(setting('scratch_discount'),true)[$country->country] : 10;
+}
 
 function resource_collection($resource): array
 {
@@ -44,22 +49,22 @@ function checkValidAppliedCouponBeforeSubmitOrder($coupon , $timezone){
     }
 }
 
-function generateTimeSlotsBetweenIntervals($start_time, $end_time, $interval = '1 hour'){
-    $start = Carbon::parse($start_time);
-    $end = Carbon::parse($end_time);
+// function generateTimeSlotsBetweenIntervals($start_time, $end_time, $interval = '1 hour'){
+//     $start = Carbon::parse($start_time);
+//     $end = Carbon::parse($end_time);
 
-    // Fix: Ensure the interval format is correct (e.g., 'PT1H' for 1 hour)
-    $interval = new DateInterval('PT' . strtoupper($interval[0]) . 'H');
-    $time_slots = [];
+//     // Fix: Ensure the interval format is correct (e.g., 'PT1H' for 1 hour)
+//     $interval = new DateInterval('PT' . strtoupper($interval[0]) . 'H');
+//     $time_slots = [];
 
-    // Create a DatePeriod to iterate over the time range
-    $period = new DatePeriod($start, $interval, $end);
-    foreach ($period as $slot) {
-        $time_slots[] = ['time' => $slot->format('h:i A') , 'booked' => 0 ];
-    }
-    // Add the end time to ensure it's included in the slots
-    return $time_slots;
-}
+//     // Create a DatePeriod to iterate over the time range
+//     $period = new DatePeriod($start, $interval, $end);
+//     foreach ($period as $slot) {
+//         $time_slots[] = ['time' => $slot->format('h:i A') , 'booked' => 0 ];
+//     }
+//     // Add the end time to ensure it's included in the slots
+//     return $time_slots;
+// }
 
 
 

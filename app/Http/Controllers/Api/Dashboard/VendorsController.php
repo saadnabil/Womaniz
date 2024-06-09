@@ -3,104 +3,49 @@ namespace App\Http\Controllers\Api\Dashboard;
 
 use App\Helpers\FileHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Dashboard\ChangeStatusValidation;
 use App\Http\Requests\Dashboard\DeleteValidation;
 use App\Http\Requests\Dashboard\VendorFormValidation;
 use App\Http\Resources\Dashboard\VendorResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Vendor;
 use App\Models\VendorWorkCategory;
+use App\Services\Dashboard\VendorService;
 use Illuminate\Support\Facades\Hash;
 
 class VendorsController extends Controller
 {
     use ApiResponseTrait;
+    protected $vendorService;
+
+    public function __construct(VendorService $vendorService)
+    {
+        $this->vendorService = $vendorService;
+    }
+
     public function index(){
-        $vendors = Vendor::with('categories')->where('country_id', auth()->user()->country_id)->latest()->simplepaginate();
+        $search = request()->has('search') ? request('search') : null;
+        $status = request()->has('status') ? request('status') : null;
+        $categories = request()->has('categories') ? request('categories') : null;
+        $vendors = $this->vendorService->listWithSearch($search, $status , $categories);
         return $this->sendResponse(resource_collection(VendorResource::collection($vendors)));
     }
+
     public function store(VendorFormValidation $request){
         $data = $request->validated();
-        $workCategories = $data['categories'];
-        unset($data['categories']);
-        if(isset($data['image'])){
-            $data['image'] = FileHelper::upload_file('vendors', $data['image']);
-        }
-        $data['password'] = Hash::make($data['password']);
-        $data['country_id'] = auth()->user()->country_id;
-        $vendor = Vendor::create($data);
-        foreach($workCategories as $category){
-            VendorWorkCategory::create([
-                'category_id' => $category,
-                'vendor_id' => $vendor->id
-            ]);
-        }
+        $this->vendorService->createVendor($data);
         return $this->sendResponse([], 'success' , 200);
     }
 
     public function update(VendorFormValidation $request, Vendor $vendor){
         $data = $request->validated();
-        //reset categories
-        VendorWorkCategory::where(['vendor_id' => $vendor->id])->delete();
-        //reset categories
-        $workCategories = $data['categories'];
-        unset($data['categories']);
-        if(isset($data['image'])){
-            $data['image'] = FileHelper::update_file('vendors', $data['image'], $vendor->image);
-        }
-        if(isset($data['password'])){
-            $data['password'] = Hash::make($data['password']);
-        }
-        $data ['bank_account_name'] = isset($data['bank_account_name']) ?$data['bank_account_name'] : null;
-        $data ['account_number'] = isset($data['account_number']) ? $data['account_number'] : null;
-        $data ['swift_number'] = isset($data['swift_number']) ? $data['swift_number'] : null;
-        $data ['iban_number'] = isset($data['iban_number']) ? $data['iban_number']  : null;
-        $vendor->update($data);
-        foreach($workCategories as $category){
-            VendorWorkCategory::create([
-                'category_id' => $category,
-                'vendor_id' => $vendor->id
-            ]);
-        }
+        $this->vendorService->updateVendor($data, $vendor);
         return $this->sendResponse([], 'success' , 200);
-    }
-
-    public function search(){
-        $vendors = Vendor::with('categories')->where('country_id', auth()->user()->country_id)->latest();
-        if(request('search')){
-            $vendors = $vendors->where(function($q){
-                $q->where('name', 'like', '%'.request('search').'%')
-                ->orwhere('email', 'like', '%'.request('search').'%')
-                ->orwhere('phone', 'like', '%'.request('search').'%')
-                ->orwhere('status', 'like', '%'.request('search').'%')
-                ->orwhere('contact_name', 'like', '%'.request('search').'%')
-                ->orwhere('hq_address', 'like', '%'.request('search').'%')
-                ->orwhere('shipping_address', 'like', '%'.request('search').'%')
-                ->orwhere('commission', 'like', '%'.request('search').'%')
-                ->orwhere('transfer_method', 'like', '%'.request('search').'%')
-                ->orwhere('bank_account_name', 'like', '%'.request('search').'%')
-                ->orwhere('account_number', 'like', '%'.request('search').'%')
-                ->orwhere('swift_number', 'like', '%'.request('search').'%')
-                ->orwhere('iban_number', 'like', '%'.request('search').'%');
-            });
-        }
-        if(request()->has('status')){
-            $vendors = $vendors->where('status' ,request('status'));
-        }
-        if(request()->has('categories')){
-            $vendors =  $vendors->WhereHas('categories', function($query){
-                $query->whereIn('category_id',request('categories'));
-            });
-        }
-
-        $vendors = $vendors->simplePaginate();
-        return $this->sendResponse(resource_collection(VendorResource::collection($vendors)));
     }
 
     public function delete(DeleteValidation $request){
         $data = $request->validated();
-        $images = Vendor::whereIn('id',$data['ids'])->pluck('image')->toarray();
-        Vendor::whereIn('id',$data['ids'])->delete();
-        FileHelper::delete_files($images);
+        $this->vendorService->deleteVendors($data);
         return $this->sendResponse([], 'success' , 200);
     }
 
@@ -114,15 +59,14 @@ class VendorsController extends Controller
         return $this->sendResponse(VendorResource::collection($vendors));
     }
 
-    public function switchstatus(Vendor $vendor){
+    public function switchstatus(ChangeStatusValidation $request, Vendor $vendor){
+        $data = $request->validated();
         $vendor->update([
-            'status' => $vendor->status == 0 ? 1 : 0,
+            'status' =>  $data['status'],
         ]);
-        $data = [
-            'status' => $vendor->status,
-        ];
-        return $this->sendResponse($data);
+        return $this->sendResponse([]);
     }
+
 
 }
 

@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Http\Resources\Api\CartResource;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -16,7 +17,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use  HasFactory, Notifiable;
+    use  HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -27,6 +28,7 @@ class User extends Authenticatable implements JWTSubject
 
     protected $guard = ["api"];
 
+    protected $date = ['deleted_at'];
 
     /**
      * The attributes that should be hidden for serialization.

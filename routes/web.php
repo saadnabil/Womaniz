@@ -24,12 +24,5 @@ Route::get('/', function () {
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('test', function(){
-    $countries = Country::get();
-    foreach($countries as $country){
-            Coupon::where('country_id', $country->id)
-                    ->where('expiration_date', '<', Carbon::today($country->timezone))
-                    ->update([
-                        'status' => 'expired',
-                    ]);
-    }
+
 });

@@ -7,19 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Contracts\Queue\ShouldQueue;
-
-
+use Spatie\Permission\Traits\HasRoles;
 
 class Admin extends User  implements ShouldQueue , JWTSubject
 {
-    use HasFactory , SoftDeletes;
+    use HasFactory , SoftDeletes, HasRoles;
 
     protected $guarded = [];
 
     protected $data = ['deleted_at'];
 
     protected $guard = 'admin';
-
 
     public function country(){
         return $this->belongsTo(Country::class);
