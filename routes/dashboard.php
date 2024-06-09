@@ -18,8 +18,10 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
 
         Route::get('data', [DataController::class, 'index']);
         Route::get('data/cities', [DataController::class, 'cities']);
+
         Route::resource('products' , ProductsController::class)->only('store');
         Route::resource('categories' , CategoriesController::class)->only('index');
+
         /**admins */
         Route::get('admins/fulldata/export', [AdminsController::class, 'fulldataexport']);
         Route::post('admins/delete', [AdminsController::class, 'delete']);
