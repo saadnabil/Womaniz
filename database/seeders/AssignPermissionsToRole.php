@@ -17,7 +17,7 @@ class AssignPermissionsToRole extends Seeder
     public function run()
     {
         $roles = Role::get();
-        $permissions = Permission::pluck('name')->toarray();
+        $permissions = Permission::get()->pluck('name')->toarray();
         foreach($roles as $role){
             $role->syncPermissions($permissions);
         }
