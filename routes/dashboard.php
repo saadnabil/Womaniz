@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\Api\Dashboard\ActivitiesController;
 use App\Http\Controllers\Api\Dashboard\AdminsController;
 use App\Http\Controllers\Api\Dashboard\CategoriesController;
 use App\Http\Controllers\Api\Dashboard\DataController;
@@ -21,6 +23,10 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
 
         Route::resource('products' , ProductsController::class)->only('store');
         Route::resource('categories' , CategoriesController::class)->only('index');
+
+        /**activities */
+        Route::resource('activities', ActivitiesController::class)->only('index');
+
 
         /**admins */
         Route::get('admins/fulldata/export', [AdminsController::class, 'fulldataexport']);
