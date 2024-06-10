@@ -38,8 +38,7 @@ class ActivitiesController extends Controller
         }
 
         $data = $data->orderByDesc('id')->with(['causer', 'subject'])->get();
-        return response()->json($data);
-        // return $this->sendResponse(resource_collection(AdminResource::collection($admins)));
+        return $this->sendResponse($data);
     }
 
 
