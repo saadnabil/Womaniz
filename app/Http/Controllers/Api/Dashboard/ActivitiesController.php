@@ -37,9 +37,8 @@ class ActivitiesController extends Controller
             $data->whereBetween('created_at', [$from_date, $to_date]);
         }
 
-        $data = $data->orderByDesc('id')->with(['causer', 'subject']);
+        $data = $data->orderByDesc('id')->with(['causer', 'subject'])->get();
         return response()->json($data);
-
         // return $this->sendResponse(resource_collection(AdminResource::collection($admins)));
     }
 
