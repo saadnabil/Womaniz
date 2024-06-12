@@ -51,8 +51,6 @@ class RolesController extends Controller
         return $this->sendResponse([]);
     }
 
-
-
     /**
      * Update the specified resource in storage.
      *

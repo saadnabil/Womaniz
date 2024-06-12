@@ -9,13 +9,10 @@ use Spatie\Activitylog\Models\Activity;
 class ActivitiesController extends Controller
 {
     use ApiResponseTrait;
-
     protected $adminService;
-
     public function __construct(AdminService $adminService)
     {
         $this->adminService = $adminService;
-
         // $this->middleware('permission:admin-list', ['only' => ['index']]);
         // $this->middleware('permission:admin-create', ['only' => ['store']]);
         // $this->middleware('permission:admin-edit', ['only' => ['update']]);
@@ -24,8 +21,6 @@ class ActivitiesController extends Controller
         // $this->middleware('permission:admin-export', ['only' => ['fulldataexport']]);
         // $this->middleware('permission:admin-change-status', ['only' => ['switchstatus']]);
     }
-
-
     public function index(Request $request){
         $data = Activity::whereNotNull('causer_id');
         if ($request->has('adminsIds')) {
@@ -40,9 +35,6 @@ class ActivitiesController extends Controller
         $data = $data->orderByDesc('id')->with(['causer', 'subject'])->get();
         return $this->sendResponse($data);
     }
-
-
-
 }
 
 

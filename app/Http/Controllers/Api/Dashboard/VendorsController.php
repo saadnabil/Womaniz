@@ -5,6 +5,7 @@ use App\Helpers\FileHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\ChangeStatusValidation;
 use App\Http\Requests\Dashboard\DeleteValidation;
+use App\Http\Requests\Dashboard\VendorAddBrandValidation;
 use App\Http\Requests\Dashboard\VendorFormValidation;
 use App\Http\Resources\Dashboard\VendorResource;
 use App\Http\Traits\ApiResponseTrait;
@@ -71,6 +72,15 @@ class VendorsController extends Controller
         $data = $request->validated();
         $vendor->update([
             'status' =>  $data['status'],
+        ]);
+        return $this->sendResponse([]);
+    }
+
+    public function addbrand(VendorAddBrandValidation $request){
+        $data = $request->validated();
+        VendorWorkCategory::fitstOrCreate([
+            'category_id' => $data['category_id'],
+            'vendor_id' => $data['vendor_id']
         ]);
         return $this->sendResponse([]);
     }

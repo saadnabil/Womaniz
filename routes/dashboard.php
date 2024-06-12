@@ -45,6 +45,7 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
 
         /**vendors */
         Route::get('vendors/fulldata/export', [VendorsController::class, 'fulldataexport']);
+        Route::post('vendors/brands/add', [VendorsController::class, 'addbrand']);
         Route::post('vendors/delete', [VendorsController::class, 'delete']);
         Route::post('vendors/{vendor}/switchstatus', [VendorsController::class, 'switchstatus']);
         Route::resource('vendors',VendorsController::class)->only('index','store','update','show');
