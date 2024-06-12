@@ -32,8 +32,7 @@ class AdminService{
         if(isset($data['image'])){
             $data['image'] = FileHelper::upload_file('admins', $data['image']);
         }
-        $data['password'] = Hash::make($data['password']);
-        $data['password'] = Hash::make($data['password']);
+        $data['password'] = bcrypt($data['password']);
         $data['country_id'] = auth()->user()->country_id;
         $role = $data['role'];
         unset($data['jobs']);
