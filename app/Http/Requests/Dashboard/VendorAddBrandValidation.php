@@ -26,8 +26,8 @@ class VendorAddBrandValidation extends AbstractFormRequest
     {
         return [
             'vendor_id' => ['required' , 'numeric'],
-            'category_id' => ['required' , 'numeric'],
             'brand_id' => ['required' , 'numeric'],
+            'category_id' => ['required' , 'numeric'],
         ];
     }
 }

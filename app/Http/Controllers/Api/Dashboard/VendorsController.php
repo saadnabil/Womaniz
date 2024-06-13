@@ -10,6 +10,7 @@ use App\Http\Requests\Dashboard\VendorFormValidation;
 use App\Http\Resources\Dashboard\VendorResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Vendor;
+use App\Models\vendorWorkBrand;
 use App\Models\VendorWorkCategory;
 use App\Services\Dashboard\VendorService;
 use Illuminate\Support\Facades\Hash;
@@ -78,13 +79,9 @@ class VendorsController extends Controller
 
     public function addbrand(VendorAddBrandValidation $request){
         $data = $request->validated();
-        VendorWorkCategory::fitstOrCreate([
-            'category_id' => $data['category_id'],
-            'vendor_id' => $data['vendor_id']
-        ]);
+        vendorWorkBrand::firstOrCreate($data);
         return $this->sendResponse([]);
     }
-
 
 }
 

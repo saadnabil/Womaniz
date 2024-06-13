@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class VendorWorkCategory extends Model
+class vendorWorkBrand extends Model
 {
     use HasFactory;
     protected $guarded = [];
@@ -52,5 +52,4 @@ class VendorWorkCategory extends Model
                 ->log('Delete');
         });
     }
-
 }
