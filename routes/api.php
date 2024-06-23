@@ -58,6 +58,7 @@ Route::group(['prefix' => 'v1/user'],function(){
             Route::post('/update', [ProfileController::class, 'update']);
             Route::post('/changepassword', [ProfileController::class, 'changepassword']);
             Route::post('/account/delete', [ProfileController::class, 'deleteAccount']);
+            Route::get('/account/delete/reasons', [ProfileController::class, 'deleteAccountReasons']);
         });
         Route::group(['prefix' => 'addresses'], function() {
             Route::get('/', [AddressesController::class, 'fetch']);

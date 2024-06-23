@@ -10,6 +10,14 @@ class AccountDeletedReason extends Model
     use HasFactory;
     protected $guarded = [];
 
+    public function getReasonAttribute(){
+        $lang = app()->getLocale();
+        if($lang == 'en'){
+            return $this->reason_en;
+        }
+        return $this->reason_ar;
+    }
+
     protected static function boot()
     {
         parent::boot();

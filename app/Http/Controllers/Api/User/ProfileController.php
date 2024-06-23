@@ -7,10 +7,12 @@ use App\Http\Requests\Api\User\AddLocationValidation;
 use App\Http\Requests\Api\User\CahngePasswordValidation;
 use App\Http\Requests\Api\User\DeleteAccountValidation;
 use App\Http\Requests\Api\User\UpdateProfileValidation;
+use App\Http\Resources\Api\AccountDeleteResonResource;
 use App\Http\Resources\Api\AddressResource;
 use App\Http\Resources\Api\CategoryResource;
 use App\Http\Resources\Api\UserResource;
 use App\Http\Traits\ApiResponseTrait;
+use App\Models\AccountDeletedReason;
 use App\Models\AccountDeleteHistory;
 use App\Models\Address;
 use App\Models\Category;
@@ -94,6 +96,11 @@ class ProfileController extends Controller
         $data = $request->validated();
         $this->profileService->deleteAccount($data);
         return $this->sendResponse([]);
+    }
+
+    public function deleteAccountReasons(){
+        $reasons = AccountDeletedReason::get();
+        return $this->sendResponse(AccountDeleteResonResource::collection($reasons));
     }
 
 }

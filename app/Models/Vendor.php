@@ -19,6 +19,11 @@ class Vendor extends Model
         return $this->belongsToMany(Category::class, 'vendor_work_categories');
     }
 
+    public function brands()
+    {
+        return $this->belongsToMany(Brand::class, 'vendor_work_brands');
+    }
+
     protected static function boot()
     {
         parent::boot();
