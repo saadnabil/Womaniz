@@ -26,9 +26,6 @@ class ForgetPasswordUserValidationStepOne extends AbstractFormRequest
     {
         return [
             'email' => ['required', 'email'],
-            // 'otp' => ['nullable', 'digits:4'],
-            // 'password' => ['required_with:otp', 'string' ,'min:8'],
-            // 'confirmpassword' => ['required_with:otp', 'string' ,'min:8', 'same:password'],
         ];
     }
 }

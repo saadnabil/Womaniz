@@ -35,7 +35,7 @@ class AuthService{
     public function forgetPasswordStepOne($data){
         $user = User::where('email', $data['email'])->first();
         if(!$user){
-            return $this->sendResponse(['error' => __('messages.Invalid credentials. Please make sure you are registered.'), 'fail' ,404]);
+            return $this->sendResponse(['error' => __('messages.Invalid credentials. Please make sure you are registered.')],'fail' ,422);
         }
         $code = generate_otp_function();
         create_new_otp($data['email'], $code);
@@ -45,7 +45,7 @@ class AuthService{
     public function forgetPasswordStepTwo($data){
         $user = User::where('email', $data['email'])->first();
         if(!$user){
-            return $this->sendResponse(['error' => __('messages.Invalid credentials. Please make sure you are registered.'), 'fail' ,404]);
+            return $this->sendResponse(['error' => __('messages.Invalid credentials. Please make sure you are registered.'), 'fail' ,422]);
         }
         $otp = Otp::where(['email' => $data['email'], 'code' => $data['otp']])->first();
         if(!$otp){
@@ -57,7 +57,7 @@ class AuthService{
     public function forgetPasswordStepThree($data){
         $user = User::where('email', $data['email'])->first();
         if(!$user){
-            return $this->sendResponse(['error' => __('messages.Invalid credentials. Please make sure you are registered.'), 'fail' ,404]);
+            return $this->sendResponse(['error' => __('messages.Invalid credentials. Please make sure you are registered.'), 'fail' ,422]);
         }
         if(!isset($data['otp'])){
             $code = generate_otp_function();
@@ -75,7 +75,7 @@ class AuthService{
     public function login(array $data){
         $token = Auth::attempt(['email' => $data['email'], 'password' => $data['password']]);
         if (!$token) {
-            return $this->sendResponse(['error' => __('messages.Invalid credentials. Please make sure you are registered.')] , 'fail' , 404);
+            return $this->sendResponse(['error' => __('messages.Invalid credentials. Please make sure you are registered.')] , 'fail' , 422);
         }
         $user = Auth::user();
         $user['token'] = $token;
