@@ -36,13 +36,16 @@ class VendorFormValidation extends AbstractFormRequest
                 'hq_address' => ['required' , 'string'],
                 'shipping_address' => ['required' , 'string'],
                 'commission' => ['required' , 'numeric', 'min:0','max:100'],
-                'transfer_method' => ['required' , 'string', 'in:bank,iban,swift'],
-                'bank_account_name' => ['required_if:transfer_method,bank' , 'string'],
-                'account_number' =>  ['required_if:transfer_method,bank' , 'string'],
-                'swift_number' =>  ['required_if:transfer_method,swift' , 'string'],
-                'iban_number' =>  ['required_if:transfer_method,iban' , 'string' ],
+                'bank_account_name' => ['required' , 'string'],
+                'bank_name' => ['required' , 'string'],
+                'account_number' =>  ['required' , 'string'],
+                'swift_number' =>  ['required' , 'string'],
+                'iban_number' =>  ['required' , 'string' ],
                 'categories' => ['required','array'],
                 'categories.*' => ['required','numeric'],
+                'legal_docs' => ['required', 'file', 'mimes:png,jpg,jpeg,svg,pdf'],
+                'commercial_registration' => ['required', 'file', 'mimes:png,jpg,jpeg,svg,pdf'],
+                'vat_certificate' => ['required', 'file', 'mimes:png,jpg,jpeg,svg,pdf']
             ];
         }else{
             return [
@@ -55,13 +58,16 @@ class VendorFormValidation extends AbstractFormRequest
                 'hq_address' => ['required' , 'string'],
                 'shipping_address' => ['required' , 'string'],
                 'commission' => ['required' , 'numeric', 'min:0','max:100'],
-                'transfer_method' => ['required' , 'string', 'in:bank,iban,swift'],
-                'bank_account_name' => ['required_if:transfer_method,bank' , 'string'],
-                'account_number' =>  ['required_if:transfer_method,bank' , 'string'],
-                'swift_number' =>  ['required_if:transfer_method,swift' , 'string'],
-                'iban_number' =>  ['required_if:transfer_method,iban' , 'string', ],
+                'bank_account_name' => ['required' , 'string'],
+                'bank_name' => ['required' , 'string'],
+                'account_number' =>  ['required' , 'string'],
+                'swift_number' =>  ['required' , 'string'],
+                'iban_number' =>  ['required' , 'string' ],
                 'categories' => ['required','array'],
                 'categories.*' => ['required','numeric'],
+                'legal_docs' => ['nullable', 'file', 'mimes:png,jpg,jpeg,svg,pdf'],
+                'commercial_registration' => ['nullable', 'file', 'mimes:png,jpg,jpeg,svg,pdf'],
+                'vat_certificate' => ['nullable', 'file', 'mimes:png,jpg,jpeg,svg,pdf']
             ];
         }
 

@@ -42,9 +42,10 @@ class VendorService{
     public function createVendor($data){
         $workCategories = $data['categories'];
         unset($data['categories']);
-        if(isset($data['image'])){
-            $data['image'] = FileHelper::upload_file('vendors', $data['image']);
-        }
+        $data['image'] = FileHelper::upload_file('vendors', $data['image']);
+        $data['legal_docs'] = FileHelper::upload_file('vendors', $data['legal_docs']);
+        $data['commercial_registration'] = FileHelper::upload_file('vendors', $data['commercial_registration']);
+        $data['vat_certificate'] = FileHelper::upload_file('vendors', $data['vat_certificate']);
         $data['password'] = Hash::make($data['password']);
         $data['country_id'] = auth()->user()->country_id;
         $vendor = Vendor::create($data);
@@ -72,6 +73,15 @@ class VendorService{
          unset($data['categories']);
          if(isset($data['image'])){
              $data['image'] = FileHelper::update_file('vendors', $data['image'], $vendor->image);
+         }
+         if(isset($data['legal_docs'])){
+            $data['legal_docs'] = FileHelper::update_file('vendors', $data['legal_docs'], $vendor->legal_docs);
+         }
+         if(isset($data['commercial_registration'])){
+            $data['commercial_registration'] = FileHelper::update_file('vendors', $data['commercial_registration'], $vendor->commercial_registration);
+         }
+         if(isset($data['vat_certificate'])){
+            $data['vat_certificate'] = FileHelper::update_file('vendors', $data['vat_certificate'], $vendor->vat_certificate);
          }
          if(isset($data['password'])){
              $data['password'] = Hash::make($data['password']);

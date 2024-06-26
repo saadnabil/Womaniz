@@ -30,8 +30,6 @@ class AuthService{
         return $this->sendResponse(new UserResource($user));
     }
 
-
-
     public function forgetPasswordStepOne($data){
         $user = User::where('email', $data['email'])->first();
         if(!$user){

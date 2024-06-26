@@ -23,7 +23,6 @@ class VendorsController extends Controller
     public function __construct(VendorService $vendorService)
     {
         $this->vendorService = $vendorService;
-
         $this->middleware('permission:vendor-list', ['only' => ['index']]);
         $this->middleware('permission:vendor-create', ['only' => ['store']]);
         $this->middleware('permission:vendor-edit', ['only' => ['update']]);
