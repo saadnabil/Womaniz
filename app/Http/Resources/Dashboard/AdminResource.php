@@ -27,7 +27,7 @@ class AdminResource extends JsonResource
                 'address' => $this->address,
                 'status' => $this->status,
                 'country' => $this->country->country,
-                'role' => $this->roles->first() ? $this->roles->first()->name : null,
+                'role' => $this->roles->first()->name,
                 'permissions' => $this->roles->first()->permissions->pluck('name'),
                 'category' => 'Accounts’ management',
         ];
