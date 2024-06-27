@@ -2,16 +2,27 @@
 namespace App\Http\Controllers\Api\Dashboard;
 use App\Helpers\FileHelper;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\Dashboard\ProductValidation;
+use App\Http\Requests\Dashboard\ProductsBulkUploadValidation;
+use App\Http\Requests\Dashboard\ProductValidation;
 use App\Http\Traits\ApiResponseTrait;
+use App\Imports\ProductImport;
 use App\Models\Category;
 use App\Models\CategoryProduct;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\ProductVariant;
+use Maatwebsite\Excel\Facades\Excel;
+
 class ProductsController extends Controller
 {
     use ApiResponseTrait;
+
+    public function bulkupload(ProductsBulkUploadValidation $request){
+        $data = $request->validated();
+        Excel::import(new ProductImport,  $data['file']);
+        return $this->sendResponse([]);
+    }
+
     public function store(ProductValidation $request){
         $data = $request->validated();
         $data['price_after_sale'] =  $data['price'] - $data['price'] * $data['discount'] / 100;

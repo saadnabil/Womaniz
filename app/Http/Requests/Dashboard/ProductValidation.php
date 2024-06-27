@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Api\Dashboard;
+namespace App\Http\Requests\Dashboard;
 
 use App\Http\Requests\AbstractFormRequest;
 

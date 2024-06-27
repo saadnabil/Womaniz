@@ -21,6 +21,7 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
         Route::get('data', [DataController::class, 'index']);
         Route::get('data/cities', [DataController::class, 'cities']);
 
+        Route::post('products/bulk/upload' ,[ProductsController::class, 'bulkupload' ]);
         Route::resource('products' , ProductsController::class)->only('store');
         Route::resource('categories' , CategoriesController::class)->only('index');
 
