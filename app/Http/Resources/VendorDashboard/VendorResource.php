@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources\Dashboard;
+namespace App\Http\Resources\VendorDashboard;
 
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -16,7 +16,7 @@ class VendorResource extends JsonResource
     public function toArray($request)
     {
         $data = [
-            'id' => $this->id,
+                'id' => $this->id,
                 'name' => $this->name,
                 'contactName' => $this->contact_name,
                 'email' => $this->email,
@@ -35,12 +35,14 @@ class VendorResource extends JsonResource
                 'commercialRegistration' => $this->commercial_registration,
                 'birthdate' => $this->birthdate,
                 'vatCertificate' => $this->vat_certificate,
-
-        ];
+            ];
 
         if($this->categories){
             $data['categories'] = VendorCategoryResource::collection($this->categories);
         }
+        if($this->token){
+            $data['token'] = $this->token;
+        };
         return $data;
     }
 }
