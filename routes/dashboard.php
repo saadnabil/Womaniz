@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Dashboard\CategoriesController;
 use App\Http\Controllers\Api\Dashboard\DataController;
 use App\Http\Controllers\Api\Dashboard\PermissionsController;
 use App\Http\Controllers\Api\Dashboard\ProductsController;
+use App\Http\Controllers\Api\Dashboard\RestoreRequestController;
 use App\Http\Controllers\Api\Dashboard\RolesController;
 use App\Http\Controllers\Api\Dashboard\ScratchGameController;
 use App\Http\Controllers\Api\Dashboard\SizesController;
@@ -58,6 +59,9 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
          /**spin game */
         Route::get('spin/information',[SpinGameController::class , 'spinInformation']);
         Route::post('spin/information/update',[SpinGameController::class , 'spinInformationUpdate']);
+
+        /**restore request */
+        Route::post('restoreAccountRequest/changeStatus/{restoreAccountRequest}' ,[RestoreRequestController::class, 'changeStatus']);
 
         /**auth logout */
         Route::post('logout' ,[AuthController::class, 'logout']);

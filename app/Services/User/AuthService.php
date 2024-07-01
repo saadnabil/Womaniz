@@ -3,6 +3,7 @@ namespace App\Services\User;
 use App\Http\Resources\Api\UserResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Otp;
+use App\Models\RestoreAccountRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -71,6 +72,14 @@ class AuthService{
     }
 
     public function login(array $data){
+        $user = User::withTrashed()->where('email', $data['email'])->first();
+        if ($user->trashed()) {
+            $restoreRequest = RestoreAccountRequest::where(['email' => $data['email']])->first();
+            if($restoreRequest){
+                return $this->sendResponse(['error' => __('messages.Your account is deactivated. A request to restore your account has been made. Please wait for the admin to respond.')], 'fail', 422);
+            }
+            return $this->sendResponse(['error' => __('messages.This account has been deleted. If you want to restore it, kindly submit a request.')] , 'fail' , 403);
+        }
         $token = Auth::attempt(['email' => $data['email'], 'password' => $data['password']]);
         if (!$token) {
             return $this->sendResponse(['error' => __('messages.Invalid credentials. Please make sure you are registered.')] , 'fail' , 422);
@@ -78,6 +87,18 @@ class AuthService{
         $user = Auth::user();
         $user['token'] = $token;
         return $this->sendResponse(new UserResource($user));
+    }
+
+    public function restoreAccountRequest($data){
+        $user = User::withTrashed()->where('email', $data['email'])->first();
+        if (!$user->trashed()) {
+            return ['error' => __('messages.This account has not been deleted.')];
+        }
+        RestoreAccountRequest::firstOrCreate([
+            'email' => $data['email'],
+            'status' => 'pending'
+        ]);
+        return;
     }
 
 }

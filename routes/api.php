@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\User\SettingController;
 use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'v1/user'],function(){
     Route::post('login', [AuthController::class , 'login']);
+    Route::post('restoreAccount/request', [AuthController::class , 'restoreAccountRequest']);
     Route::post('register', [AuthController::class , 'register']);
     Route::post('forgetPasswordStepOne', [AuthController::class , 'forgetPasswordStepOne']);
     Route::post('forgetPasswordStepTwo', [AuthController::class , 'forgetPasswordStepTwo']);
@@ -43,7 +44,7 @@ Route::group(['prefix' => 'v1/user'],function(){
             Route::get('/', [CouponsController::class, 'validcoupons']);
         });
         Route::group(['prefix' => 'cart'], function() {
-            Route::get('/details', [CartController::class, 'cartDetails']);
+            Route::get('/detai2024-07-11 12:58:17ls', [CartController::class, 'cartDetails']);
             Route::get('/minusQuantity/{cartId}', [CartController::class, 'minusQuantity']);
             Route::post('/add', [CartController::class, 'add']);
             Route::get('/plusQuantity/{cartId}', [CartController::class, 'plusQuantity']);

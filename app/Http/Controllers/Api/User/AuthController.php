@@ -7,9 +7,11 @@ use App\Http\Requests\Api\User\ForgetPasswordUserValidationStepThree;
 use App\Http\Requests\Api\User\ForgetPasswordUserValidationStepTwo;
 use App\Http\Requests\Api\User\LoginUserValidation;
 use App\Http\Requests\Api\User\RegisterUserValidation;
+use App\Http\Requests\Api\User\RestoreAccountValidation;
 use App\Http\Resources\Api\UserResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Otp;
+use App\Models\RestoreAccountRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
@@ -54,6 +56,15 @@ class AuthController extends Controller
     public function forgetPasswordStepThree(ForgetPasswordUserValidationStepThree $request){
         $data = $request->validated();
         return $this->authService->forgetPasswordStepThree($data);
+    }
+
+    public function restoreAccountRequest(RestoreAccountValidation $request ){
+        $data = $request->validated();
+        $result = $this->authService->restoreAccountRequest($data);
+        if(isset($result['error'])){
+            return $this->sendResponse(['error' => $result['error']], 'fail' ,422);
+        }
+        return $this->sendResponse([]);
     }
 }
 
