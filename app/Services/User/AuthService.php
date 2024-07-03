@@ -96,7 +96,8 @@ class AuthService{
         }
         RestoreAccountRequest::firstOrCreate([
             'email' => $data['email'],
-            'status' => 'pending'
+            'status' => 'pending',
+            'user_id' => $user->id,
         ]);
         return;
     }

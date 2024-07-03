@@ -2,17 +2,9 @@
 namespace App\Http\Controllers\Api\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\AccountRestoreRequestChangeStatusValidation;
-use App\Http\Requests\Dashboard\UpdateScratchDiscountValue;
-use App\Http\Requests\Dashboard\UpdateSpinInformation;
-use App\Http\Resources\Dashboard\ScratchGameResource;
-use App\Http\Resources\Dashboard\SpinGameResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\RestoreAccountRequest;
-use App\Models\ScratchGame;
-use App\Models\SpinGame;
-use App\Services\Dashboard\ScratchService;
-use App\Services\Dashboard\SpinService;
-use Carbon\Carbon;
+
 
 class RestoreRequestController extends Controller
 {
@@ -28,11 +20,12 @@ class RestoreRequestController extends Controller
         $data = $request->validated();
         if($restoreAccountRequest->status == 'pending'){
             $statusMappingArray = [
-                0 => 'rejected' ,
+                0 => 'rejected',
                 1 => 'accepted'
             ];
             $restoreAccountRequest->update([
                 'status' =>  $statusMappingArray[$data['status']],
+                'rejection_reason' => $data['rejection_reason'] ?? null,
             ]);
         }
         return $this->sendResponse([]);
