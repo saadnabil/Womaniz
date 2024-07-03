@@ -16,6 +16,7 @@ class RestoreAccountRequestResource extends JsonResource
     {
         return[
             'id' => $this->id,
+            'date' => $this->created_at->format('Y-m-d'),
             'status' => $this->status,
             'user' => new UserResource($this->user),
         ];
