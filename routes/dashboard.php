@@ -61,6 +61,7 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
         Route::post('spin/information/update',[SpinGameController::class , 'spinInformationUpdate']);
 
         /**restore request */
+        Route::post('restoreAccountRequest' ,[RestoreRequestController::class, 'index']);
         Route::post('restoreAccountRequest/changeStatus/{restoreAccountRequest}' ,[RestoreRequestController::class, 'changeStatus']);
 
         /**auth logout */
