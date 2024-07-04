@@ -15,11 +15,14 @@ class ScratchGameResource extends JsonResource
      */
     public function toArray($request)
     {
+        $user = auth()->user();
+        $user = $user->load('country');
         return [
                 'id' => $this->id,
                 'code' => $this->code,
-                'discount' => $this->discount,
+                'todaysDiscount' => $this->discount,
                 'date' => $this->date,
+                'currentDiscount' => json_decode(setting('scratch_discount'),true)[$user->country->country],
         ];
     }
 }
