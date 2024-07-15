@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers\Api\Dashboard;
+namespace App\Http\Controllers\Api\VendorDashboard;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\ProductsBulkUploadValidation;
 use App\Http\Requests\Dashboard\ProductValidation;
@@ -23,12 +23,6 @@ class ProductsController extends Controller
                            ->latest();
         $products = $products->simplepaginate();
         return $this->sendResponse(resource_collection(ProductResource::collection($products)));
-    }
-
-    public function bulkupload(ProductsBulkUploadValidation $request){
-        $data = $request->validated();
-        Excel::import(new ProductImport,  $data['file']);
-        return $this->sendResponse([]);
     }
 
     public function store(ProductValidation $request, ProductService $productService){

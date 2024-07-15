@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Dashboard;
 
 use App\Http\Requests\AbstractFormRequest;
+use App\Rules\Dashboard\CheckSubTypeRule;
 
 class ProductValidation extends AbstractFormRequest
 {
@@ -23,18 +24,21 @@ class ProductValidation extends AbstractFormRequest
      */
     public function rules()
     {
-        return [
+        $data =  [
 
-            'product_type' => ['required', 'in:clothes,jewellery,cosmetics'],
-            'jewellery_type' => ['required_if:product_type,jewellery', 'in:ring,necklace,earing,bracelet'],
+            'product_type' => ['required','in:clothes,jewellery,cosmetics'],
+            'product_sub_type' => ['required', new CheckSubTypeRule()],
 
             'name_en' => ['required', 'string', 'max:250'],
             'name_ar' => ['required', 'string', 'max:250'],
+
             'desc_en' => ['required', 'string'],
             'desc_ar' => ['required', 'string'],
+
             'price' => ['required', 'string' , 'min:0'],
             'discount' =>  ['required', 'numeric' ,'min:0'],
             'country_id' => ['required', 'numeric'],
+            'vat' => ['required', 'numeric'],
 
             'fit_size_desc_en' => ['nullable','string','required_if:product_type,jewellery','required_if:product_type,clothes'],
             'fit_size_desc_ar' => ['nullable','string','required_if:product_type,jewellery','required_if:product_type,clothes'],
@@ -51,26 +55,17 @@ class ProductValidation extends AbstractFormRequest
             'about_product_desc_en' => ['nullable','string','required_if:product_type,cosmetics'],
             'about_product_desc_ar' => ['nullable','string','required_if:product_type,cosmetics'],
 
-            'dimension' =>  ['nullable','string','required_if:jewellery_type,ring','required_if:jewellery_type,earing'],
+            'dimension' =>  ['nullable','string','required_if:product_sub_type,ring','required_if:product_sub_type,earing'],
 
-            'diamond_en' => ['nullable','string','required_if:jewellery_type,ring','required_if:jewellery_type,earing'],
-            'diamond_ar' => ['nullable','string','required_if:jewellery_type,ring','required_if:jewellery_type,earing'],
+            'material_en' => ['nullable','required_if:product_type,jewellery','string'],
+            'material_ar' => ['nullable','required_if:product_type,jewellery','string'],
 
-            'metal_en' => ['nullable','required_if:product_type,jewellery','string'],
-            'metal_en' => ['nullable','required_if:product_type,jewellery','string'],
-
-            'chain_length' => ['nullable','required_if:jewellery_type,necklace', 'numeric'],
-
-
-            'thumbnail' => ['required', 'image' ,'mimes:png,jpg,jpeg,svg,gif'],
-
-            'images' => ['required', 'array'],
-            'images.*' => ['required', 'image' ,'mimes:png,jpg,jpeg,svg,gif'],
+            'chain_length' => ['nullable','required_if:product_sub_type,necklace', 'numeric'],
 
             'variants' => ['required', 'array'],
-
             'variants.*.size_id' => ['required', 'numeric'],
             'variants.*.stock' => ['required', 'numeric'],
+            'variants.*.sku' => ['required', 'string'],
 
             'categories' => ['required', 'array'],
             'categories.*id' => ['required','numeric'],
@@ -78,5 +73,19 @@ class ProductValidation extends AbstractFormRequest
             'brand_id' => ['nullable' , 'numeric'],
 
         ];
+
+        if(request()->isMethod('post')){
+            $data['thumbnail'] = ['required', 'image' ,'mimes:png,jpg,jpeg,svg,gif'];
+            $data['images'] = ['required', 'array'];
+            $data['images.*'] = ['required', 'image' ,'mimes:png,jpg,jpeg,svg,gif'];
+        }
+
+        if(request()->isMethod('put')){
+            $data['thumbnail'] = ['nullable', 'image' ,'mimes:png,jpg,jpeg,svg,gif'];
+            $data['images'] = ['nullable', 'array'];
+             $data['images.*'] = ['nullable', 'image' ,'mimes:png,jpg,jpeg,svg,gif'];
+         }
+
+        return $data;
     }
 }

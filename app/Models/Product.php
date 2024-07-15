@@ -38,6 +38,31 @@ class Product extends Model
         return $this->fit_size_desc_ar;
     }
 
+    public function getIngredientsDescAttribute(){
+        $lang = app()->getLocale();
+        if($lang == 'en'){
+            return $this->ingredients_desc_en;
+        }
+        return $this->ingredients_desc_ar;
+    }
+
+    public function getAboutProductDescAttribute(){
+        $lang = app()->getLocale();
+        if($lang == 'en'){
+            return $this->about_product_desc_en;
+        }
+        return $this->about_product_desc_ar;
+    }
+
+    public function getMaterialAttribute(){
+        $lang = app()->getLocale();
+        if($lang == 'en'){
+            return $this->material_en;
+        }
+        return $this->material_ar;
+    }
+
+
     public function getShipInformationDescAttribute(){
         $lang = app()->getLocale();
         if($lang == 'en'){

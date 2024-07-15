@@ -18,6 +18,14 @@ class Brand extends Model
         return $this->belongsToMany(Category::class , 'category_brands')->where('type','brand_category');
     }
 
+    public function getNameAttribute(){
+        $lang = app()->getLocale();
+        if($lang == 'en'){
+            return $this->name_en;
+        }
+        return $this->name_ar;
+    }
+
 
     protected static function boot()
     {

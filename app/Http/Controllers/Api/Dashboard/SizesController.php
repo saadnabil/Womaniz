@@ -14,4 +14,8 @@ class SizesController extends Controller
         $sizes = Size::get();
         return $this->sendResponse(SizeResource::collection($sizes));
     }
+
+    public function getSizesCategory(){
+        $sizes = Size::get();
+    }
 }

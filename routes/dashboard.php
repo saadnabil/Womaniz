@@ -1,5 +1,4 @@
 <?php
-
 use App\Http\Controllers\Api\Dashboard\ActivitiesController;
 use App\Http\Controllers\Api\Dashboard\AdminsController;
 use App\Http\Controllers\Api\Dashboard\CategoriesController;
@@ -23,7 +22,7 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
         Route::get('data/cities', [DataController::class, 'cities']);
 
         Route::post('products/bulk/upload' ,[ProductsController::class, 'bulkupload' ]);
-        Route::resource('products' , ProductsController::class)->only('store');
+        Route::resource('products' , ProductsController::class)->only('index','store','update','destroy');
         Route::resource('categories' , CategoriesController::class)->only('index');
 
         /**activities */
