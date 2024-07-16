@@ -63,20 +63,16 @@ class Product extends Model
     }
 
 
-    public function getShipInformationDescAttribute(){
+    public function getShipInformation(){
         $lang = app()->getLocale();
-        if($lang == 'en'){
-            return $this->ship_information_desc_en;
-        }
-        return $this->ship_information_desc_ar;
+        $ship_information = json_decode(setting('ship_information'),true);
+        return $ship_information[$lang];
     }
 
-    public function getReturnOrderDescAttribute(){
+    public function getReturnOrder(){
         $lang = app()->getLocale();
-        if($lang == 'en'){
-            return $this->return_order_desc_en;
-        }
-        return $this->return_order_desc_ar;
+        $return_order = json_decode(setting('return_order'),true);
+        return $return_order[$lang];
     }
 
     public function categories()
