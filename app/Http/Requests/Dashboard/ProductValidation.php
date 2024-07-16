@@ -37,17 +37,9 @@ class ProductValidation extends AbstractFormRequest
 
             'price' => ['required', 'string' , 'min:0'],
             'discount' =>  ['required', 'numeric' ,'min:0'],
-            'country_id' => ['required', 'numeric'],
-            'vat' => ['required', 'numeric'],
 
             'fit_size_desc_en' => ['nullable','string','required_if:product_type,jewellery','required_if:product_type,clothes'],
             'fit_size_desc_ar' => ['nullable','string','required_if:product_type,jewellery','required_if:product_type,clothes'],
-
-            'ship_information_desc_en' => ['nullable','string','required_if:product_type,jewellery','required_if:product_type,clothes'],
-            'ship_information_desc_ar' => ['nullable','string','required_if:product_type,jewellery','required_if:product_type,clothes'],
-
-            'return_order_desc_en' => ['required','string','required_if:product_type,jewellery'],
-            'return_order_desc_ar' => ['required','string','required_if:product_type,jewellery'],
 
             'ingredients_desc_en' => ['nullable','string','required_if:product_type,cosmetics'],
             'ingredients_desc_ar' => ['nullable','string','required_if:product_type,cosmetics'],

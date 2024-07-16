@@ -20,6 +20,7 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
 
         Route::get('data', [DataController::class, 'index']);
         Route::get('data/cities', [DataController::class, 'cities']);
+        Route::get('data/productSetting', [DataController::class, 'productSetting']);
 
         Route::post('products/bulk/upload' ,[ProductsController::class, 'bulkupload' ]);
         Route::resource('products' , ProductsController::class)->only('index','store','update','destroy');

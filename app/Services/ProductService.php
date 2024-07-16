@@ -18,6 +18,7 @@ class ProductService{
         unset($data['variants']);
         unset($data['categories']);
         $data['thumbnail'] = FileHelper::upload_file('products',$data['thumbnail']);
+        $data['country_id'] = auth()->user()->country_id;
         $product = Product::create($data);
         foreach( $variants as $variant){
             ProductVariant::create([

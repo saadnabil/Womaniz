@@ -49,6 +49,13 @@ class DataController extends Controller
         return $this->sendResponse($data);
     }
 
+    public function productSetting(){
+        return [
+            'return_order' => json_decode(setting('return_order'),true)[app()->getLocale()],
+            'ship_information' =>  json_decode(setting('ship_information'),true)[app()->getLocale()],
+        ];
+    }
+
     public function cities(){
         $country = auth()->user()->country->load('cities');
         return $this->sendResponse($country->cities);
