@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Api\Dashboard;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Dashboard\DeleteValidation;
 use App\Http\Requests\Dashboard\ProductsBulkUploadValidation;
 use App\Http\Requests\Dashboard\ProductValidation;
 use App\Http\Resources\Dashboard\ProductResource;
@@ -23,6 +24,11 @@ class ProductsController extends Controller
                            ->with('variants','brand','categories')
                            ->latest();
         $search = request()->has('search') ? request('search') : null;
+        if($request->has('category_id')){
+            $products = $products->whereHas('categories',function($q){
+                $q->where('category_id', request('category_id'));
+            });
+        }
         if($request->has('search')){
             $products = $products->where(function($q) use($search){
                 $q->where('name_en', 'like', '%'.$search.'%')
@@ -50,8 +56,21 @@ class ProductsController extends Controller
             $products =  $products->where('brand_id', request('brand_id'));
         }
 
+        if($request->has('status')){
+            $products =  $products->where('status', request('status'));
+        }
+
         $products = $products->simplepaginate();
         return $this->sendResponse(resource_collection(ProductResource::collection($products)));
+    }
+
+    public function fulldataexport(){
+        $user = auth()->user();
+        $user = $user->load('country');
+        $products = Product::where('country_id', $user->country->id)
+                            ->with('variants','brand','categories')
+                            ->latest()->get();
+        return $this->sendResponse(ProductResource::collection($products));
     }
 
     public function bulkupload(ProductsBulkUploadValidation $request){
@@ -72,8 +91,9 @@ class ProductsController extends Controller
         return $this->sendResponse([]);
     }
 
-    public function destroy(Request $request, Product $product){
-        $product->delete();
+    public function delete(DeleteValidation $request,){
+        $data = $request->validated();
+        Product::whereIn('id',$data['ids'])->delete();
         return $this->sendResponse([]);
     }
 

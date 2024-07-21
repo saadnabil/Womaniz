@@ -22,8 +22,10 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
         Route::get('data/cities', [DataController::class, 'cities']);
         Route::get('data/productSetting', [DataController::class, 'productSetting']);
 
+        Route::get('products/fulldata/export', [ProductsController::class, 'fulldataexport']);
         Route::post('products/bulk/upload' ,[ProductsController::class, 'bulkupload' ]);
-        Route::resource('products' , ProductsController::class)->only('index','store','update','destroy');
+        Route::post('products/delete', [ProductsController::class, 'delete']);
+        Route::resource('products' , ProductsController::class)->only('index','store','update');
 
         Route::get('categories/lastParentChildCategories/{parentCategory}' , [CategoriesController::class, 'getLastChildCategoriesForParentCategory']);
         Route::resource('categories' , CategoriesController::class)->only('index');
