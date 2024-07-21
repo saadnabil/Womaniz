@@ -24,11 +24,12 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
 
         Route::post('products/bulk/upload' ,[ProductsController::class, 'bulkupload' ]);
         Route::resource('products' , ProductsController::class)->only('index','store','update','destroy');
+
+        Route::get('categories/lastParentChildCategories/{parentCategory}' , [CategoriesController::class, 'getLastChildCategoriesForParentCategory']);
         Route::resource('categories' , CategoriesController::class)->only('index');
 
         /**activities */
         Route::resource('activities', ActivitiesController::class)->only('index');
-
 
         /**admins */
         Route::get('admins/fulldata/export', [AdminsController::class, 'fulldataexport']);

@@ -62,19 +62,6 @@ class Product extends Model
         return $this->material_ar;
     }
 
-
-    public function getShipInformation(){
-        $lang = app()->getLocale();
-        $ship_information = json_decode(setting('ship_information'),true);
-        return $ship_information[$lang];
-    }
-
-    public function getReturnOrder(){
-        $lang = app()->getLocale();
-        $return_order = json_decode(setting('return_order'),true);
-        return $return_order[$lang];
-    }
-
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'category_products');

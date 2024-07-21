@@ -16,6 +16,18 @@ function resource_collection($resource): array
     return json_decode($resource->response()->getContent(), true) ?? [];
 }
 
+function getShipInformation(){
+    $lang = app()->getLocale();
+    $ship_information = json_decode(setting('ship_information'),true);
+    return $ship_information[$lang];
+}
+
+function getReturnOrderInformation(){
+    $lang = app()->getLocale();
+    $return_order = json_decode(setting('return_order'),true);
+    return $return_order[$lang];
+}
+
 function langs(){
     return ['en', 'ar'];
 }
