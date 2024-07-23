@@ -99,9 +99,7 @@ class ProductVariantsSheetImport implements ToModel, WithHeadingRow
                 'sku' => $row['sku'],
             ]);
 
-        } else {
-            Log::error('Product ID or Varinat not found', ['row' => $row]);
-        }
+        } 
     }
 }
 
@@ -127,8 +125,6 @@ class ProductCatigoriesSheetImport implements ToModel, WithHeadingRow
                 'category_id' => $row['category_id'],
             ]);
 
-        } else {
-            Log::error('Product ID or Country not found', ['row' => $row]);
-        }
+        } 
     }
 }
