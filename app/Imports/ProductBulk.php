@@ -94,7 +94,7 @@ class ProductTagsSheetImport implements ToModel, WithHeadingRow
         $productMap = $this->productsSheetImport->getProductMap();
         $productId = $productMap[$row['product_id']] ?? null;
 
-        $size = Size::where("name", $row['size'])->first();
+        $size = Size::where('title', $row['size'])->first();
 
 
         if ($productId && $size) {
