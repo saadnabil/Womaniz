@@ -6,6 +6,7 @@ use App\Http\Requests\Dashboard\ProductsBulkUploadValidation;
 use App\Http\Requests\Dashboard\ProductValidation;
 use App\Http\Resources\Dashboard\ProductResource;
 use App\Http\Traits\ApiResponseTrait;
+use App\Imports\ProductBulk;
 use App\Imports\ProductImport;
 use App\Models\Category;
 use App\Models\Product;
@@ -88,7 +89,10 @@ class ProductsController extends Controller
 
     public function bulkupload(ProductsBulkUploadValidation $request){
         $data = $request->validated();
-        Excel::import(new ProductImport,  $data['file']);
+        // Excel::import(new ProductImport,  $data['file']);
+        Excel::import(new ProductBulk,  $data['file']);
+
+
         return $this->sendResponse([]);
     }
 
