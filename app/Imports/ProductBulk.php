@@ -9,7 +9,6 @@ use App\Models\Size;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Spatie\Activitylog\Models\Activity;
 use Exception;
 
 
@@ -38,7 +37,6 @@ class ProductsSheetImport implements ToModel, WithHeadingRow
 
     public function model(array $row)
     {
-        Activity::disableLogging();
 
                 $product = Product::create([
                     'name_en' => $row['name_en'],
@@ -65,7 +63,6 @@ class ProductsSheetImport implements ToModel, WithHeadingRow
                     'country_id' => $row['country_id'],
                     'brand_id' => $row['brand_id'],
             ]);
-            Activity::enableLogging();
 
             // Store the mapping
             $this->productMap[$row['product_id']] = $product->id;
@@ -96,7 +93,6 @@ class ProductVariantsSheetImport implements ToModel, WithHeadingRow
 
 
         if ($productId && $size) {
-            Activity::disableLogging();
 
             ProductVariant::create([
                 'product_id' => $productId,
@@ -104,7 +100,6 @@ class ProductVariantsSheetImport implements ToModel, WithHeadingRow
                 'stock' => $row['stock'],
                 'sku' => $row['sku'],
             ]);
-            Activity::enableLogging();
 
         } 
     }
@@ -127,13 +122,11 @@ class ProductCatigoriesSheetImport implements ToModel, WithHeadingRow
 
 
         if ($productId) {
-            Activity::disableLogging();
 
             CategoryProduct::create([
                 'product_id' => $productId,
                 'category_id' => $row['category_id'],
             ]);
-            Activity::enableLogging();
 
         } 
     }

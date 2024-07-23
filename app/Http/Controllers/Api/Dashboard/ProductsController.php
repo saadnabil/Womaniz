@@ -11,6 +11,7 @@ use App\Imports\ProductImport;
 use App\Models\Category;
 use App\Models\Product;
 use App\Services\ProductService;
+use Spatie\Activitylog\Facades\LogBatch;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -90,8 +91,11 @@ class ProductsController extends Controller
     public function bulkupload(ProductsBulkUploadValidation $request){
         $data = $request->validated();
         // Excel::import(new ProductImport,  $data['file']);
+        $logBatch = LogBatch::startBatch();
+
         Excel::import(new ProductBulk,  $data['file']);
 
+        LogBatch::endBatch($logBatch);
 
         return $this->sendResponse([]);
     }
