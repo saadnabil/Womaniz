@@ -128,17 +128,16 @@ class ProductCatigoriesSheetImport implements ToModel, WithHeadingRow
         $productMap = $this->productsSheetImport->getProductMap();
         $productId = $productMap[$row['product_id']] ?? null;
 
-        $size = Size::where('title', $row['size'])->first();
 
 
-        if ($productId && $size) {
+        if ($productId) {
             CategoryProduct::create([
                 'product_id' => $productId,
                 'category_id' => $row['category_id'],
             ]);
 
         } else {
-            Log::error('Product ID or Varinat not found', ['row' => $row]);
+            Log::error('Product ID or Country not found', ['row' => $row]);
         }
     }
 }
