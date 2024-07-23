@@ -3,16 +3,7 @@ namespace App\Imports;
 
 use App\Models\Product;
 use App\Models\Category;
-use App\Models\Country;
-use App\Models\Brand;
-use App\Models\Subcategory;
 use App\Models\CategoryProduct;
-use App\Models\Tag;
-use App\Models\ProductTags;
-use App\Models\ProductAdditionalFeatures;
-use App\Models\ProductFeatures;
-use App\Models\ProductFeatureValues;
-use App\Models\ProductVariant;
 use App\Models\Size;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
