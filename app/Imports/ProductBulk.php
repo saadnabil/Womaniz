@@ -4,6 +4,7 @@ namespace App\Imports;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\CategoryProduct;
+use App\Models\ProductVariant;
 use App\Models\Size;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
