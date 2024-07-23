@@ -39,6 +39,11 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
         Route::post('admins/{admin}/switchstatus', [AdminsController::class, 'switchstatus']);
         Route::resource('admins', AdminsController::class)->only('index','store','update','show');
 
+
+        /**Orders */
+        Route::resource('orders', AdminsController::class)->only('index','store','update','show');
+
+
         /**users */
         Route::post('users/{user}/switchstatus', [UsersController::class, 'switchstatus']);
         Route::get('users/fulldata/export', [UsersController::class, 'fulldataexport']);

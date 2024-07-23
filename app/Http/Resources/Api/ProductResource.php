@@ -28,8 +28,8 @@ class ProductResource extends JsonResource
             'product_type' => $this->product_type,
             'variants' => VariantResource::collection($this->variants),
             'images' => ImageResource::collection($this->images),
-            'return_order_desc' => $this->getReturnOrder(),
-            'ship_information_desc' => $this->getShipInformation(),
+            'return_order_desc' => getReturnOrderInformation(),
+            'ship_information_desc' => getShipInformation(),
         ];
         if( $this->product_type == 'clothes' ){
             $data['fit_size_desc'] = $this->fit_size_desc; //clothes

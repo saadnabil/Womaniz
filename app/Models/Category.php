@@ -14,7 +14,20 @@ class Category extends Model
 
     protected $date = ['deleted_at'];
 
+    public function getMainCategoryAllDescendantIds(){
+        $descendantIds = collect();
+        $this->allMainCategoryLevelChildren->each(function ($child) use (&$descendantIds) {
+            $descendantIds = $descendantIds->merge([$child->id])
+                                           ->merge($child->getMainCategoryAllDescendantIds());
+        });
+        return $descendantIds->unique();
+    }
+
     public function children(){
+        return $this->hasMany(Category::class, 'parent_id', 'id')->where('type','app_category');
+    }
+
+    public function allMainCategoryLevelChildren(){
         return $this->hasMany(Category::class, 'parent_id', 'id');
     }
 

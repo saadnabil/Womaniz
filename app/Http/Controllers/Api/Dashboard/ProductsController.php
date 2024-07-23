@@ -24,11 +24,23 @@ class ProductsController extends Controller
                            ->with('variants','brand','categories')
                            ->latest();
         $search = request()->has('search') ? request('search') : null;
+
+        $mainCategoryId = $request->has('main_category_id') ? request('main_category_id') : 'all';
+
+        if($mainCategoryId != 'all'){
+            $mainCategory = Category::findOrfail($mainCategoryId);
+            $childCategoriesIds = $mainCategory->getMainCategoryAllDescendantIds();
+            $products = $products->whereHas('categories',function($q) use($childCategoriesIds){
+                $q->whereIn('category_id', $childCategoriesIds);
+            });
+        }
+
         if($request->has('category_id')){
             $products = $products->whereHas('categories',function($q){
                 $q->where('category_id', request('category_id'));
             });
         }
+
         if($request->has('search')){
             $products = $products->where(function($q) use($search){
                 $q->where('name_en', 'like', '%'.$search.'%')
@@ -52,6 +64,7 @@ class ProductsController extends Controller
                 ->orwhere('product_sub_type', 'like', '%'.$search.'%');
             });
         }
+
         if($request->has('brand_id')){
             $products =  $products->where('brand_id', request('brand_id'));
         }

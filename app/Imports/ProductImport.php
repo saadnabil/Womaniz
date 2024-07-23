@@ -41,6 +41,8 @@ class ProductImport implements ToCollection
                     'product_sub_type' => $row[15],
                     'material_en' => $row[17],
                     'material_ar' => $row[18],
+                    'model_id' => $row[19],
+                    'vendor_id' => $row[20]
                 ]);
                 $variants = json_decode($row[16], true) ?? [];
                 foreach($variants as $variant){
@@ -48,6 +50,7 @@ class ProductImport implements ToCollection
                         'product_id' => $product->id,
                         'size_id' => is_numeric($variant['size']) && in_array($variant['size'], $sizes) ? $variant['size'] : 1,
                         'stock' => is_numeric($variant['stock']) && $variant['stock'] > 0  ? $variant['stock'] : 0,
+                        'sku' => $variant['stock'],
                     ]);
                 }
              }
