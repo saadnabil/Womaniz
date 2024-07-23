@@ -45,8 +45,6 @@ class ProductsSheetImport implements ToModel, WithHeadingRow
 
     public function model(array $row)
     {
-        $country = country::where('country', $row['country'])->first();
-        $brand = Brand::where('name_en', $row['brand'])->first();
 
                 $product = Product::create([
                     'name_en' => $row['name_en'],
