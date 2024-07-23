@@ -70,8 +70,8 @@ class ProductsSheetImport implements ToModel, WithHeadingRow
                     'material_ar' => $row['material_ar'],
                     'model_id' => $row['model_id'],
                     'vendor_id' => $row['vendor_id'],
-                    'country_id' => $country->id,
-                    'brand_id' => $brand->id,
+                    'country_id' => $row['country_id'],
+                    'brand_id' => $row['brand_id'],
             ]);
 
             // Store the mapping
