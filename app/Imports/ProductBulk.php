@@ -31,7 +31,8 @@ class ProductBulk implements WithMultipleSheets
     {
         return [
             'Products Data' => $this->productsSheetImport,
-            'Product Variant' => new ProductTagsSheetImport($this->productsSheetImport),
+            'Product Variant' => new ProductVariantsSheetImport($this->productsSheetImport),
+            'Product Category' => new ProductCatigoriesSheetImport($this->productsSheetImport),
         ];
     }
 }
@@ -42,6 +43,9 @@ class ProductsSheetImport implements ToModel, WithHeadingRow
 
     public function model(array $row)
     {
+        $country = Country::where('country', $row['country'])->first();
+        $brand = Brand::where('name_en', $row['brand'])->first();
+
                 $product = Product::create([
                     'name_en' => $row['name_en'],
                     'name_ar' => $row['name_ar'],
@@ -63,14 +67,13 @@ class ProductsSheetImport implements ToModel, WithHeadingRow
                     'material_en' => $row['material_en'],
                     'material_ar' => $row['material_ar'],
                     'model_id' => $row['model_id'],
-                    'vendor_id' => $row['vendor_id']
+                    'vendor_id' => $row['vendor_id'],
+                    'country_id' => $country->id
+                    'brand_id' => $brand->id
             ]);
 
             // Store the mapping
             $this->productMap[$row['product_id']] = $product->id;
-
-
-
 
     }
 
@@ -80,7 +83,7 @@ class ProductsSheetImport implements ToModel, WithHeadingRow
     }
 }
 
-class ProductTagsSheetImport implements ToModel, WithHeadingRow
+class ProductVariantsSheetImport implements ToModel, WithHeadingRow
 {
     protected $productsSheetImport;
 
@@ -111,4 +114,31 @@ class ProductTagsSheetImport implements ToModel, WithHeadingRow
     }
 }
 
+class ProductCatigoriesSheetImport implements ToModel, WithHeadingRow
+{
+    protected $productsSheetImport;
 
+    public function __construct(ProductsSheetImport $productsSheetImport)
+    {
+        $this->productsSheetImport = $productsSheetImport;
+    }
+
+    public function model(array $row)
+    {
+        $productMap = $this->productsSheetImport->getProductMap();
+        $productId = $productMap[$row['product_id']] ?? null;
+
+        $size = Size::where('title', $row['size'])->first();
+
+
+        if ($productId && $size) {
+            CategoryProduct::create([
+                'product_id' => $productId,
+                'category_id' => $row['category_id'],
+            ]);
+
+        } else {
+            Log::error('Product ID or Varinat not found', ['row' => $row]);
+        }
+    }
+}
