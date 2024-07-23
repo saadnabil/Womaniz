@@ -8,8 +8,6 @@ use App\Models\Size;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Exception;
 
 class ProductBulk implements WithMultipleSheets
