@@ -3,6 +3,8 @@ namespace App\Imports;
 
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Country;
+use App\Models\Brand;
 use App\Models\Subcategory;
 use App\Models\Tag;
 use App\Models\ProductTags;
@@ -43,7 +45,7 @@ class ProductsSheetImport implements ToModel, WithHeadingRow
 
     public function model(array $row)
     {
-        $country = Country::where('country', $row['country'])->first();
+        $country = country::where('country', $row['country'])->first();
         $brand = Brand::where('name_en', $row['brand'])->first();
 
                 $product = Product::create([
