@@ -3,20 +3,14 @@ namespace App\Imports;
 
 use App\Models\Product;
 use App\Models\Category;
-use App\Models\Subcategory;
-use App\Models\Tag;
-use App\Models\ProductTags;
-use App\Models\ProductAdditionalFeatures;
-use App\Models\ProductFeatures;
-use App\Models\ProductFeatureValues;
+use App\Models\CategoryProduct;
 use App\Models\ProductVariant;
 use App\Models\Size;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Exception;
+
 
 class ProductBulk implements WithMultipleSheets
 {
@@ -31,7 +25,8 @@ class ProductBulk implements WithMultipleSheets
     {
         return [
             'Products Data' => $this->productsSheetImport,
-            'Product Variant' => new ProductTagsSheetImport($this->productsSheetImport),
+            'Product Variant' => new ProductVariantsSheetImport($this->productsSheetImport),
+            'Product Category' => new ProductCatigoriesSheetImport($this->productsSheetImport),
         ];
     }
 }
@@ -42,35 +37,35 @@ class ProductsSheetImport implements ToModel, WithHeadingRow
 
     public function model(array $row)
     {
+
                 $product = Product::create([
-                    'name_en' => $row[0],
-                    'name_ar' => $row[1],
-                    'desc_en' => $row[2],
-                    'desc_ar' => $row[3],
-                    'price' => $row[4],
-                    'discount' => $row[5],
-                    'price_after_sale' =>  $row[4] - $row[4] * $row[5] / 100,
-                    'fit_size_desc_en' => $row[6],
-                    'fit_size_desc_ar' => $row[7],
-                    'ingredients_desc_en' => $row[8],
-                    'ingredients_desc_ar' => $row[9],
-                    'about_product_desc_en' => $row[10],
-                    'about_product_desc_ar' => $row[11],
-                    'dimension' => $row[12],
-                    'chain_length' => $row[13],
-                    'product_type' => $row[14],
-                    'product_sub_type' => $row[15],
-                    'material_en' => $row[17],
-                    'material_ar' => $row[18],
-                    'model_id' => $row[19],
-                    'vendor_id' => $row[20]
+                    'name_en' => $row['name_en'],
+                    'name_ar' => $row['name_ar'],
+                    'desc_en' => $row['desc_en'],
+                    'desc_ar' => $row['desc_ar'],
+                    'price' => $row['price'],
+                    'discount' => $row['discount'],
+                    'price_after_sale' =>  $row['price'] - $row['price'] * $row['discount'] / 100,
+                    'fit_size_desc_en' => $row['fit_size_desc_en'],
+                    'fit_size_desc_ar' => $row['fit_size_desc_ar'],
+                    'ingredients_desc_en' => $row['ingredients_desc_en'],
+                    'ingredients_desc_ar' => $row['ingredients_desc_ar'],
+                    'about_product_desc_en' => $row['about_product_desc_en'],
+                    'about_product_desc_ar' => $row['about_product_desc_ar'],
+                    'dimension' => $row['dimension'],
+                    'chain_length' => $row['chain_length'],
+                    'product_type' => $row['product_type'],
+                    'product_sub_type' => $row['product_sub_type'],
+                    'material_en' => $row['material_en'],
+                    'material_ar' => $row['material_ar'],
+                    'model_id' => $row['model_id'],
+                    'vendor_id' => $row['vendor_id'],
+                    'country_id' => $row['country_id'],
+                    'brand_id' => $row['brand_id'],
             ]);
 
             // Store the mapping
             $this->productMap[$row['product_id']] = $product->id;
-
-
-
 
     }
 
@@ -80,7 +75,7 @@ class ProductsSheetImport implements ToModel, WithHeadingRow
     }
 }
 
-class ProductTagsSheetImport implements ToModel, WithHeadingRow
+class ProductVariantsSheetImport implements ToModel, WithHeadingRow
 {
     protected $productsSheetImport;
 
@@ -94,10 +89,11 @@ class ProductTagsSheetImport implements ToModel, WithHeadingRow
         $productMap = $this->productsSheetImport->getProductMap();
         $productId = $productMap[$row['product_id']] ?? null;
 
-        $size = Size::where("name", $row['size'])->first();
+        $size = Size::where('title', $row['size'])->first();
 
 
         if ($productId && $size) {
+
             ProductVariant::create([
                 'product_id' => $productId,
                 'size_id' => $size->id,
@@ -105,10 +101,33 @@ class ProductTagsSheetImport implements ToModel, WithHeadingRow
                 'sku' => $row['sku'],
             ]);
 
-        } else {
-            Log::error('Product ID or Varinat not found', ['row' => $row]);
-        }
+        } 
     }
 }
 
+class ProductCatigoriesSheetImport implements ToModel, WithHeadingRow
+{
+    protected $productsSheetImport;
 
+    public function __construct(ProductsSheetImport $productsSheetImport)
+    {
+        $this->productsSheetImport = $productsSheetImport;
+    }
+
+    public function model(array $row)
+    {
+        $productMap = $this->productsSheetImport->getProductMap();
+        $productId = $productMap[$row['product_id']] ?? null;
+
+
+
+        if ($productId) {
+
+            CategoryProduct::create([
+                'product_id' => $productId,
+                'category_id' => $row['category_id'],
+            ]);
+
+        } 
+    }
+}
