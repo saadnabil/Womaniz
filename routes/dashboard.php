@@ -3,6 +3,7 @@ use App\Http\Controllers\Api\Dashboard\ActivitiesController;
 use App\Http\Controllers\Api\Dashboard\AdminsController;
 use App\Http\Controllers\Api\Dashboard\CategoriesController;
 use App\Http\Controllers\Api\Dashboard\DataController;
+use App\Http\Controllers\Api\Dashboard\OrdersController;
 use App\Http\Controllers\Api\Dashboard\PermissionsController;
 use App\Http\Controllers\Api\Dashboard\ProductsController;
 use App\Http\Controllers\Api\Dashboard\RestoreRequestController;
@@ -27,6 +28,9 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
         Route::post('products/delete', [ProductsController::class, 'delete']);
         Route::resource('products' , ProductsController::class)->only('index','store','update');
 
+        Route::get('orders/changeStatus/{order}/{status}' , [OrdersController::class, 'changeStatus']);
+        Route::resource('orders' , OrdersController::class)->only('index','show');
+
         Route::get('categories/lastParentChildCategories/{parentCategory}' , [CategoriesController::class, 'getLastChildCategoriesForParentCategory']);
         Route::resource('categories' , CategoriesController::class)->only('index');
 
@@ -39,9 +43,6 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
         Route::post('admins/{admin}/switchstatus', [AdminsController::class, 'switchstatus']);
         Route::resource('admins', AdminsController::class)->only('index','store','update','show');
 
-
-        /**Orders */
-        Route::resource('orders', AdminsController::class)->only('index','store','update','show');
 
 
         /**users */

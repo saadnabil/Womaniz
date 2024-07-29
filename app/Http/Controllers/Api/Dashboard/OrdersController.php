@@ -1,79 +1,57 @@
 <?php
 namespace App\Http\Controllers\Api\Dashboard;
-
-use App\Helpers\FileHelper;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Dashboard\AdminFormValidation;
-use App\Http\Requests\Dashboard\ChangeStatusValidation;
-use App\Http\Requests\Dashboard\DeleteValidation;
-use App\Http\Resources\Dashboard\AdminResource;
+use App\Http\Resources\Dashboard\OrderResource;
+use App\Http\Resources\Dashboard\OrderTableResource;
 use App\Http\Traits\ApiResponseTrait;
-use App\Models\Admin;
 use App\Models\Order;
-use App\Services\Dashboard\AdminService;
 class OrdersController extends Controller
 {
     use ApiResponseTrait;
-
-    protected $adminService;
-
-    public function __construct(AdminService $adminService)
-    {
-        $this->adminService = $adminService;
-
-        $this->middleware('permission:admin-list', ['only' => ['index']]);
-        $this->middleware('permission:admin-create', ['only' => ['store']]);
-        $this->middleware('permission:admin-edit', ['only' => ['update']]);
-        $this->middleware('permission:admin-show', ['only' => ['show']]);
-        $this->middleware('permission:admin-delete', ['only' => ['delete']]);
-        $this->middleware('permission:admin-export', ['only' => ['fulldataexport']]);
-        $this->middleware('permission:admin-change-status', ['only' => ['switchstatus']]);
-    }
-
-
     public function index(){
-        $orders = Order::latest()->get();
-        return $this->sendResponse(resource_collection(AdminResource::collection($admins)));
+        $orders = Order::with('user','orderDetails.product')->latest();
+        if(request()->has('status')){
+            $orders = $orders->where('status', request('status'));
+        }
+        if(request()->has('search')){
+            $orders = $orders->where(function($query){
+                $query->where('id', 'like', '%'.request('search').'%')
+                      ->orWhere('status', 'like', '%'.request('search').'%')
+                      ->orWhere('payment_method', 'like', '%'.request('search').'%')
+                      ->orWhere('total', 'like', '%'.request('search').'%')
+                      ->orWhere('totalsub', 'like', '%'.request('search').'%')
+                      ->orWhere('discount', 'like', '%'.request('search').'%')
+                      ->orWhere('vat', 'like', '%'.request('search').'%')
+                      ->orWhere('shipping', 'like', '%'.request('search').'%')
+                      ->orWhereHas('address',function($q){
+                            $q->where('long', 'like', '%'.request('search').'%')
+                              ->orWhere('lat' , 'like', '%'.request('search').'%')
+                              ->orWhere('label' , 'like', '%'.request('search').'%')
+                              ->orWhere('description' , 'like', '%'.request('search').'%');
+                      })
+                      ->orWhereHas('user',function($q){
+                            $q->where('name', 'like', '%'.request('search').'%')
+                                ->orWhere('email' , 'like', '%'.request('search').'%')
+                                ->orWhere('phone' , 'like', '%'.request('search').'%')
+                                ->orWhere('birthdate' , 'like', '%'.request('search').'%')
+                                ->orWhere('gender' , 'like', '%'.request('search').'%');
+                  });
+            });
+        }
+        $orders = $orders->simplepaginate();
+        return $this->sendResponse(resource_collection(OrderTableResource::collection($orders)));
     }
 
-    public function show(Admin $admin){
-        $admin->load('country');
-        return $this->sendResponse(new AdminResource($admin));
+    public function show(Order $order){
+        $order->load('user','orderDetails.product');
+        return $this->sendResponse(new OrderResource($order));
     }
 
-    public function store(AdminFormValidation $request){
-        $data = $request->validated();
-        $this->adminService->createAdmin($data);
-        return $this->sendResponse([], 'success' , 200);
-    }
-
-    public function update(AdminFormValidation $request, Admin $admin){
-        $data = $request->validated();
-        $this->adminService->updateAdmin($data, $admin);
-        return $this->sendResponse([], 'success' , 200);
-    }
-
-    public function delete(DeleteValidation $request){
-        $data = $request->validated();
-        $this->adminService->deleteAdmin($data);
-        return $this->sendResponse([], 'success' , 200);
-    }
-
-    public function fulldataexport(){
-        $admins = Admin::with('country')->where('country_id', auth()->user()->country_id)->latest()->get();
-        return $this->sendResponse(AdminResource::collection($admins));
-    }
-
-    public function switchstatus(ChangeStatusValidation $request, Admin $admin){
-        $data = $request->validated();
-        $admin->update([
-            'status' =>  $data['status'],
-        ]);
+    public function changeStatus(Order $order, $status){
+        if(checkOrderStatus($status) == false){
+            return $this->sendResponse(['error' =>   __('messages.Order status is invalid!')],'fail',400);
+        }
+        $order->update(['status' => $status]);
         return $this->sendResponse([]);
     }
-
 }
-
-
-
-

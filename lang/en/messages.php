@@ -22,5 +22,6 @@ return [
     'Other' => 'Other',
     'This account has been deleted. If you want to restore it, kindly submit a request.' => 'This account has been deleted. If you want to restore it, kindly submit a request.',
     'This account has not been deleted.' => 'This account has not been deleted.',
-    'Your account is deactivated. A request to restore your account has been made. Please wait for the admin to respond.' => 'Your account is deactivated. A request to restore your account has been made. Please wait for the admin to respond.'
+    'Your account is deactivated. A request to restore your account has been made. Please wait for the admin to respond.' => 'Your account is deactivated. A request to restore your account has been made. Please wait for the admin to respond.',
+    'Order status is invalid!' => 'Order status is invalid!'
 ];

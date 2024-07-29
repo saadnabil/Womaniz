@@ -22,6 +22,13 @@ function getShipInformation(){
     return $ship_information[$lang];
 }
 
+function checkOrderStatus($status){
+    if(in_array($status,['pending','delivered','returned','canceled','delivery_failed','shipped','ready_to_ship'])){
+        return true;
+    }
+    return false;
+}
+
 function getReturnOrderInformation(){
     $lang = app()->getLocale();
     $return_order = json_decode(setting('return_order'),true);

@@ -14,11 +14,9 @@ use App\Services\ProductService;
 use Spatie\Activitylog\Facades\LogBatch;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
-
 class ProductsController extends Controller
 {
     use ApiResponseTrait;
-
     public function index(Request $request){
         $user = auth()->user();
         $user = $user->load('country');
@@ -32,11 +30,6 @@ class ProductsController extends Controller
             $childCategoriesIds = $mainCategory->getMainCategoryAllDescendantIds();
             $products = $products->whereHas('categories',function($q) use($childCategoriesIds){
                 $q->whereIn('category_id', $childCategoriesIds);
-            });
-        }
-        if($request->has('category_id')){
-            $products = $products->whereHas('categories',function($q){
-                $q->where('category_id', request('category_id'));
             });
         }
         if($request->has('search')){

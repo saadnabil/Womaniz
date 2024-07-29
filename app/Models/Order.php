@@ -20,6 +20,14 @@ class Order extends Model
         return $this->belongsTo(Coupon::class)->withTrashed();
     }
 
+    public function user(){
+        return $this->belongsTo(User::class)->withTrashed();
+    }
+
+    public function address(){
+        return $this->belongsTo(Address::class)->withTrashed();
+    }
+
     protected static function boot()
     {
         parent::boot();
