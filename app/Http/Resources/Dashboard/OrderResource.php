@@ -24,7 +24,7 @@ class OrderResource extends JsonResource
             'vat' => $this->vat,
             'shipping' => $this->shipping,
             'status' => $this->status,
-            'date' => $this->created_at->format('y-m-d H:i a'),
+            'date' => $this->created_at->format('Y-m-d'),
             'paymentMethod' => $this->payment_method,
             'numberofItems' => count($this->orderDetails),
             'user' => new UserResource($this->user),

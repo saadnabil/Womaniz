@@ -17,7 +17,7 @@ class OrderTableResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'date' => $this->created_at->format('y-m-d H:i a'),
+            'date' => $this->created_at->format('Y-m-d'),
             'id' => $this->id,
             'customer' => $this->user->name,
             'numberOfItems' => count($this->orderDetails),
