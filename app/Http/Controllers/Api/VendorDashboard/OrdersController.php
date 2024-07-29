@@ -1,7 +1,6 @@
 <?php
-namespace App\Http\Controllers\Api\Dashboard;
+namespace App\Http\Controllers\Api\VendorDashboard;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Dashboard\DeleteValidation;
 use App\Http\Resources\Dashboard\OrderResource;
 use App\Http\Resources\Dashboard\OrderTableResource;
 use App\Http\Traits\ApiResponseTrait;
@@ -10,10 +9,12 @@ class OrdersController extends Controller
 {
     use ApiResponseTrait;
     public function index(){
-        $orders = Order::latest();
+        $orders = Order::with('user','orderDetails.product')->latest();
+
         if(request()->has('status')){
             $orders = $orders->where('status', request('status'));
         }
+
         if(request()->has('search')){
             $orders = $orders->where(function($query){
                 $query->where('id', 'like', '%'.request('search').'%')
@@ -43,12 +44,6 @@ class OrdersController extends Controller
         return $this->sendResponse(resource_collection(OrderTableResource::collection($orders)));
     }
 
-    public function fulldataexport(){
-        $orders = Order::latest()->get();
-        return $this->sendResponse(OrderTableResource::collection($orders));
-
-    }
-
     public function show(Order $order){
         $order->load('user','orderDetails.product');
         return $this->sendResponse(new OrderResource($order));
@@ -60,11 +55,5 @@ class OrdersController extends Controller
         }
         $order->update(['status' => $status]);
         return $this->sendResponse([]);
-    }
-
-    public function delete(DeleteValidation $request){
-        $data = $request->validated();
-        Order::whereIn('id',$data['ids'])->delete();
-        return $this->sendResponse([], 'success' , 200);
     }
 }

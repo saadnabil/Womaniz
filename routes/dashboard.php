@@ -28,6 +28,8 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
         Route::post('products/delete', [ProductsController::class, 'delete']);
         Route::resource('products' , ProductsController::class)->only('index','store','update');
 
+        Route::post('orders/delete' , [OrdersController::class, 'delete']);
+        Route::get('orders/fulldata/export' , [OrdersController::class, 'fulldataexport']);
         Route::get('orders/changeStatus/{order}/{status}' , [OrdersController::class, 'changeStatus']);
         Route::resource('orders' , OrdersController::class)->only('index','show');
 
