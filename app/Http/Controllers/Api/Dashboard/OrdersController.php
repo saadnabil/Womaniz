@@ -15,7 +15,7 @@ class OrdersController extends Controller
             $orders = $orders->where('status', request('status'));
         }
         if(request()->has('date')){
-            $orders = $orders->where('date', request('date'));
+            $orders = $orders->whereDate('created_at', request('date'));
         }
         if(request()->has('search')){
             $orders = $orders->where(function($query){
