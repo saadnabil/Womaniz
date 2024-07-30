@@ -10,8 +10,14 @@ Route::group(['prefix' => 'v1/vendordashboard'], function(){
         /**auth logout */
         Route::post('logout' ,[AuthController::class, 'logout']);
     });
+
+    /**orders */
+    Route::post('orders/delete' , [OrdersController::class, 'delete']);
+    Route::get('orders/fulldata/export' , [OrdersController::class, 'fulldataexport']);
     Route::get('orders/changeStatus/{order}/{status}' , [OrdersController::class, 'changeStatus']);
     Route::resource('orders' , OrdersController::class)->only('index','show');
+    /**orders */
+
     Route::get('data/policy', [DataController::class, 'policy']);
     Route::get('data/security', [DataController::class, 'security']);
     Route::resource('products' , ProductsController::class)->only('index','store','update','destroy');

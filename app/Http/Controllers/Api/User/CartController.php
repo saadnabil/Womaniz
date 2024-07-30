@@ -81,13 +81,14 @@ class CartController extends Controller
         $user  =  auth()->user();
         $product = Product::where([
             'id' => $data['product_id'],
-        ]);
+        ])->first();
         if(!$product){
             return $this->sendResponse(['error' => __('messages.Product is not found')],'fail',404);
         }
         Cart::firstorcreate([
             'product_id' =>  $data['product_id'] ,
             'user_id' => auth()->user()->id ,
+            'product_variant_id' => $data['product_variant_id']
         ]);
         return $this->cartDetails();
     }

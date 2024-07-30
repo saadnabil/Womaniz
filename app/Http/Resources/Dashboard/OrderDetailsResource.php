@@ -18,6 +18,7 @@ class OrderDetailsResource extends JsonResource
             'id' => $this->id,
             'quantity' => $this->quantity,
             'price' => $this->price,
+            'sku' => $this->product_variant ? $this->product_variant->sku : null,
             'price_after_sale' => $this->price_after_sale,
             'product_information' => new ProductResource($this->product),
         ];

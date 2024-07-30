@@ -71,6 +71,7 @@ class OrdersController extends Controller
                 'quantity' => $item->quantity,
                 'price' => $item->product->price,
                 'price_after_sale' => $item->product->price_after_sale,
+                'product_variant_id' => $item->product_variant_id,
             ]);
         }
 

@@ -49,11 +49,10 @@ class OrdersController extends Controller
     public function fulldataexport(){
         $orders = Order::latest()->get();
         return $this->sendResponse(OrderTableResource::collection($orders));
-
     }
 
     public function show(Order $order){
-        $order->load('user','orderDetails.product');
+        $order->load('user','orderDetails.product.brand','orderDetails.product_variant');
         return $this->sendResponse(new OrderResource($order));
     }
 

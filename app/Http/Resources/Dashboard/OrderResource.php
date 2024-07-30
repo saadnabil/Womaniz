@@ -29,7 +29,6 @@ class OrderResource extends JsonResource
             'numberofItems' => count($this->orderDetails),
             'user' => new UserResource($this->user),
             'orderDetails' => OrderDetailsResource::collection($this->orderDetails),
-
         ];
     }
 }

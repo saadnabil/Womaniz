@@ -14,6 +14,10 @@ class OrderDetails extends Model
         return $this->belongsTo(Product::class)->withTrashed();
     }
 
+    public function product_variant(){
+        return $this->belongsTo(ProductVariant::class);
+    }
+
     protected static function boot()
     {
         parent::boot();
