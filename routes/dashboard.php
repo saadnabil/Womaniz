@@ -26,7 +26,7 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
         Route::get('products/fulldata/export', [ProductsController::class, 'fulldataexport']);
         Route::post('products/bulk/upload' ,[ProductsController::class, 'bulkupload' ]);
         Route::post('products/delete', [ProductsController::class, 'delete']);
-        Route::resource('products' , ProductsController::class)->only('index','store','update');
+        Route::resource('products' , ProductsController::class)->only('index','store','update','show');
 
         Route::post('orders/delete' , [OrdersController::class, 'delete']);
         Route::get('orders/fulldata/export' , [OrdersController::class, 'fulldataexport']);

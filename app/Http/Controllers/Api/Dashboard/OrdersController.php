@@ -10,7 +10,7 @@ class OrdersController extends Controller
 {
     use ApiResponseTrait;
     public function index(){
-        $orders = Order::latest();
+        $orders = Order::where('country_id', auth()->user()->country_id)->latest();
         if(request()->has('status')){
             $orders = $orders->where('status', request('status'));
         }

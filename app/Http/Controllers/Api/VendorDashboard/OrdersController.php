@@ -9,12 +9,15 @@ class OrdersController extends Controller
 {
     use ApiResponseTrait;
     public function index(){
-        $orders = Order::with('user','orderDetails.product')->latest();
+        $orders = Order::with('user','orderDetails.product')->latest()->get();
+        dd($orders);
+
+
+
 
         if(request()->has('status')){
             $orders = $orders->where('status', request('status'));
         }
-
         if(request()->has('search')){
             $orders = $orders->where(function($query){
                 $query->where('id', 'like', '%'.request('search').'%')
@@ -43,12 +46,10 @@ class OrdersController extends Controller
         $orders = $orders->simplepaginate();
         return $this->sendResponse(resource_collection(OrderTableResource::collection($orders)));
     }
-
     public function show(Order $order){
         $order->load('user','orderDetails.product');
         return $this->sendResponse(new OrderResource($order));
     }
-
     public function changeStatus(Order $order, $status){
         if(checkOrderStatus($status) == false){
             return $this->sendResponse(['error' =>   __('messages.Order status is invalid!')],'fail',400);

@@ -65,6 +65,11 @@ class ProductsController extends Controller
         return $this->sendResponse(resource_collection(ProductResource::collection($products)));
     }
 
+    public function show(Product $product){
+        $product->load('variants','brand','categories');
+        return $this->sendResponse(new ProductResource($product));
+    }
+
     public function fulldataexport(){
         $user = auth()->user();
         $user = $user->load('country');
