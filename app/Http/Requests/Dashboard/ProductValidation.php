@@ -47,12 +47,12 @@ class ProductValidation extends AbstractFormRequest
             'about_product_desc_en' => ['nullable','string','required_if:product_type,cosmetics'],
             'about_product_desc_ar' => ['nullable','string','required_if:product_type,cosmetics'],
 
-            'dimension' =>  ['nullable','string','required_if:product_sub_type,ring','required_if:product_sub_type,earing'],
+            'dimension' =>  ['nullable','string','required_if:product_sub_type,earing'],
 
             'material_en' => ['nullable','required_if:product_type,jewellery','string'],
             'material_ar' => ['nullable','required_if:product_type,jewellery','string'],
 
-            'chain_length' => ['nullable','required_if:product_sub_type,necklace', 'numeric'],
+            'chain_length' => ['nullable','required_if:product_sub_type,necklace','required_if:product_sub_type,bracelet', 'numeric'],
 
             'variants' => ['required', 'array'],
             'variants.*.size_id' => ['required', 'numeric'],

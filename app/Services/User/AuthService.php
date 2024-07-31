@@ -10,11 +10,12 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthService{
     use ApiResponseTrait;
-
     public function register(array $data)
     {
         if(!isset($data['otp'])){
             $code = generate_otp_function();
+            $request_id = sendOtp();
+            dd($request_id);
             create_new_otp($data['email'], $code);
             return $this->sendResponse(['code' => $code]);
         }
