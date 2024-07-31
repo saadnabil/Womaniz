@@ -38,8 +38,11 @@ function checkOrderStatus($status){
         return $response->getRequestId();
     }
 
-    function verifyOtp(){
-
+    function verifyOtp($request_id, $code){
+        $basic  = new \Vonage\Client\Credentials\Basic("72b4f1f4", "wL7XlR4bFChlCgCx");
+        $client = new \Vonage\Client(new \Vonage\Client\Credentials\Container($basic));
+        $result = $client->verify()->check($request_id, $code);
+        return $result->getStatus()=== 0 ? true : false;
     }
 
     // function verifyOtp($code)
@@ -140,11 +143,11 @@ function get_day_calendar_index(){
 
 
 
-function create_new_otp($email , $code){
+function create_new_otp($email , $request_id){
     Otp::where(['email' => $email])->delete();
     Otp::create([
         'email' => $email,
-        'code' => $code,
+        'request_id' => $request_id,
     ]);
     return;
 }

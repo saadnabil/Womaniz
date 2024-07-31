@@ -26,6 +26,7 @@ class AuthController extends Controller
     {
         $this->authService = $authService;
     }
+
     public function login(LoginUserValidation $request)
     {
         $data = $request->validated();

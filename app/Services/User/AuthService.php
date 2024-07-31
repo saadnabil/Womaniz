@@ -13,14 +13,16 @@ class AuthService{
     public function register(array $data)
     {
         if(!isset($data['otp'])){
-            $code = generate_otp_function();
             $request_id = sendOtp();
-            dd($request_id);
-            create_new_otp($data['email'], $code);
-            return $this->sendResponse(['code' => $code]);
+            create_new_otp($data['email'],  $request_id);
+            return $this->sendResponse([]);
         }
-        $otp = Otp::where(['email' => $data['email'], 'code' => $data['otp']])->first();
+        $otp = Otp::where(['email' => $data['email']])->first();
         if(!$otp){
+            return $this->sendResponse(['error' => __('messages.Verification code is not found')],'fail','404');
+        }
+        $verified = verifyOtp( $otp->request_id, $data['otp']);
+        if($verified == false){
             return $this->sendResponse(['error' => __('messages.Verification code is not correct')],'fail','404');
         }
         $data['password'] = Hash::make($data['password']);
