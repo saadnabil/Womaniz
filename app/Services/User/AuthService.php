@@ -5,6 +5,7 @@ use App\Http\Traits\ApiResponseTrait;
 use App\Models\Otp;
 use App\Models\RestoreAccountRequest;
 use App\Models\User;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -13,9 +14,13 @@ class AuthService{
     public function register(array $data)
     {
         if(!isset($data['otp'])){
-            $request_id = sendOtp();
-            create_new_otp($data['email'],  $request_id);
-            return $this->sendResponse([]);
+            try{
+                $request_id = sendOtp();
+                create_new_otp($data['email'],  $request_id);
+
+            }catch(Exception $x){
+                return $this->sendResponse(['error' => 'Error occured. '. $x->getMessage() ], 'fail' ,400);
+            }
         }
         $otp = Otp::where(['email' => $data['email']])->first();
         if(!$otp){

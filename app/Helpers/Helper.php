@@ -29,54 +29,29 @@ function checkOrderStatus($status){
     return false;
 }
 
-    function sendOtp($number = '201098277871')
-    {
-        $basic  = new \Vonage\Client\Credentials\Basic("72b4f1f4", "wL7XlR4bFChlCgCx");
-        $client = new \Vonage\Client(new \Vonage\Client\Credentials\Container($basic));
-        $request = new \Vonage\Verify\Request($number, "Vonage");
-        $response = $client->verify()->start($request);
-        return $response->getRequestId();
+
+function sendOtp($number = '201098277871')
+{
+    $basic  = new \Vonage\Client\Credentials\Basic("72b4f1f4", "wL7XlR4bFChlCgCx");
+    $client = new \Vonage\Client(new \Vonage\Client\Credentials\Container($basic));
+    $request = new \Vonage\Verify\Request($number, "Vonage");
+    $response = $client->verify()->start($request);
+    return $response->getRequestId();
+}
+
+function verifyOtp($request_id, $code){
+    $basic  = new \Vonage\Client\Credentials\Basic("72b4f1f4", "wL7XlR4bFChlCgCx");
+    $client = new \Vonage\Client(new \Vonage\Client\Credentials\Container($basic));
+
+    try{
+        $result = $client->verify()->check($request_id, $code);
+        return $result->getStatus() === 0 ? true : false;
     }
-
-    function verifyOtp($request_id, $code){
-        $basic  = new \Vonage\Client\Credentials\Basic("72b4f1f4", "wL7XlR4bFChlCgCx");
-        $client = new \Vonage\Client(new \Vonage\Client\Credentials\Container($basic));
-
-        try{
-            $result = $client->verify()->check($request_id, $code);
-            return $result->getStatus()=== 0 ? true : false;
-        }
-        catch (\Exception $e) {
-            // Handle the exception or log the error
-            return false;
-        }
-
+    catch (\Exception $e) {
+        // Handle the exception or log the error
+        return false;
     }
-
-    // function verifyOtp($code)
-    // {
-    //     $apiKey = '72b4f1f4';
-    //     $apiSecret = 'wL7XlR4bFChlCgCx';
-    //     $url = "https://api.nexmo.com/verify/check/json?api_key=$apiKey&api_secret=$apiSecret&request_id=$requestId&code=$code";
-    //     $ch = curl_init();
-    //     curl_setopt($ch, CURLOPT_URL, $url);
-    //     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    //     $response = curl_exec($ch);
-    //     $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    //     curl_close($ch);
-
-    //     if ($httpcode == 200) {
-    //         $data = json_decode($response, true);
-    //         // Process the response data as needed
-    //         dd(response()->json($data));
-    //     } else {
-    //         // Handle the error
-    //         return response()->json(['error' => 'Failed to verify'], $httpcode);
-    //     }
-    // }
-
-
-
+}
 
 
 function getReturnOrderInformation(){
