@@ -41,8 +41,16 @@ function checkOrderStatus($status){
     function verifyOtp($request_id, $code){
         $basic  = new \Vonage\Client\Credentials\Basic("72b4f1f4", "wL7XlR4bFChlCgCx");
         $client = new \Vonage\Client(new \Vonage\Client\Credentials\Container($basic));
-        $result = $client->verify()->check($request_id, $code);
-        return $result->getStatus()=== 0 ? true : false;
+
+        try{
+            $result = $client->verify()->check($request_id, $code);
+            return $result->getStatus()=== 0 ? true : false;
+        }
+        catch (\Exception $e) {
+            // Handle the exception or log the error
+            return false;
+        }
+
     }
 
     // function verifyOtp($code)

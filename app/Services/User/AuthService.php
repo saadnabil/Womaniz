@@ -21,10 +21,12 @@ class AuthService{
         if(!$otp){
             return $this->sendResponse(['error' => __('messages.Verification code is not found')],'fail','404');
         }
+
         $verified = verifyOtp( $otp->request_id, $data['otp']);
         if($verified == false){
             return $this->sendResponse(['error' => __('messages.Verification code is not correct')],'fail','404');
         }
+
         $data['password'] = Hash::make($data['password']);
         unset($data['otp']);
         unset($data['confirmpassword']);
