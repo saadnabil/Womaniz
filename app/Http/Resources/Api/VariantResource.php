@@ -15,6 +15,7 @@ class VariantResource extends JsonResource
     public function toArray($request)
     {
         $data = [
+            'id' => $this->id,
             'size_id' => $this->size_id,
             'stock' => $this->stock,
             'size' => $this->size->title,
