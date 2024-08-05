@@ -9,15 +9,22 @@ class OrdersController extends Controller
 {
     use ApiResponseTrait;
     public function index(){
-        $orders = Order::with('user','orderDetails.product')->latest()->get();
-        dd($orders);
 
-
-
+        $vendor = auth()->user();
+        $orders = Order::with(['user', 'orderDetails' => function ($query) use ($vendor) {
+            $query->whereHas('product', function ($productQuery) use ($vendor) {
+                $productQuery->where('vendor_id', $vendor->id);
+            });
+        }, 'orderDetails.product'])
+        ->whereHas('orderDetails.product', function ($query) use ($vendor) {
+            $query->where('vendor_id', $vendor->id);
+        })
+        ->latest();
 
         if(request()->has('status')){
             $orders = $orders->where('status', request('status'));
         }
+
         if(request()->has('search')){
             $orders = $orders->where(function($query){
                 $query->where('id', 'like', '%'.request('search').'%')

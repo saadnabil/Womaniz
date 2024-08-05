@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\User\AddProductCartValidation;
 use App\Http\Requests\Api\User\ApplyCouponValidation;
 use App\Http\Resources\Api\CartResource;
-use App\Http\Resources\Api\CategoryResource;
-use App\Http\Resources\Api\ProductResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Cart;
 use App\Models\Coupon;
@@ -79,17 +77,31 @@ class CartController extends Controller
     public function add(AddProductCartValidation $request){
         $data = $request->validated();
         $user  =  auth()->user();
-        $product = Product::where([
-            'id' => $data['product_id'],
-        ])->first();
+
+        $product = Product::with('variants')->where([
+                                'id' => $data['product_id'],
+                            ])->whereHas('variants',function($query) use ($data){
+                                $query->where('id', $data['product_variant_id']);
+                            })->first();
         if(!$product){
             return $this->sendResponse(['error' => __('messages.Product is not found')],'fail',404);
         }
-        Cart::firstorcreate([
-            'product_id' =>  $data['product_id'] ,
-            'user_id' => auth()->user()->id ,
+        $cartExisted = Cart::where([
+            'product_id' => $data['product_id'],
+            'user_id' =>$user->id,
             'product_variant_id' => $data['product_variant_id']
-        ]);
+        ])->first();
+        if(!$cartExisted){
+            Cart::create([
+                'product_id' =>  $data['product_id'] ,
+                'user_id' => auth()->user()->id ,
+                'product_variant_id' => $data['product_variant_id']
+            ]);
+        }else{
+            $cartExisted->update([
+                'quantity' => $cartExisted->quantity + 1,
+            ]);
+        }
         return $this->cartDetails();
     }
 
@@ -117,7 +129,6 @@ class CartController extends Controller
         $user = auth()->user();
         $user->update(['coupon_id' => null]);
         return $this->cartDetails();
-
     }
 
 }

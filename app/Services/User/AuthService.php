@@ -15,7 +15,7 @@ class AuthService{
     {
         if(!isset($data['otp'])){
             try{
-                $request_id = sendOtp();
+                $request_id = sendOtp($data['phone']);
                 create_new_otp($data['email'],  $request_id);
 
             }catch(Exception $x){
