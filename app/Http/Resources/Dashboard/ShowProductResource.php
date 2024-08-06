@@ -4,6 +4,7 @@ namespace App\Http\Resources\Dashboard;
 
 use App\Http\Resources\Dashboard\ImageResource;
 use App\Http\Resources\Dashboard\VariantResource;
+use App\Models\Color;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -47,6 +48,7 @@ class ShowProductResource extends JsonResource
             'categories' => CategoryResource::collection($this->categories),
             'return_order_desc' => getReturnOrderInformation(),
             'ship_information_desc' => getShipInformation(),
+            'color' => new ColorResource($this->color),
         ];
     }
 }
