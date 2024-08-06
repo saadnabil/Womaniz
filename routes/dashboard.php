@@ -2,6 +2,7 @@
 use App\Http\Controllers\Api\Dashboard\ActivitiesController;
 use App\Http\Controllers\Api\Dashboard\AdminsController;
 use App\Http\Controllers\Api\Dashboard\CategoriesController;
+use App\Http\Controllers\Api\Dashboard\ColorsController;
 use App\Http\Controllers\Api\Dashboard\DataController;
 use App\Http\Controllers\Api\Dashboard\OrdersController;
 use App\Http\Controllers\Api\Dashboard\PermissionsController;
@@ -29,7 +30,7 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
         Route::resource('products' , ProductsController::class)->only('index','store','update','show');
 
         /**colors */
-        Route::resource('colors' , ProductsController::class)->only('index');
+        Route::resource('colors' , ColorsController::class)->only('index');
 
          /**orders */
         Route::post('orders/delete' , [OrdersController::class, 'delete']);
