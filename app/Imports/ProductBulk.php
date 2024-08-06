@@ -62,6 +62,7 @@ class ProductsSheetImport implements ToModel, WithHeadingRow
                     'vendor_id' => $row['vendor_id'],
                     'country_id' => $row['country_id'],
                     'brand_id' => $row['brand_id'],
+                    'status' => 'pending',
             ]);
 
             // Store the mapping
@@ -101,7 +102,7 @@ class ProductVariantsSheetImport implements ToModel, WithHeadingRow
                 'sku' => $row['sku'],
             ]);
 
-        } 
+        }
     }
 }
 
@@ -128,6 +129,6 @@ class ProductCatigoriesSheetImport implements ToModel, WithHeadingRow
                 'category_id' => $row['category_id'],
             ]);
 
-        } 
+        }
     }
 }

@@ -5,9 +5,9 @@ use App\Http\Requests\Dashboard\DeleteValidation;
 use App\Http\Requests\Dashboard\ProductsBulkUploadValidation;
 use App\Http\Requests\Dashboard\ProductValidation;
 use App\Http\Resources\Dashboard\ProductResource;
+use App\Http\Resources\Dashboard\ShowProductResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Imports\ProductBulk;
-use App\Imports\ProductImport;
 use App\Models\Category;
 use App\Models\Product;
 use App\Services\ProductService;
@@ -67,7 +67,7 @@ class ProductsController extends Controller
 
     public function show(Product $product){
         $product->load('variants','brand','categories');
-        return $this->sendResponse(new ProductResource($product));
+        return $this->sendResponse(new ShowProductResource($product));
     }
 
     public function fulldataexport(){

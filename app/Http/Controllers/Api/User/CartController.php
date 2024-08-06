@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\User\AddProductCartValidation;
 use App\Http\Requests\Api\User\ApplyCouponValidation;
 use App\Http\Resources\Api\CartResource;
+use App\Http\Resources\Api\CategoryResource;
+use App\Http\Resources\Api\ProductResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Cart;
 use App\Models\Coupon;
@@ -22,9 +24,9 @@ class CartController extends Controller
         $tax  = 14;
         $shipping = count($user->carts) > 0 ?  20 : 0 ;
         $discount = $user->appliedcoupon ? $user->appliedcoupon->discount : 0  ;
-        $user->carts->each(function ($cart) use (&$total , &$totalSub) {
+        $user->carts->each(function ($cart) use (&$totalSub) {
             $cart->price = $cart->quantity * $cart->product->price; // Assuming there's a 'price' column in your 'products' table
-            $cart->price_after_sale = $cart->quantity * ( $cart->product->price -  $cart->product->price_after_sale);
+            $cart->price_after_sale = $cart->quantity * $cart->product->price_after_sale;
             //sum cart final
             $totalSub += $cart->price_after_sale;
             //sum cart final
@@ -32,10 +34,10 @@ class CartController extends Controller
         $data = [
             'vat' => $tax ,
             'shipping' => $shipping ,
-            'total' =>  round(( ($totalSub - ($totalSub * $discount / 100))  + ( $totalSub * $tax / 100 ) + $shipping ) * 2) / 2 ,
+            'total' =>  round(( ( $totalSub - ($totalSub * $discount / 100))  + ( $totalSub * $tax / 100 ) + $shipping ) * 2) / 2 ,
             'totalSub' => $totalSub ,
             'discount' => $discount ,
-            'details' => CartResource::collection($user->carts) ,
+            'details' => CartResource::collection($user->carts),
         ];
         return $this->sendResponse($data);
     }
@@ -77,7 +79,6 @@ class CartController extends Controller
     public function add(AddProductCartValidation $request){
         $data = $request->validated();
         $user  =  auth()->user();
-
         $product = Product::with('variants')->where([
                                 'id' => $data['product_id'],
                             ])->whereHas('variants',function($query) use ($data){
@@ -88,7 +89,7 @@ class CartController extends Controller
         }
         $cartExisted = Cart::where([
             'product_id' => $data['product_id'],
-            'user_id' =>$user->id,
+            'user_id' => auth()->user()->id,
             'product_variant_id' => $data['product_variant_id']
         ])->first();
         if(!$cartExisted){
@@ -99,7 +100,7 @@ class CartController extends Controller
             ]);
         }else{
             $cartExisted->update([
-                'quantity' => $cartExisted->quantity + 1,
+                'quantity' =>  $cartExisted->quantity + 1
             ]);
         }
         return $this->cartDetails();
@@ -129,6 +130,7 @@ class CartController extends Controller
         $user = auth()->user();
         $user->update(['coupon_id' => null]);
         return $this->cartDetails();
+
     }
 
 }
