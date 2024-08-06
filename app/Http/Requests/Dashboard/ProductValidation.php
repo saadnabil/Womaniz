@@ -63,6 +63,7 @@ class ProductValidation extends AbstractFormRequest
             'categories.*id' => ['required','numeric'],
 
             'brand_id' => ['nullable' , 'numeric'],
+            'color_id' => ['nullable']
 
         ];
 

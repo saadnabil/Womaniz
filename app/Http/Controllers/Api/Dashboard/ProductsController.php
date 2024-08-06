@@ -83,11 +83,8 @@ class ProductsController extends Controller
         $data = $request->validated();
         // Excel::import(new ProductImport,  $data['file']);
         $logBatch = LogBatch::startBatch();
-
         Excel::import(new ProductBulk,  $data['file']);
-
         LogBatch::endBatch($logBatch);
-
         return $this->sendResponse([]);
     }
 
