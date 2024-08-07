@@ -63,7 +63,6 @@ class ProductsController extends Controller
         $search = request('search');
         $products = $this->productService->search($search);
         return $this->sendResponse(resource_collection(ProductResource::collection($products)));
-
     }
 
 }

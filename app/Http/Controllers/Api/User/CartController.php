@@ -31,6 +31,7 @@ class CartController extends Controller
             $totalSub += $cart->price_after_sale;
             //sum cart final
         });
+        // $total =
         $data = [
             'vat' => $tax ,
             'shipping' => $shipping ,
