@@ -29,7 +29,7 @@ class OrdersController extends Controller
     }
 
     public function show(Order $order){
-        $order = $order->load('orderDetails.product','coupon');
+        $order = $order->load('orderDetails.product','coupon','address');
         return $this->sendResponse(new OrderResource($order));
     }
 
