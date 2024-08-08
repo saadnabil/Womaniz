@@ -9,7 +9,6 @@ class OrdersController extends Controller
 {
     use ApiResponseTrait;
     public function index(){
-
         $vendor = auth()->user();
         $orders = Order::with(['user', 'orderDetails' => function ($query) use ($vendor) {
             $query->whereHas('product', function ($productQuery) use ($vendor) {

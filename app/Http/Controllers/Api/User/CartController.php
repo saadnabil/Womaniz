@@ -21,7 +21,7 @@ class CartController extends Controller
     public function cartDetails(){
         $user = auth()->user()->load(['carts.product','appliedcoupon']);
         $totalSub = 0 ;
-        $tax  = 14;
+        $tax  = 0;
         $shipping = count($user->carts) > 0 ?  20 : 0 ;
         $discount = $user->appliedcoupon ? $user->appliedcoupon->discount : 0  ;
         $user->carts->each(function ($cart) use (&$totalSub) {
@@ -31,11 +31,19 @@ class CartController extends Controller
             $totalSub += $cart->price_after_sale;
             //sum cart final
         });
-        // $total =
+
+        /**Calculate Order Total */
+        $total = $totalSub;
+        $total = $total + ( $total * $tax / 100 );
+        $total = $total - ( $total * $discount / 100 );
+        $total = $total + $shipping ;
+        $total = round($total * 2) / 2 ;
+         /**Calculate Order Total */
+
         $data = [
             'vat' => $tax ,
             'shipping' => $shipping ,
-            'total' =>  round(( ( $totalSub - ($totalSub * $discount / 100))  + ( $totalSub * $tax / 100 ) + $shipping ) * 2) / 2 ,
+            'total' =>  $total,
             'totalSub' => $totalSub ,
             'discount' => $discount ,
             'details' => CartResource::collection($user->carts),
