@@ -28,6 +28,11 @@ class OrdersController extends Controller
         return $this->sendResponse(resource_collection(OrderResource::collection($user->orders()->where('status','!=','delivered')->simplepaginate())));
     }
 
+    public function show(Order $order){
+        $order = $order->load('orders.orderDetails.product','orders.coupon');
+        return $this->sendResponse(new OrderResource($order));
+    }
+
     public function makeOrder(MakeOrderValidation $request)
     {
         $user = auth()->user()->load(['carts.product', 'appliedcoupon', 'country']);

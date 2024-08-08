@@ -34,6 +34,7 @@ Route::group(['prefix' => 'v1/user'],function(){
         });
         Route::group(['prefix' => 'orders'],function(){
             Route::get('/past',[OrdersController::class,'pastorders']);
+            Route::get('/show/{order}',[OrdersController::class,'show']);
             Route::get('/current',[OrdersController::class,'currentorders']);
             Route::post('/makeorder',[OrdersController::class,'makeorder']);
         });
