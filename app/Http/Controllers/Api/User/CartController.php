@@ -19,39 +19,13 @@ class CartController extends Controller
     use ApiResponseTrait;
 
     public function cartDetails(){
-        $user = auth()->user()->load(['carts.product','appliedcoupon']);
-        $totalSub = 0 ;
-        $tax  = 0;
-        $shipping = count($user->carts) > 0 ?  20 : 0 ;
-        $discount = $user->appliedcoupon ? $user->appliedcoupon->discount : 0  ;
-        $user->carts->each(function ($cart) use (&$totalSub) {
-            $cart->price = $cart->quantity * $cart->product->price; // Assuming there's a 'price' column in your 'products' table
-            $cart->price_after_sale = $cart->quantity * $cart->product->price_after_sale;
-            //sum cart final
-            $totalSub += $cart->price_after_sale;
-            //sum cart final
-        });
-
-        /**Calculate Order Total */
-        $total = $totalSub;
-        $total = $total + ( $total * $tax / 100 );
-        $total = $total - ( $total * $discount / 100 );
-        $total = $total + $shipping ;
-        $total = round($total * 2) / 2 ;
-         /**Calculate Order Total */
-
-        $data = [
-            'vat' => $tax ,
-            'shipping' => $shipping ,
-            'total' =>  $total,
-            'totalSub' => $totalSub ,
-            'discount' => $discount ,
-            'details' => CartResource::collection($user->carts),
-        ];
+        $user = auth()->user();
+        $data = $user->cartData();
         return $this->sendResponse($data);
     }
 
     public function minusQuantity($cartId){
+        $user = auth()->user();
         $cart = Cart::find($cartId);
         if(!$cart){
             return $this->sendResponse(['error' => __('messages.Cart item is not found')],'fail' , 404);
@@ -62,10 +36,12 @@ class CartController extends Controller
         $cart->update([
             'quantity' => $cart->quantity - 1,
         ]);
-        return $this->cartDetails();
+        $data = $user->cartData();
+        return $this->sendResponse($data);
     }
 
     public function plusQuantity($cartId){
+        $user = auth()->user();
         $cart = Cart::find($cartId);
         if(!$cart){
             return $this->sendResponse(['error' => __('messages.Cart item is not found')],'fail' , 404);
@@ -73,16 +49,19 @@ class CartController extends Controller
         $cart->update([
             'quantity' => $cart->quantity + 1,
         ]);
-        return $this->cartDetails();
+        $data = $user->cartData();
+        return $this->sendResponse($data);
     }
 
     public function remove($cartId){
+        $user = auth()->user();
         $cart = Cart::find($cartId);
         if(!$cart){
             return $this->sendResponse(['error' => __('messages.Cart item is not found')],'fail' , 404);
         }
         $cart->delete();
-        return $this->cartDetails();
+        $data = $user->cartData();
+        return $this->sendResponse($data);
     }
 
     public function add(AddProductCartValidation $request){
@@ -112,7 +91,8 @@ class CartController extends Controller
                 'quantity' =>  $cartExisted->quantity + 1
             ]);
         }
-        return $this->cartDetails();
+        $data = $user->cartData();
+        return $this->sendResponse($data);
     }
 
     public function applycoupn(ApplyCouponValidation $request){
@@ -132,13 +112,15 @@ class CartController extends Controller
         $user->update([
             'coupon_id' => $coupon->id,
         ]);
-        return $this->cartDetails();
+        $data = $user->cartData();
+        return $this->sendResponse($data);
     }
 
     public function removecoupon(){
         $user = auth()->user();
         $user->update(['coupon_id' => null]);
-        return $this->cartDetails();
+        $data = $user->cartData();
+        return $this->sendResponse($data);
 
     }
 

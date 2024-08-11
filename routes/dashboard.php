@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Dashboard\ColorsController;
 use App\Http\Controllers\Api\Dashboard\DataController;
 use App\Http\Controllers\Api\Dashboard\OrdersController;
 use App\Http\Controllers\Api\Dashboard\PermissionsController;
+use App\Http\Controllers\Api\Dashboard\ProductImagesController;
 use App\Http\Controllers\Api\Dashboard\ProductsController;
 use App\Http\Controllers\Api\Dashboard\RestoreRequestController;
 use App\Http\Controllers\Api\Dashboard\RolesController;
@@ -28,6 +29,9 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
         Route::post('products/bulk/upload' ,[ProductsController::class, 'bulkupload' ]);
         Route::post('products/delete', [ProductsController::class, 'delete']);
         Route::resource('products' , ProductsController::class)->only('index','store','update','show');
+
+        /**product images */
+        Route::resource('product-images' , ProductImagesController::class)->only('destroy');
 
         /**colors */
         Route::resource('colors' , ColorsController::class)->only('index');

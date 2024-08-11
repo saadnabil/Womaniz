@@ -35,8 +35,7 @@ class OrdersController extends Controller
 
     public function makeOrder(MakeOrderValidation $request)
     {
-        $user = auth()->user()->load(['carts.product', 'appliedcoupon', 'country']);
-
+        $user = auth()->user();
         // Validate request data
         $data = $request->validated();
 
@@ -53,6 +52,7 @@ class OrdersController extends Controller
         }
 
         $cartData = $user->cartData();
+
 
         // Create the order
         $order = Order::create([
