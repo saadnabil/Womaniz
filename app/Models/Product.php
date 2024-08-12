@@ -54,6 +54,14 @@ class Product extends Model
         return $this->about_product_desc_ar;
     }
 
+    public function getReturnOrderDescAttribute(){
+        $lang = app()->getLocale();
+        if($lang == 'en'){
+            return $this->return_order_desc_en;
+        }
+        return $this->return_order_desc_ar;
+    }
+
     public function getMaterialAttribute(){
         $lang = app()->getLocale();
         if($lang == 'en'){
@@ -98,6 +106,10 @@ class Product extends Model
 
     public function brand(){
         return $this->belongsTo(Brand::class);
+    }
+
+    public function vendor(){
+        return $this->belongsTo(Vendor::class);
     }
 
 

@@ -15,7 +15,7 @@ class AuthService{
     {
         if(!isset($data['otp'])){
             try{
-                $request_id = sendOtp($data['phone']);
+                $request_id = sendOtpWithVonage($data['phone']);
                 create_new_otp($data['email'],  $request_id);
 
             }catch(Exception $x){
@@ -27,7 +27,7 @@ class AuthService{
             return $this->sendResponse(['error' => __('messages.Verification code is not found')],'fail','404');
         }
 
-        $verified = verifyOtp( $otp->request_id, $data['otp']);
+        $verified = verifyOtpWithVonage( $otp->request_id, $data['otp']);
         if($verified == false){
             return $this->sendResponse(['error' => __('messages.Verification code is not correct')],'fail','404');
         }

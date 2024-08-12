@@ -123,13 +123,12 @@ class User extends Authenticatable implements JWTSubject
         $total = $total + ( $total * $tax / 100 );
         $total = $total - ( $total * $discount / 100 );
         $total = $total + $shipping ;
-        $total = round($total * 2) / 2 ;
          /**Calculate Order Total */
 
         $data = [
             'vat' => $tax ,
             'shipping' => $shipping ,
-            'total' =>  $total ,
+            'total' =>  round($total, 2),
             'totalSub' => $totalSub ,
             'discount' => $discount ,
             'details' => CartResource::collection($this->carts),

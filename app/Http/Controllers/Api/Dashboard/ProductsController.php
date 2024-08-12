@@ -21,7 +21,7 @@ class ProductsController extends Controller
         $user = auth()->user();
         $user = $user->load('country');
         $products = Product::where('country_id', $user->country->id)
-                           ->with('variants','brand','categories')
+                           ->with('variants','brand','categories','vendor')
                            ->latest();
         $search = request()->has('search') ? request('search') : null;
         $mainCategoryId = $request->has('main_category_id') ? request('main_category_id') : 'all';

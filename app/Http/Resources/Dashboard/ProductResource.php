@@ -41,7 +41,8 @@ class ProductResource extends JsonResource
             'product_sub_type' => $this->product_sub_type,
             'brand' => new BrandResource($this->brand),
             'categories' => CategoryResource::collection($this->categories),
-            'return_order_desc' => getReturnOrderInformation(),
+            'vendor' => new VendorResource($this->vendor),
+            'return_order_desc' => $this->return_order_desc,
             'ship_information_desc' => getShipInformation(),
         ];
     }
