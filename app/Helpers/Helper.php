@@ -128,7 +128,6 @@ function get_day_calendar_index(){
     ];
 }
 
-
 /**vonage */
 // function create_new_otp($email , $request_id){
 //     Otp::where(['email' => $email])->delete();
