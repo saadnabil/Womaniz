@@ -46,7 +46,6 @@ function sendOtpWithVonage($number = '201098277871')
 function verifyOtpWithVonage($request_id, $code){
     $basic  = new \Vonage\Client\Credentials\Basic("72b4f1f4", "wL7XlR4bFChlCgCx");
     $client = new \Vonage\Client(new \Vonage\Client\Credentials\Container($basic));
-
     try{
         $result = $client->verify()->check($request_id, $code);
         return $result->getStatus() === 0 ? true : false;
@@ -57,52 +56,6 @@ function verifyOtpWithVonage($request_id, $code){
     }
 }
 
-
-function sendSmsWithVlserv($message)
-{
-    $userName = 'pixelAPI';
-    $password = 'Yh{z!n!]QG';
-    $smsText = 'Thank you for signing up with Womniz App! To complete your registration, please use the following verification code: 1234';
-    $smsLang = 'EN'; // Language code, adjust as needed
-    $smsSender = '1800';
-    $smsReceiver = '201143707240';
-    $smsID = (string) Str::uuid();
-    $campaignID = 'YourCampaignID';
-
-    // Build the SOAP XML
-    $xml = '<?xml version="1.0" encoding="utf-8"?>
-    <soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
-    <soap12:Body>
-        <SendSMS xmlns="http://tempuri.org/">
-        <UserName>' . $userName . '</UserName>
-        <Password>' . $password . '</Password>
-        <SMSText>' . $smsText . '</SMSText>
-        <SMSLang>' . $smsLang . '</SMSLang>
-        <SMSSender>' . $smsSender . '</SMSSender>
-        <SMSReceiver>' . $smsReceiver . '</SMSReceiver>
-        <SMSID>' . $smsID . '</SMSID>
-        <CampaignID>' . $campaignID . '</CampaignID>
-        </SendSMS>
-    </soap12:Body>
-    </soap12:Envelope>';
-
-    // Send the request
-    $response = Http::withHeaders([
-        'Content-Type' => 'application/soap+xml; charset=utf-8',
-    ])->post('http://smsvas.vlserv.com/VLSMSPlatformResellerAPI/SendSMSService/SMSSender.asmx', $xml);
-
-    // Check if the request was successful
-    if ($response->successful()) {
-        // Handle the successful response
-        $responseBody = $response->body();
-        // Process the response body as needed
-        return response()->json(['message' => 'SMS sent successfully', 'response' => $responseBody]);
-    } else {
-        // Handle the error response
-        return response()->json(['message' => 'Failed to send SMS', 'response' => $response->body()], $response->status());
-    }
-
-}
 
 
 function getReturnOrderInformation(){
@@ -176,12 +129,22 @@ function get_day_calendar_index(){
 }
 
 
+/**vonage */
+// function create_new_otp($email , $request_id){
+//     Otp::where(['email' => $email])->delete();
+//     Otp::create([
+//         'email' => $email,
+//         'request_id' => $request_id,
+//     ]);
+//     return;
+// }
+/**vonage */
 
-function create_new_otp($email , $request_id){
+function create_new_otp($email , $code){
     Otp::where(['email' => $email])->delete();
     Otp::create([
         'email' => $email,
-        'request_id' => $request_id,
+        'code' => $code,
     ]);
     return;
 }

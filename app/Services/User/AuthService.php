@@ -11,27 +11,50 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthService{
     use ApiResponseTrait;
+    /**Vonage Register */
+    // public function register(array $data)
+    // {
+
+    //     if(!isset($data['otp'])){
+    //         try{
+    //             $request_id = sendOtpWithVonage($data['phone']);
+    //             create_new_otp($data['email'],  $request_id);
+
+    //         }catch(Exception $x){
+    //             return $this->sendResponse(['error' => 'Error occured. '. $x->getMessage() ], 'fail' ,400);
+    //         }
+    //     }
+    //     $otp = Otp::where(['email' => $data['email']])->first();
+    //     if(!$otp){
+    //         return $this->sendResponse(['error' => __('messages.Verification code is not found')],'fail','404');
+    //     }
+
+    //     $verified = verifyOtpWithVonage( $otp->request_id, $data['otp']);
+    //     if($verified == false){
+    //         return $this->sendResponse(['error' => __('messages.Verification code is not correct')],'fail','404');
+    //     }
+
+    //     $data['password'] = Hash::make($data['password']);
+    //     unset($data['otp']);
+    //     unset($data['confirmpassword']);
+    //     $user = User::create($data);
+    //     $user['token'] = Auth::login($user);
+    //     $otp->delete();
+    //     return $this->sendResponse(new UserResource($user));
+    // }
+    /**Vonage Register */
+
     public function register(array $data)
     {
         if(!isset($data['otp'])){
-            try{
-                $request_id = sendOtpWithVonage($data['phone']);
-                create_new_otp($data['email'],  $request_id);
-
-            }catch(Exception $x){
-                return $this->sendResponse(['error' => 'Error occured. '. $x->getMessage() ], 'fail' ,400);
-            }
+            $code = generate_otp_function();
+            create_new_otp($data['email'], $code);
+            return $this->sendResponse(['code' => $code]);
         }
-        $otp = Otp::where(['email' => $data['email']])->first();
+        $otp = Otp::where(['email' => $data['email'], 'code' => $data['otp']])->first();
         if(!$otp){
-            return $this->sendResponse(['error' => __('messages.Verification code is not found')],'fail','404');
-        }
-
-        $verified = verifyOtpWithVonage( $otp->request_id, $data['otp']);
-        if($verified == false){
             return $this->sendResponse(['error' => __('messages.Verification code is not correct')],'fail','404');
         }
-
         $data['password'] = Hash::make($data['password']);
         unset($data['otp']);
         unset($data['confirmpassword']);
@@ -40,6 +63,8 @@ class AuthService{
         $otp->delete();
         return $this->sendResponse(new UserResource($user));
     }
+
+
 
     public function forgetPasswordStepOne($data){
         $user = User::where('email', $data['email'])->first();

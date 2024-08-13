@@ -36,7 +36,7 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
         /**colors */
         Route::resource('colors' , ColorsController::class)->only('index');
 
-         /**orders */
+        /**orders */
         Route::post('orders/delete' , [OrdersController::class, 'delete']);
         Route::get('orders/fulldata/export' , [OrdersController::class, 'fulldataexport']);
         Route::get('orders/changeStatus/{order}/{status}' , [OrdersController::class, 'changeStatus']);
