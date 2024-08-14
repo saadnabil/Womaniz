@@ -26,7 +26,7 @@ class ProductValidation extends AbstractFormRequest
     {
         $data =  [
 
-            'product_type' => ['required','in:clothes,jewellery,cosmetics'],
+            'product_type' => ['required','in:clothes,jewellery,cosmetics,celebrities'],
             'product_sub_type' => ['required', new CheckSubTypeRule()],
 
             'name_en' => ['required', 'string', 'max:250'],
