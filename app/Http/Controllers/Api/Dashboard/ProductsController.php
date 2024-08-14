@@ -18,6 +18,7 @@ class ProductsController extends Controller
 {
     use ApiResponseTrait;
     public function index(Request $request){
+        /**kfdkfdf */
         $user = auth()->user();
         $user = $user->load('country');
         $products = Product::where('country_id', $user->country->id)
