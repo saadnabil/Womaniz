@@ -37,6 +37,9 @@ class CheckSubTypeRule implements Rule
         }elseif($producttype == 'cosmetics' &&  !in_array($value, ['cosmetics'])){
             $this->message = 'The :attribute must be in cosmetics';
             return false;
+        }elseif($producttype == 'celebrities' &&  !in_array($value, ['celebrities'])){
+            $this->message = 'The :attribute must be in celebrities';
+            return false;
         }
         return true;
     }
