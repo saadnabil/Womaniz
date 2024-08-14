@@ -25,9 +25,12 @@ class LocationValidation extends AbstractFormRequest
     public function rules()
     {
         return [
-            'label' => ['required','string', 'max:50'],
+            'label' => ['nullable','string', 'in:Home,Work'],
             'long' => ['required', 'string', 'max:100'],
             'lat' => ['required', 'string', 'max:100'],
+            'apt_floor' => ['required','string'],
+            'street_address' => ['required', 'string'],
+            'map_address' => ['required', 'string'],
         ];
     }
 }

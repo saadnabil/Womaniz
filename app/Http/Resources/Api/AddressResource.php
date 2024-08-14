@@ -19,6 +19,8 @@ class AddressResource extends JsonResource
             'label' => $this->label,
             'long' => $this->long,
             'lat' => $this->lat,
+            'description' => $this->descritpion,
+            'apt_floor' => $this->apt_floor,
         ];
         return $data;
     }
