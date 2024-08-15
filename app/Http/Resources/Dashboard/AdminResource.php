@@ -23,12 +23,12 @@ class AdminResource extends JsonResource
                 'phone' => $this->phone,
                 'age' => Carbon::parse($this->birthdate)->diffInYears(Carbon::now()) ,
                 'birthdate' => $this->birthdate,
-                'country' => $this->country_id,
+                'countryId' => $this->country_id,
                 'address' => $this->address,
                 'status' => $this->status,
                 'country' => $this->country->country,
-                'role' => $this->roles->first()->name,
-                'permissions' => $this->roles->first()->permissions->pluck('name'),
+                'role' => $this->roles->first() != null ? $this->roles->first()->name : '',
+                'permissions' => $this->roles->first() != null ? $this->roles->first()->permissions->pluck('name') : [],
                 'category' => 'Accounts’ management',
         ];
         if($this->token){
