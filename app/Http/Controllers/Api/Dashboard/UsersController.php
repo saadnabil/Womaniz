@@ -29,9 +29,6 @@ class UsersController extends Controller
         $this->middleware('permission:user-change-status', ['only' => ['switchstatus']]);
     }
 
-
-
-
     public function index(){
         $search = request()->has('search') ? request('search') : null;
         $status = request()->has('status') ? request('status') : null;

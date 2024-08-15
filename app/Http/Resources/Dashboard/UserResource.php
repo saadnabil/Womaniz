@@ -29,6 +29,7 @@ class UserResource extends JsonResource
             'city' => $this->city != null ?  $this->city->name : null,
             'gender' => __('dashboard.'.$this->gender),
             'addresses' => AddressResource::collection($this->addresses),
+            'numOrders' => count($this->orders),
         ];
         return $data;
     }

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 class UserService{
 
     public function listWithSearch($search = null, $status = null , $cities = null){
-        $users = User::with('country','city','addresses')->where('country_id', auth()->user()->country_id)->latest();
+        $users = User::with('country','city','addresses','orders')->where('country_id', auth()->user()->country_id)->latest();
         if($search){
             $users = $users->where(function($q) use($search){
                 $q->where('name', 'like', '%'.$search.'%')
