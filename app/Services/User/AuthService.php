@@ -67,7 +67,7 @@ class AuthService{
             'label' => 'Work',
             'long' => '30.254655656',
             'lat' => '32.225656',
-            'user_id' => auth()->user()->id,
+            'user_id' => $user->id,
             'apt_floor' => '34',
             'map_address' => '34 Anafis Street',
             'street_address' => '34 Anafis Street'
