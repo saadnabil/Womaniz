@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Resources\Api\CartResource;
+use App\Jobs\SendOtpOnMail;
 use App\Models\Country;
 use App\Models\Otp;
 use Carbon\Carbon;
@@ -145,6 +146,18 @@ function create_new_otp($email , $code){
         'email' => $email,
         'code' => $code,
     ]);
+
+     /**Dispatch job for sending email */
+     $data = [
+        'email' => $email,
+        'code' => $code,
+     ];
+     $data = [
+        'email' => $email,
+        'code' => $code,
+    ];
+     dispatch(new SendOtpOnMail($data));
+     /**Dispatch job for sending email */
     return;
 }
 

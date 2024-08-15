@@ -2,6 +2,7 @@
 namespace App\Services\User;
 use App\Http\Resources\Api\UserResource;
 use App\Http\Traits\ApiResponseTrait;
+use App\Jobs\SendOtpOnMail;
 use App\Models\Address;
 use App\Models\Otp;
 use App\Models\RestoreAccountRequest;
@@ -73,6 +74,8 @@ class AuthService{
             'street_address' => '34 Anafis Street'
         ]);
          /**Add defualt address */
+
+
         return $this->sendResponse(new UserResource($user));
     }
 
