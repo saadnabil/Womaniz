@@ -2,6 +2,7 @@
 namespace App\Services\User;
 use App\Http\Resources\Api\UserResource;
 use App\Http\Traits\ApiResponseTrait;
+use App\Models\Address;
 use App\Models\Otp;
 use App\Models\RestoreAccountRequest;
 use App\Models\User;
@@ -61,6 +62,17 @@ class AuthService{
         $user = User::create($data);
         $user['token'] = Auth::login($user);
         $otp->delete();
+        /**Add defualt address */
+        Address::create([
+            'label' => 'Work',
+            'long' => '30.254655656',
+            'lat' => '32.225656',
+            'user_id' => auth()->user()->id,
+            'apt_floor' => '34',
+            'map_address' => '34 Anafis Street',
+            'street_address' => '34 Anafis Street'
+        ]);
+         /**Add defualt address */
         return $this->sendResponse(new UserResource($user));
     }
 
