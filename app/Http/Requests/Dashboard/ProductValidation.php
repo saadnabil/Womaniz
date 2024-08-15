@@ -68,6 +68,8 @@ class ProductValidation extends AbstractFormRequest
             'brand_id' => ['nullable' , 'numeric'],
             'color_id' => ['nullable'],
             'model_id' => ['required'],
+
+            'vendor_id' => ['nullable','numeric'],
         ];
 
         if(request()->isMethod('post')){
