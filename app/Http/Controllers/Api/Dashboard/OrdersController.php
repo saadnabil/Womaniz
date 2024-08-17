@@ -31,7 +31,9 @@ class OrdersController extends Controller
                             $q->where('long', 'like', '%'.request('search').'%')
                               ->orWhere('lat' , 'like', '%'.request('search').'%')
                               ->orWhere('label' , 'like', '%'.request('search').'%')
-                              ->orWhere('description' , 'like', '%'.request('search').'%');
+                              ->orWhere('apt_floor' , 'like', '%'.request('search').'%')
+                              ->orWhere('map_address' , 'like', '%'.request('search').'%')
+                              ->orWhere('street_address' , 'like', '%'.request('search').'%');
                       })
                       ->orWhereHas('user',function($q){
                             $q->where('name', 'like', '%'.request('search').'%')
