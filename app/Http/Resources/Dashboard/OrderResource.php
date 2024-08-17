@@ -27,6 +27,7 @@ class OrderResource extends JsonResource
             'date' => $this->created_at->format('Y-m-d'),
             'paymentMethod' => $this->payment_method,
             'numberofItems' => count($this->orderDetails),
+            'address' => new AddressResource($this->address),
             'user' => new UserResource($this->user),
             'orderDetails' => OrderDetailsResource::collection($this->orderDetails),
         ];

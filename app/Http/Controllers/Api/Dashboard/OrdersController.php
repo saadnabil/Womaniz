@@ -52,7 +52,8 @@ class OrdersController extends Controller
     }
 
     public function show(Order $order){
-        $order->load('user','orderDetails.product.brand','orderDetails.product_variant');
+        /**Eager loading all data */
+        $order->load('user.addresses','address','orderDetails.product.brand','orderDetails.product.vendor.categories','orderDetails.product.categories','orderDetails.product_variant');
         return $this->sendResponse(new OrderResource($order));
     }
 

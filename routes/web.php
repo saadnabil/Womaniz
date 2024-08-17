@@ -1,8 +1,10 @@
 <?php
 
+use App\Mail\OtpMail;
 use App\Models\Country;
 use App\Models\Coupon;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 /*
@@ -25,4 +27,12 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('test', function(){
 
+});
+
+Route::get('test-mail', function(){
+    $data = [
+        'email' => 'saadnabil00@gmail.com',
+        'code' => '1234',
+    ];
+    Mail::to('saadnabil00@gmail')->send(new OtpMail($data));
 });
