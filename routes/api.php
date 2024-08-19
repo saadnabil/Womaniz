@@ -12,8 +12,6 @@ use App\Http\Controllers\Api\User\ProductsController;
 use App\Http\Controllers\Api\User\ProfileController;
 use App\Http\Controllers\Api\User\SalonController;
 use App\Http\Controllers\Api\User\SettingController;
-use App\Mail\OtpMail;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'v1/user'],function(){
     Route::post('login', [AuthController::class , 'login']);
@@ -99,6 +97,8 @@ Route::group(['prefix' => 'v1/user'],function(){
             Route::post('bookStepThree', [SalonController::class, 'bookStepThree']);
             Route::post('bookStepFour', [SalonController::class, 'bookStepFour']);
         });
+
+
 
     });
 });

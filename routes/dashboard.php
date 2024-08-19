@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\Dashboard\AdminsController;
 use App\Http\Controllers\Api\Dashboard\CategoriesController;
 use App\Http\Controllers\Api\Dashboard\ColorsController;
 use App\Http\Controllers\Api\Dashboard\DataController;
+use App\Http\Controllers\Api\Dashboard\InvoicesController;
 use App\Http\Controllers\Api\Dashboard\OrdersController;
 use App\Http\Controllers\Api\Dashboard\PermissionsController;
 use App\Http\Controllers\Api\Dashboard\ProductImagesController;
@@ -84,6 +85,9 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
 
         /**auth logout */
         Route::post('logout' ,[AuthController::class, 'logout']);
+
+        /**Invoice PDF */
+        Route::get('invoice', [InvoicesController::class, 'sendInvoice']);
 
         Route::resource('roles', RolesController::class);
         Route::resource('permissions', PermissionsController::class)->only('index');
