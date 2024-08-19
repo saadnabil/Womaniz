@@ -129,7 +129,7 @@ class User extends Authenticatable implements JWTSubject
             'vat' => $tax ,
             'shipping' => $shipping ,
             'total' =>  round($total, 2),
-            'totalSub' => $totalSub ,
+            'totalSub' => route($totalSub, 2) ,
             'discount' => $discount ,
             'details' => CartResource::collection($this->carts),
         ];
