@@ -123,7 +123,7 @@ class AuthService{
 
     public function login(array $data){
         $user = User::withTrashed()->where('email', $data['email'])->first();
-        if ($user->trashed()) {
+        if ($user && $user->trashed()) {
             $restoreRequest = RestoreAccountRequest::where(['email' => $data['email']])->first();
             if($restoreRequest){
                 return $this->sendResponse(['error' => __('messages.Your account is deactivated. A request to restore your account has been made. Please wait for the admin to respond.')], 'fail', 422);
@@ -135,6 +135,7 @@ class AuthService{
             return $this->sendResponse(['error' => __('messages.Invalid credentials. Please make sure you are registered.')] , 'fail' , 422);
         }
         $user = Auth::user();
+
         $user['token'] = $token;
         return $this->sendResponse(new UserResource($user));
     }
