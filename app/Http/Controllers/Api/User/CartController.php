@@ -89,7 +89,7 @@ class CartController extends Controller
             ]);
         }else{
             $cartExisted->update([
-                'quantity' =>  $cartExisted->quantity + 1
+                'quantity' =>  $cartExisted->quantity + $data['quantity']
             ]);
         }
         $data = $user->cartData();

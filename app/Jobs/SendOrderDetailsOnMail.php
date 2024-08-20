@@ -34,6 +34,7 @@ class SendOrderDetailsOnMail implements ShouldQueue
      */
     public function handle()
     {
-        Mail::to($this->order['email'])->send(new SendOrderDetails($this->order));
+        log($this->order['email']['user']['email']);
+        Mail::to($this->order['email']['user']['email'])->send(new SendOrderDetails($this->order));
     }
 }
