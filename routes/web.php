@@ -1,8 +1,10 @@
 <?php
 
 use App\Mail\OtpMail;
+use App\Mail\SendOrderDetails;
 use App\Models\Country;
 use App\Models\Coupon;
+use App\Models\Order;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
@@ -29,10 +31,15 @@ Route::get('test', function(){
 
 });
 
-Route::get('test-mail', function(){
+Route::get('test-mail-otp', function(){
     $data = [
         'email' => 'saadnabil00@gmail.com',
         'code' => '1234',
     ];
     Mail::to('saadnabil00@gmail')->send(new OtpMail($data));
+});
+Route::get('test-mail-order',function(){
+    $order = Order::first();
+    $order->load('user.addresses','address','orderDetails.product.brand','orderDetails.product.vendor.categories','orderDetails.product.categories','orderDetails.product_variant');
+    Mail::to('saadnabil00@gmail.com')->send(new SendOrderDetails($order));
 });

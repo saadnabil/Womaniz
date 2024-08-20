@@ -84,7 +84,8 @@ class CartController extends Controller
             Cart::create([
                 'product_id' =>  $data['product_id'] ,
                 'user_id' => auth()->user()->id ,
-                'product_variant_id' => $data['product_variant_id']
+                'product_variant_id' => $data['product_variant_id'],
+                'quantity' => $data['quantity'],
             ]);
         }else{
             $cartExisted->update([

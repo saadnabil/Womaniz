@@ -53,7 +53,6 @@ class OrdersController extends Controller
 
         $cartData = $user->cartData();
 
-
         // Create the order
         $order = Order::create([
             'user_id' => $user->id,
@@ -91,6 +90,9 @@ class OrdersController extends Controller
         // Reset user's coupon_id
         $user->update(['coupon_id' => null]);
 
+        /**dispatch email */
+        send_order_details_email($order);
+        /**dispatch email */
         return $this->sendResponse([]);
     }
 }

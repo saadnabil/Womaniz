@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Resources\Api\CartResource;
+use App\Jobs\SendOrderDetailsOnMail;
 use App\Jobs\SendOtpOnMail;
+use App\Mail\SendOrderDetails;
 use App\Models\Country;
 use App\Models\Otp;
 use Carbon\Carbon;
@@ -160,6 +162,13 @@ function create_new_otp($email , $code){
      /**Dispatch job for sending email */
     return;
 }
+
+
+function send_order_details_email($order){
+    $order->load('user.addresses','address','orderDetails.product.brand','orderDetails.product.vendor.categories','orderDetails.product.categories','orderDetails.product_variant');
+    dispatch(new SendOrderDetailsOnMail($order));
+}
+
 
 function weekDays (){
     return ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];

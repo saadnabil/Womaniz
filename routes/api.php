@@ -98,8 +98,6 @@ Route::group(['prefix' => 'v1/user'],function(){
             Route::post('bookStepFour', [SalonController::class, 'bookStepFour']);
         });
 
-
-
     });
 });
 
