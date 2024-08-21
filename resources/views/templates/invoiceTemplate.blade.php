@@ -346,7 +346,7 @@
 
         @foreach($order['orderDetails'] as $key => $details)
             <div class="product">
-                <img src="{{ url('storage/'.$order['product']['image']) }}" alt="Product Image" />
+                <img src="{{ url('storage/'.$order['product']['thumbnail']) }}" alt="Product Image" />
                 <div class="product-info">
                     @if($details['price'] == $details['price_after_sale'])
                         <p><strong>{{ $details['price_after_sale'] }} EGP</strong></p>
