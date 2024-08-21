@@ -296,10 +296,10 @@
     <div class="email-container">
         <div class="header">
             <div class="flex">
-                <img src="images/logo.svg" alt="Womniz Logo" class="logo" />
+                <img src="{{ url('images/logo.svg') }}" alt="Womniz Logo" class="logo" />
             </div>
             <h2>Your order is on its way!</h2>
-            <img src="images/delivery_image.svg" alt="Delivery Image" class="delivery-image" />
+            <img src="{{ url('images/delivery_image.svg') }}" alt="Delivery Image" class="delivery-image" />
         </div>
 
         <div class="greeting">
@@ -313,19 +313,19 @@
         <div class="tracking-info">
             <div class="tracking-steps">
                 <div class="">
-                    <img src="images/ordered.svg" />
+                    <img src="{{ url('images/ordered.svg') }}" />
                     <p>Ordered</p>
                 </div>
                 <div class="">
-                    <img src="images/packed.svg" />
+                    <img src="{{ url('images/packed.svg') }}" />
                     <p>Packed</p>
                 </div>
                 <div class="">
-                    <img src="images/shipping.svg" />
+                    <img src="{{ url('images/shipping.svg') }}" />
                     <p>Shipping</p>
                 </div>
                 <div class="">
-                    <img src="images/delievered.svg" />
+                    <img src="{{ url('images/delievered.svg') }}" />
                     <p>Delivered</p>
                 </div>
             </div>
@@ -387,13 +387,13 @@
             <h1 class="flex text-xl items-center">Womniz</h1>
             <div class="flex flex-col gap-5 items-center flex-row ">
                 <div class="max-w-lg flex items-center gap-2 bg-black rounded-lg mb-4 p-10 mr-2">
-                    <img src="images/appstore.svg" alt="App Store" class="mr-10" />
+                    <img src="{{ url('images/appstore.svg') }}" alt="App Store" class="mr-10" />
                     <div class="flex flex-col">
                         <p class="bold text-white">Download on the App Store</p>
                     </div>
                 </div>
                 <div class="max-w-lg flex items-center gap-2 bg-black mb-4 rounded-lg p-10">
-                    <img src="images/googleIcon.svg" alt="Google Play" class="mr-10" />
+                    <img src="{{ url('images/googleIcon.svg') }}" alt="Google Play" class="mr-10" />
                     <div class="flex flex-col">
                         <p class="bold m-0 text-white">
                             Download on the Google Play
