@@ -43,6 +43,7 @@ Route::get('test-mail-otp', function(){
 
 Route::get('test-mail-order',function(){
     $order = Order::first();
+    dd($order);
     send_order_details_email($order);
 });
 
