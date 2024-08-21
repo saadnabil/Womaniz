@@ -11,7 +11,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
 
-class SendOrderDetailsOnMail implements ShouldQueue
+class SendEmailOrderDetails implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -20,11 +20,13 @@ class SendOrderDetailsOnMail implements ShouldQueue
      *
      * @return void
      */
-    protected $order;
+    public $tries = 10;
+    public $timeout = 300;
+    protected $order ;
     public function __construct($order)
     {
         //
-        $this->order = $order;
+        $this->order  = $order ;
     }
 
     /**
@@ -34,7 +36,6 @@ class SendOrderDetailsOnMail implements ShouldQueue
      */
     public function handle()
     {
-        log($this->order['email']['user']['email']);
-        Mail::to($this->order['email']['user']['email'])->send(new SendOrderDetails($this->order));
+        Mail::to($this->order['user']['email'])->send(new SendOrderDetails($this->order));
     }
 }

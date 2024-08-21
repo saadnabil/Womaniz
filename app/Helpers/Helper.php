@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Resources\Api\CartResource;
+use App\Jobs\SendEmailOrderDetails;
 use App\Jobs\SendOrderDetailsOnMail;
 use App\Jobs\SendOtpOnMail;
 use App\Mail\SendOrderDetails;
@@ -166,7 +167,7 @@ function create_new_otp($email , $code){
 
 function send_order_details_email($order){
     $order->load('user.addresses','address','orderDetails.product.brand','orderDetails.product.vendor.categories','orderDetails.product.categories','orderDetails.product_variant');
-    dispatch(new SendOrderDetailsOnMail($order));
+    dispatch(new SendEmailOrderDetails($order));
 }
 
 

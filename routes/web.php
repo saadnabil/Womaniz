@@ -1,5 +1,6 @@
 <?php
 
+use App\Jobs\SendEmailOrderDetails;
 use App\Jobs\SendOrderDetailsOnMail;
 use App\Mail\OtpMail;
 use App\Mail\SendOrderDetails;
@@ -39,10 +40,10 @@ Route::get('test-mail-otp', function(){
     ];
     Mail::to('saadnabil00@gmail')->send(new OtpMail($data));
 });
+
 Route::get('test-mail-order',function(){
     $order = Order::first();
-    $order->load('user.addresses','address','orderDetails.product.brand','orderDetails.product.vendor.categories','orderDetails.product.categories','orderDetails.product_variant');
-    dispatch(new SendOrderDetailsOnMail($order));
+    send_order_details_email($order);
 });
 
 

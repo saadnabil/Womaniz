@@ -334,41 +334,38 @@
 
         <div class="order-summary">
             <h3>ORDER SUMMARY</h3>
-            <p>Order No: NEGE12345678</p>
-            <p>Shipment No: NEG12345678</p>
+            <p>Order No: {{ $order['id'] }}</p>
+            <p>Shipment No: {{ $order['id'] }}</p>
         </div>
 
         <div class="shipping-address">
             <h3>SHIPPING ADDRESS</h3>
-            <p>Ahmed Ali</p>
-            <p>34 Ibn El nafees, El manteqa El sadsah, Cairo, Egypt</p>
+            <p>{{ $order['user']['name'] }}</p>
+            <p>{{ $order['address']['street_address'] }}</p>
         </div>
 
-        <div class="product">
-            <img src="images/product_image.svg" alt="Product Image" />
-            <div class="product-info">
-                <p><strong>EGP 500</strong></p>
-                <p>Zara</p>
-                <p>White sleeve top</p>
-                <p>Quantity: 1</p>
+        @foreach($order['orderDetails'] as $key => $details)
+            <div class="product">
+                <img src="images/product_image.svg" alt="Product Image" />
+                <div class="product-info">
+                    @if($details['price'] == $details['price_after_sale'])
+                        <p><strong>{{ $details['price_after_sale'] }} EGP</strong></p>
+                    @else
+                        <p> <span style="text-decoration: line-through;">{{ $details['price'] }} </span> EGP  <strong style="padding-left:20px;">{{ $details['price_after_sale'] }} EGP</strong></p>
+                    @endif
+                    <p>Zara</p>
+                    <p>{{ $details['product']['name_en'] }}</p>
+                    <p>Quantity: {{ $details['quantity'] }}</p>
+                </div>
             </div>
-        </div>
+        @endforeach
 
-        <div class="product">
-            <img src="images/product_image.svg" alt="Product Image" />
-            <div class="product-info">
-                <p><strong>EGP 500</strong></p>
-                <p>Zara</p>
-                <p>White sleeve top</p>
-                <p>Quantity: 1</p>
-            </div>
-        </div>
 
         <div class="flex items-between">
             <div class="order-total">
-                <p>Sub total: 1000 EGP</p>
-                <p>Shipping: 50 EGP</p>
-                <p><strong>Total: 1050 EGP</strong></p>
+                <p>Sub total: {{ $order['totalsub'] }} EGP</p>
+                <p>Shipping: {{ $order['shipping'] }} EGP</p>
+                <p><strong>Total: {{ $order['total'] }} EGP</strong></p>
             </div>
             <div>
                 <img src="images/price.svg" />
