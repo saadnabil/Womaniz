@@ -100,8 +100,8 @@ class Product extends Model
         return $this->belongsTo(Country::class);
     }
 
-    public function color(){
-        return $this->belongsTo(Color::class);
+    public function colors(){
+        return $this->hasMany(ProductColor::class);
     }
 
     public function brand(){
@@ -110,6 +110,10 @@ class Product extends Model
 
     public function vendor(){
         return $this->belongsTo(Vendor::class);
+    }
+
+    public function sku(){
+        return $this->hasMany(ProductVariantSku::class);
     }
 
 

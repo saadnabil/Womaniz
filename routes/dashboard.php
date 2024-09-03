@@ -19,6 +19,8 @@ use App\Http\Controllers\Api\Dashboard\VendorsController;
 use App\Http\Controllers\Dashboard\AuthController;
 use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'v1/dashboard'], function(){
+    Route::post('products/bulk/upload' ,[ProductsController::class, 'bulkupload' ]);
+
     Route::post('login' ,[AuthController::class, 'login']);
     Route::group(['middleware' => 'auth:admin'],function(){
 
@@ -27,7 +29,7 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
         Route::get('data/productSetting', [DataController::class, 'productSetting']);
 
         Route::get('products/fulldata/export', [ProductsController::class, 'fulldataexport']);
-        Route::post('products/bulk/upload' ,[ProductsController::class, 'bulkupload' ]);
+        // Route::post('products/bulk/upload' ,[ProductsController::class, 'bulkupload' ]);
         Route::post('products/delete', [ProductsController::class, 'delete']);
         Route::resource('products' , ProductsController::class)->only('index','store','update','show');
 

@@ -18,6 +18,9 @@ class ProductVariant extends Model
         return $this->belongsTo(Size::class);
     }
 
+    public function sku(){
+        return $this->belongsTo(ProductVariantSku::class);
+    }
 
     // protected static function boot()
     // {
