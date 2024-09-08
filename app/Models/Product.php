@@ -112,10 +112,13 @@ class Product extends Model
         return $this->belongsTo(Vendor::class);
     }
 
-    public function sku(){
+    public function skus(){
         return $this->hasMany(ProductVariantSku::class);
     }
 
+    public function product_specifications(){
+        return $this->hasMany(ProductSpecification::class);
+    }
 
     // protected static function boot()
     // {
