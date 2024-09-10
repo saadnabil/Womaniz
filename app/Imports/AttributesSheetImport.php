@@ -10,8 +10,9 @@ use App\Models\Color;
 use App\Models\Size;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class AttributesSheetImport implements ToCollection
+class AttributesSheetImport implements ToCollection, WithHeadingRow
 {
     public function collection(Collection $rows)
     {
@@ -23,7 +24,7 @@ class AttributesSheetImport implements ToCollection
                     'product_id' => $product->id,
                     'sku' => $row['sku_attribute'],
                     'price' => $row['price'],
-                    'quantity' => $row['quantity'],
+                    'stock' => $row['quantity'],
                 ]);
 
                 if (!empty($row['color'])) {
@@ -31,7 +32,7 @@ class AttributesSheetImport implements ToCollection
                     ProductColor::create([
                         'product_id' => $product->id,
                         'color_id' => $color->id,
-                        'variant_sku_id' => $variantSku->id,
+                        'sku_id' => $variantSku->id,
                     ]);
                 }
 
@@ -40,7 +41,7 @@ class AttributesSheetImport implements ToCollection
                     ProductVariant::create([
                         'product_id' => $product->id,
                         'size_id' => $size->id,
-                        'variant_sku_id' => $variantSku->id,
+                        'sku_id' => $variantSku->id,
                     ]);
                 }
             }

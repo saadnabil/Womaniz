@@ -8,8 +8,9 @@ use App\Models\CategoryProduct;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ProductsSheetImport implements ToCollection
+class ProductsSheetImport implements ToCollection, WithHeadingRow
 {
     public function collection(Collection $rows)
     {
@@ -20,9 +21,10 @@ class ProductsSheetImport implements ToCollection
                     'name_ar' => $row['name_ar'],
                     'desc_en' => $row['description_en'],
                     'desc_ar' => $row['description_ar'],
-                    'original_price' => $row['original_price'],
-                    'sale_price' => $row['sale_price'],
-                    'model' => $row['model'],
+                    'price' => $row['original_price'],
+                    'price_after_sale' => $row['sale_price'],
+                    'discount' => $row['sale_price'] ? ((($row['original_price'] - $row['sale_price'] )* $row['sale_price'] )/ 100) : 0,
+                    'model_id' => $row['model'],
                     'brand_id' => $row['brand_id'],
                     'seller_sku' => $row['seller_sku'],
                     'vendor_id' => $row['vendor_id'],

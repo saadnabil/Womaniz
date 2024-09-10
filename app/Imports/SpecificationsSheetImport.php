@@ -6,8 +6,9 @@ use App\Models\Product;
 use App\Models\ProductSpecification;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class SpecificationsSheetImport implements ToCollection
+class SpecificationsSheetImport implements ToCollection, WithHeadingRow
 {
     public function collection(Collection $rows)
     {

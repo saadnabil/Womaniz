@@ -5,7 +5,9 @@ use App\Models\ProductVariant;
 use App\Models\Size;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
-class ProductImport implements ToCollection
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+
+class ProductImport implements ToCollection, WithHeadingRow
 {
     /**
     * @param Collection $collection
