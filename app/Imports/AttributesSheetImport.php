@@ -23,12 +23,14 @@ class AttributesSheetImport implements ToCollection, WithHeadingRow
                 $variantSku = ProductVariantSku::create([
                     'product_id' => $product->id,
                     'sku' => $row['sku_attribute'],
-                    'price' => $row['price'],
+                    'price' => $row['original_price'],
+                    'price_after_sale' => $row['sale_price'],
+                    'discount' => $row['sale_price'] ? ((($row['original_price'] - $row['sale_price'] )* $row['sale_price'] )/ 100) : 0,
                     'stock' => $row['quantity'],
                 ]);
 
                 if (!empty($row['color'])) {
-                    $color = Color::firstOrCreate(['name_en' => $row['color']]);
+                    $color = Color::firstOrCreate(['hexa' => $row['color']]);
                     ProductColor::create([
                         'product_id' => $product->id,
                         'color_id' => $color->id,
@@ -37,12 +39,26 @@ class AttributesSheetImport implements ToCollection, WithHeadingRow
                 }
 
                 if (!empty($row['size'])) {
-                    $size = Size::firstOrCreate(['name_en' => $row['size']]);
-                    ProductVariant::create([
-                        'product_id' => $product->id,
-                        'size_id' => $size->id,
-                        'sku_id' => $variantSku->id,
-                    ]);
+
+                    $size = Size::first(['name_en' => $row['size']]);
+                    if(!$size){
+                        $size = Size::create([
+                            'name_en' => $row['size_en'],
+                            'name_ar' => $row['size_ar'],
+                        ]);
+                        ProductVariant::create([
+                            'product_id' => $product->id,
+                            'size_id' => $size->id,
+                            'sku_id' => $variantSku->id,
+                        ]);
+                    }else{
+                        ProductVariant::create([
+                            'product_id' => $product->id,
+                            'size_id' => $size->id,
+                            'sku_id' => $variantSku->id,
+                        ]);
+                    }
+
                 }
             }
         }
