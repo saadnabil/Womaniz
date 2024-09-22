@@ -44,7 +44,9 @@ Route::group(['prefix' => 'v1/user'],function(){
         });
 
         Route::group(['prefix' => 'home'], function() {
-            Route::get('/', [HomeController::class, 'index']);
+            Route::get('/partone', [HomeController::class, 'partOne']);
+            Route::get('/parttwo', [HomeController::class, 'partTwo']);
+            Route::get('/lastLevelCategories', [HomeController::class, 'lastLevelCategories']);
         });
 
         Route::group(['prefix' => 'coupons'], function() {
