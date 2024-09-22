@@ -68,6 +68,7 @@ class HomeController extends Controller
             $categoryId = request()->input('category_id');
             $products =  $products->whereHas('categories', function($query) use ($categoryId) {
                 $query->where('category_id', $categoryId);
+
             });
         }
         $products = $products->simplePaginate();
