@@ -45,8 +45,11 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
         Route::get('orders/changeStatus/{order}/{status}' , [OrdersController::class, 'changeStatus']);
         Route::resource('orders' , OrdersController::class)->only('index','show');
 
+
+        /**categories */
         Route::get('categories/lastParentChildCategories/{parentCategory}' , [CategoriesController::class, 'getLastChildCategoriesForParentCategory']);
-        Route::resource('categories' , CategoriesController::class)->only('index');
+        Route::resource('categories' , CategoriesController::class)->only('index','store');
+
 
         /**activities */
         Route::resource('activities', ActivitiesController::class)->only('index');
@@ -65,6 +68,7 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
 
         /**sizes */
         Route::get('sizes', [SizesController::class , 'index']);
+
 
         /**vendors */
         Route::get('vendors/fulldata/export', [VendorsController::class, 'fulldataexport']);

@@ -1,16 +1,9 @@
 <?php
 
-use App\Jobs\SendEmailOrderDetails;
-use App\Jobs\SendOrderDetailsOnMail;
 use App\Mail\OtpMail;
-use App\Mail\SendOrderDetails;
-use App\Models\Country;
-use App\Models\Coupon;
 use App\Models\Order;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Str;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -44,6 +37,7 @@ Route::get('test-mail-otp', function(){
 Route::get('test-mail-order',function(){
     $order = Order::first();
     send_order_details_email($order);
+    dd('success');
 });
 
 

@@ -19,9 +19,7 @@ return new class extends Migration
             Schema::table('products', function (Blueprint $table) {
                 // Step 1: Add the seller_sku column as nullable initially
                 $table->string('seller_sku')->nullable();
-
             });
-
             DB::statement('UPDATE products SET seller_sku = CONCAT("sku_", id)');
             Schema::table('products', function (Blueprint $table) {
                 $table->string('seller_sku')->unique()->nullable(false)->change();
