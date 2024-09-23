@@ -31,10 +31,10 @@ class VendorResource extends JsonResource
                 'swiftNumber' => $this->swift_number,
                 'ibanNumber' => $this->iban_number,
                 'status' => $this->status,
-                'legalDocs' => $this->legal_docs,
-                'commercialRegistration' => $this->commercial_registration,
+                'legalDocs' => url('storage/'. $this->legal_docs),
+                'commercialRegistration' => url('storage/'.$this->commercial_registration) ,
                 'birthdate' => $this->birthdate,
-                'vatCertificate' => $this->vat_certificate,
+                'vatCertificate' => url('storage/'.$this->vat_certificate) ,
 
         ];
 
