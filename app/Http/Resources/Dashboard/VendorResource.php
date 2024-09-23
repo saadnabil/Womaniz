@@ -16,7 +16,7 @@ class VendorResource extends JsonResource
     public function toArray($request)
     {
         $data = [
-            'id' => $this->id,
+                'id' => $this->id,
                 'name' => $this->name,
                 'contactName' => $this->contact_name,
                 'email' => $this->email,
