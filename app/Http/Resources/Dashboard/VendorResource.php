@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Resources\Dashboard;
-
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -16,6 +15,7 @@ class VendorResource extends JsonResource
     public function toArray($request)
     {
         $data = [
+                /**** */
                 'id' => $this->id,
                 'name' => $this->name,
                 'contactName' => $this->contact_name,
