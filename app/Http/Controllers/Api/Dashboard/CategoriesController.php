@@ -1,6 +1,9 @@
 <?php
 namespace App\Http\Controllers\Api\Dashboard;
+
+use App\Helpers\FileHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Dashboard\MainCategoryFormValidation;
 use App\Http\Resources\Api\CategoryResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Category;
@@ -18,7 +21,7 @@ class CategoriesController extends Controller
         return $this->sendResponse(CategoryResource::collection($childs));
     }
 
-    function getLastChildCategories($parentId)
+    public function getLastChildCategories($parentId)
     {
         $categories = Category::where('parent_id', $parentId)->get();
         $lastChildren = [];
@@ -31,4 +34,16 @@ class CategoriesController extends Controller
         }
         return $lastChildren;
     }
+
+    public function store(MainCategoryFormValidation $request){
+        $data = $request->validated();
+        if(isset($data['image'])){
+            $data['image'] = FileHelper::upload_file('categories',$data['image']);
+        }
+        $data['type'] = 'app_category';
+        $data['country_id'] = auth()->user()->country_id;
+        Category::create($data);
+        return $this->sendResponse([]);
+    }
+
 }
