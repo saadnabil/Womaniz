@@ -35,6 +35,7 @@ class VendorResource extends JsonResource
                 'commercialRegistration' => url('storage/'.$this->commercial_registration) ,
                 'birthdate' => $this->birthdate,
                 'vatCertificate' => url('storage/'.$this->vat_certificate) ,
+                /***dsds */
 
         ];
 
