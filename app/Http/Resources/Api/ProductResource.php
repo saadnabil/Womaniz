@@ -19,7 +19,7 @@ class ProductResource extends JsonResource
             'name' => $this->name,
             'desc' => $this->desc,
             'country_id' => $this->country_id,
-            'country' => $this->country->country,
+            'country' => $this->country ?  $this->country->country : null,
             'thumbnail' => $this->thumbnail?  url('storage/'.$this->thumbnail) : null,
             'is_favourite' => $this->favoritedbyusers->contains(auth()->user()),
             'price' => round($this->price),

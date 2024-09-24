@@ -36,7 +36,6 @@ class VendorResource extends JsonResource
                 'birthdate' => $this->birthdate,
                 'vatCertificate' => url('storage/'.$this->vat_certificate) ,
                 /***dsds */
-
         ];
 
         if($this->categories){
