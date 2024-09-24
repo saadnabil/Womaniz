@@ -15,7 +15,6 @@ class VendorResource extends JsonResource
     public function toArray($request)
     {
         $data = [
-                /**** */
                 'id' => $this->id,
                 'name' => $this->name,
                 'contactName' => $this->contact_name,
@@ -34,8 +33,7 @@ class VendorResource extends JsonResource
                 'legalDocs' => url('storage/'. $this->legal_docs),
                 'commercialRegistration' => url('storage/'.$this->commercial_registration) ,
                 'birthdate' => $this->birthdate,
-                'vatCertificate' => url('storage/'.$this->vat_certificate) ,
-                /***dsds */
+                'vatCertificate' => url('storage/'.$this->vat_certificate),
         ];
 
         if($this->categories){
