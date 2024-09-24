@@ -33,17 +33,9 @@ class VendorResource extends JsonResource
                 'legalDocs' => url('storage/'. $this->legal_docs),
                 'commercialRegistration' => url('storage/'.$this->commercial_registration) ,
                 'birthdate' => $this->birthdate,
-<<<<<<< HEAD
                 'vatCertificate' => url('storage/'.$this->vat_certificate) ,
-                /***dsds */
-<<<<<<< HEAD
-
-=======
->>>>>>> c49885901106f076e15a7a0f6f78c6ff26503c07
-=======
-                'vatCertificate' => url('storage/'.$this->vat_certificate),
->>>>>>> 9fb2650f566518aea2715c53965930d508c4d339
         ];
+
 
         if($this->categories){
             $data['categories'] = VendorCategoryResource::collection($this->categories);
