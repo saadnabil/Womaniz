@@ -22,14 +22,21 @@ class CategoryResource extends JsonResource
             'isLastLevel' => $this->children->count() > 0 ? 0 : 1,
         ];
 
-        if($this->parent_id == null && $this->is_salon != 1 && $this->type == 'app_category'){
-            $data['brands'] = BrandResource::collection($this->brands);
-        }
-
         if($this->children->count() > 0){
             $data['childs'] = CategoryResource::collection($this->children);
         }
 
+        if($this->brands){
+            $data['brands'] = BrandResource::collection($this->brands);
+        }
+
+        if($this->is_salon == 1){
+            $data['salons'] = SalonResource::collection($this->salons->where('country_id',auth()->user()->country_id));
+        }
+
+        if($this->parent_id == null){
+            $data['is_salon'] = $this->is_salon;
+        }
 
         return $data;
     }

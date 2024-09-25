@@ -34,6 +34,8 @@ Route::group(['prefix' => 'v1/user'],function(){
 
         Route::group(['prefix' => 'categories'],function(){
             Route::get('/',[CategoriesController::class,'index']);
+            Route::get('/mainCategories',[CategoriesController::class,'mainCategories']);
+            Route::get('/subCategories/{category}',[CategoriesController::class,'subCategories']);
         });
 
         Route::group(['prefix' => 'orders'],function(){
