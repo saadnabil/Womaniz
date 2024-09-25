@@ -15,9 +15,20 @@ class Banner extends Model
     public function getImageAttribute(){
         $lang = app()->getLocale();
         if($lang == 'en'){
-            return $this->image_en;
+            return $this->getImage($this->image_en);
         }
-        return $this->image_ar;
+        return $this->getImage($this->image_ar);
+    }
+
+    private function getImage($image)
+    {
+        if (filter_var($image, FILTER_VALIDATE_URL)) {
+            // If the image is a valid URL, return it directly
+            return $image;
+        } else {
+            // If the image is not a URL, assume it's a file path and return it with the asset helper
+            return url('storage/' . $image);
+        }
     }
 
 }

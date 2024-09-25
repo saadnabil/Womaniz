@@ -19,7 +19,7 @@ class SalonResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'image' => $this->image?  url('storage/'.$this->image) : null,
-            'branches' => SalonBranchResource::collection($this->branches),
+            // 'branches' => SalonBranchResource::collection($this->branches),
        ];
     }
 }

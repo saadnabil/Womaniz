@@ -31,6 +31,8 @@ class CategoryResource extends JsonResource
             $data['childs'] = CategoryResource::collection($this->children);
         }
 
+
+
         return $data;
     }
 }

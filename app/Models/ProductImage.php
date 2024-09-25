@@ -21,7 +21,7 @@ class ProductImage extends Model
             return $this->image;
         } else {
             // If the image is not a URL, assume it's a file path and return it with the asset helper
-            return asset('storage/' . $this->image);
+            return url('storage/' . $this->image);
         }
     }
 

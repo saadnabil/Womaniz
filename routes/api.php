@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\User\OrdersController;
 use App\Http\Controllers\Api\User\PaymentCardsController;
 use App\Http\Controllers\Api\User\ProductsController;
 use App\Http\Controllers\Api\User\ProfileController;
+use App\Http\Controllers\Api\User\SallonsController;
 use App\Http\Controllers\Api\User\SalonController;
 use App\Http\Controllers\Api\User\SettingController;
 use Illuminate\Support\Facades\Route;
@@ -35,13 +36,16 @@ Route::group(['prefix' => 'v1/user'],function(){
 
         Route::group(['prefix' => 'brands'],function(){
             Route::get('/subCategories/{brand}',[BrandsController::class,'subCategories']);
-
         });
 
         Route::group(['prefix' => 'categories'],function(){
             Route::get('/',[CategoriesController::class,'index']);
             Route::get('/mainCategories',[CategoriesController::class,'mainCategories']);
             Route::get('/subCategories/{category}',[CategoriesController::class,'subCategories']);
+        });
+
+        Route::group(['prefix' => 'salons'],function(){
+            Route::get('/{salon}/branches',[SallonsController::class,'branches']);
         });
 
         Route::group(['prefix' => 'orders'],function(){
