@@ -14,8 +14,16 @@ class ProductImage extends Model
         return $this->belongsTo(Product::class);
     }
 
-
-
+    public function getImagePathAttribute()
+    {
+        if (filter_var($this->image, FILTER_VALIDATE_URL)) {
+            // If the image is a valid URL, return it directly
+            return $this->image;
+        } else {
+            // If the image is not a URL, assume it's a file path and return it with the asset helper
+            return url('storage/' . $this->image);
+        }
+    }
 
     // protected static function boot()
     // {
