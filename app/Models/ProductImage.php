@@ -14,7 +14,7 @@ class ProductImage extends Model
         return $this->belongsTo(Product::class);
     }
 
-    private function getImage($image)
+
 
 
     // protected static function boot()
