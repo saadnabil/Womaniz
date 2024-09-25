@@ -7,5 +7,6 @@ class SallonsController extends Controller
     use ApiResponseTrait;
     public function branches($salon){
         $salon->load('branches');
+        return response()
     }
 }
