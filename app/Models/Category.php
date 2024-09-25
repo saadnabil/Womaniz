@@ -25,12 +25,12 @@ class Category extends Model
 
     public function getImageAttribute()
     {
-        if (filter_var($this->image, FILTER_VALIDATE_URL)) {
+        if (filter_var($this->attributes['image'], FILTER_VALIDATE_URL)) {
             // If the image is a valid URL, return it directly
-            return $this->image;
+            return $this->attributes['image'];
         } else {
             // If the image is not a URL, assume it's a file path and return it with the asset helper
-            return asset('storage/' . $this->image);
+            return asset('storage/' . $this->attributes['image']);
         }
     }
 
