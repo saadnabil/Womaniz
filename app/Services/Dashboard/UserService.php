@@ -19,7 +19,8 @@ class UserService{
                 ->orwhere('phone', 'like', '%'.$search.'%')
                 ->orwhere('status', 'like', '%'.$search.'%')
                 ->orWhereHas('addresses', function($query) use($search){
-                    $query->where('description','like',  '%'.$search.'%');
+                    $query->where('street_address','like',  '%'.$search.'%')
+                          ->where('map_address','like',  '%'.$search.'%');
                 });
             });
         }
