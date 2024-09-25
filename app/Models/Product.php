@@ -64,7 +64,7 @@ class Product extends Model
         return $this->return_order_desc_ar;
     }
 
-    public function getThumbnailAttribute(){
+    public function getImageAttribute(){
         return $this->thumbnail;
         // if (filter_var($this->thumbnail, FILTER_VALIDATE_URL)) {
         //     // If the image is a valid URL, return it directly
