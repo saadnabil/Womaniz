@@ -21,6 +21,8 @@ class Product extends Model
         return $this->name_ar;
     }
 
+
+
     public function getDescAttribute(){
         $lang = app()->getLocale();
         if($lang == 'en'){
@@ -60,6 +62,16 @@ class Product extends Model
             return $this->return_order_desc_en;
         }
         return $this->return_order_desc_ar;
+    }
+
+    public function getThumbnailAttribute(){
+        if (filter_var($this->thumbnail, FILTER_VALIDATE_URL)) {
+            // If the image is a valid URL, return it directly
+            return $this->thumbnail;
+        } else {
+            // If the image is not a URL, assume it's a file path and return it with the asset helper
+            return url('storage/' . $this->thumbnail);
+        }
     }
 
     public function getMaterialAttribute(){
