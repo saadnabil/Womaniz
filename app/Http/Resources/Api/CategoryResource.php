@@ -15,6 +15,7 @@ class CategoryResource extends JsonResource
      */
     public function toArray($request)
     {
+
         $data = [
             'id' => $this->id,
             'name' => $this->name,
@@ -30,7 +31,7 @@ class CategoryResource extends JsonResource
             $data['childs'] = CategoryResource::collection($this->children);
         }
 
-
         return $data;
+
     }
 }

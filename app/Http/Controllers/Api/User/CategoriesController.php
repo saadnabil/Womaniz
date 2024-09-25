@@ -30,9 +30,4 @@ class CategoriesController extends Controller
         return $this->sendResponse(new CategoryResource($category));
     }
 
-    public function brandCategories(Brand $brand){
-        $brand->load('children','brands');
-        return $this->sendResponse(new CategoryResource($brand));
-    }
-
 }

@@ -18,7 +18,7 @@ class BrandResource extends JsonResource
             'id' => $this->id,
             'name_en' => $this->name_en,
             'icon' => $this->icon?  url('storage/'.$this->icon) : null,
-            // 'categories' => CategoryResource::collection($this->categories)
+            'categories' => CategoryResource::collection($this->categories)
        ];
     }
 }

@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\Api\User\AddressesController;
 use App\Http\Controllers\Api\User\AuthController;
+use App\Http\Controllers\Api\User\BrandsController;
 use App\Http\Controllers\Api\User\CartController;
 use App\Http\Controllers\Api\User\CategoriesController;
 use App\Http\Controllers\Api\User\CouponsController;
@@ -30,6 +31,11 @@ Route::group(['prefix' => 'v1/user'],function(){
             Route::get('scratchGameDetails' , [GamesController::class , 'scratchgamedetails']);
             Route::get('scratch' , [GamesController::class , 'scratch']);
             Route::post('spin' , [GamesController::class , 'spin']);
+        });
+
+        Route::group(['prefix' => 'brands'],function(){
+            Route::get('/subCategories/{brand}',[BrandsController::class,'subCategories']);
+
         });
 
         Route::group(['prefix' => 'categories'],function(){
