@@ -65,14 +65,13 @@ class Product extends Model
     }
 
     public function getImageAttribute(){
-        return $this->thumbnail;
-        // if (filter_var($this->thumbnail, FILTER_VALIDATE_URL)) {
-        //     // If the image is a valid URL, return it directly
-        //     return $this->thumbnail;
-        // } else {
-        //     // If the image is not a URL, assume it's a file path and return it with the asset helper
-        //     return url('storage/' . $this->thumbnail);
-        // }
+        if (filter_var($this->thumbnail, FILTER_VALIDATE_URL)) {
+            // If the image is a valid URL, return it directly
+            return $this->thumbnail;
+        } else {
+            // If the image is not a URL, assume it's a file path and return it with the asset helper
+            return url('storage/' . $this->thumbnail);
+        }
     }
 
     public function getMaterialAttribute(){
