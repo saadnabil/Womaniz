@@ -23,6 +23,17 @@ class Category extends Model
         return $descendantIds->unique();
     }
 
+    public function getImageAttribute()
+    {
+        if (filter_var($this->image, FILTER_VALIDATE_URL)) {
+            // If the image is a valid URL, return it directly
+            return $this->image;
+        } else {
+            // If the image is not a URL, assume it's a file path and return it with the asset helper
+            return asset('storage/' . $this->image);
+        }
+    }
+
     public function children(){
         return $this->hasMany(Category::class, 'parent_id', 'id')->where('type','app_category');
     }
