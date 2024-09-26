@@ -3,6 +3,7 @@
 use App\Models\Category;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -17,63 +18,45 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name_en')->nullable();
+
             $table->string('name_ar')->nullable();
+
             $table->text('desc_en')->nullable();
+
             $table->text('desc_ar')->nullable();
+
             $table->string('thumbnail')->nullable();
+
             $table->double('price')->nullable();
+
             $table->double('price_after_sale')->nullable();
+
             $table->double('discount')->default(0.00);
+
+            $table->foreignId('designer_id')->nullable()->constrained('designers')->onUpdate('cascade')->onDelete('cascade');
+
+            $table->foreignId('country_id')->nullable()->constrained('countries')->onUpdate('cascade')->onDelete('cascade');
 
             $table->string('product_type')->nullable();
 
-            $table->foreignId('designer_id')
-                  ->nullable()
-                  ->constrained('designers')
-                  ->onUpdate('cascade')
-                  ->onDelete('cascade');
+            $table->string('product_sub_type')->nullable();
 
-            $table->foreignId('country_id')
-                  ->nullable()
-                  ->constrained('countries')
-                  ->onUpdate('cascade')
-                  ->onDelete('cascade');
+            $table->string('vat')->default(0)->nullable();
 
-                  $table->foreignId('size_id')
-                  ->nullable()
-                  ->constrained('sizes')
-                  ->onUpdate('cascade')
-                  ->onDelete('cascade');
-
-            $table->text('fit_size_desc_en')->nullable();
-            $table->text('fit_size_desc_ar')->nullable();
-
-            $table->text('ship_information_desc_en')->nullable();
-            $table->text('ship_information_desc_ar')->nullable();
-
-            $table->text('return_order_desc_en')->nullable();
-            $table->text('return_order_desc_ar')->nullable();
-
-            $table->text('ingredients_desc_en')->nullable();
-            $table->text('ingredients_desc_ar')->nullable();
-
-            $table->text('about_product_desc_en')->nullable();
-            $table->text('about_product_desc_ar')->nullable();
-
-            $table->text('dimension')->nullable();
-
-            $table->text('diamond_en')->nullable();
-            $table->text('diamond_ar')->nullable();
-
-            $table->text('metal_en')->nullable();
-            $table->text('metal_ar')->nullable();
-
-            $table->integer('chain_length')->nullable();
+            $table->foreignId('size_id')->nullable()->constrained('sizes')->onUpdate('cascade')->onDelete('cascade');
 
             $table->foreignId('brand_id')->nullable()->constrained('brands')->onDelete('cascade')->onUpdate('cascade');
 
+            $table->foreignId('vendor_id')->nullable()->constrained('vendors')->onDelete('cascade')->onUpdate('cascade');
+
+            $table->string('seller_sku')->nullable();
+
+            $table->string('status')->default('live');
+
+            $table->string('model_id')->nullable();
 
             $table->softDeletes();
+
             $table->timestamps();
         });
     }

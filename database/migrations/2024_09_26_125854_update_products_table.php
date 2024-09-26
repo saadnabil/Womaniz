@@ -14,8 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::table('products', function (Blueprint $table) {
-            //
-            $table->dropColumn(['diamond_en', 'diamond_ar']);
+            $table->dropColumn('material_en');
+            $table->dropColumn('material_ar');
+            $table->dropColumn('chain_length');
 
         });
     }
@@ -28,9 +29,9 @@ return new class extends Migration
     public function down()
     {
         Schema::table('products', function (Blueprint $table) {
-            //
-            $table->string('diamond_en')->nullable();
-            $table->string('diamond_ar')->nullable();
+            $table->text('material_en')->nullable();
+            $table->text('material_ar')->nullable();
+            $table->text('chain_length')->nullable();
         });
     }
 };
