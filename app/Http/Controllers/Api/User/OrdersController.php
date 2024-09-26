@@ -25,7 +25,7 @@ class OrdersController extends Controller
 
     public function currentorders(){
         $user = auth()->user()->load('orders.orderDetails.product','orders.coupon');
-        return $this->sendResponse(resource_collection(OrderResource::collection($user->orders()->where('status','!=','delivered')->simplepaginate())));
+        return $this->sendResponse(resource_collection(OrderResource::collection($user->orders()->where('status','!=','delivered')->paginate())));
     }
 
     public function show(Order $order){

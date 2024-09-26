@@ -15,6 +15,7 @@ class ProductsController extends Controller
 {
     use ApiResponseTrait;
     protected $productService;
+
     public function __construct(ProductService $productServcie)
     {
         $this->productService = $productServcie;
