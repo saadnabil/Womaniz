@@ -9,15 +9,18 @@ class ProductVariantSku extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'product_id',
-        'sku',
-        'stock',
-        'price',
-    ];
+    protected $guarded = [];
 
     public function product(){
         return $this->belongsTo(Product::class);
+    }
+
+    public function product_variants(){
+        return $this->hasMany(ProductVariant::class);
+    }
+
+    public function product_colors(){
+        return $this->hasMany(ProductColor::class);
     }
 
 }

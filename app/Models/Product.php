@@ -139,7 +139,7 @@ class Product extends Model
         return $this->hasMany(ProductVariantSku::class);
     }
 
-    public function product_specifications(){
+    public function specifications(){
         return $this->hasMany(ProductSpecification::class);
     }
 

@@ -4,8 +4,11 @@ namespace App\Services;
 use App\Helpers\FileHelper;
 use App\Models\CategoryProduct;
 use App\Models\Product;
+use App\Models\ProductColor;
 use App\Models\ProductImage;
+use App\Models\ProductSpecification;
 use App\Models\ProductVariant;
+use App\Models\ProductVariantSku;
 
 class ProductService{
 
@@ -14,19 +17,37 @@ class ProductService{
         $images = $data['images'];
         $variants = $data['variants'];
         $categories = $data['categories'];
+        $specifications = $data['specifications'];
         unset($data['images']);
         unset($data['variants']);
         unset($data['categories']);
+        unset($data['specifications']);
         $data['thumbnail'] = FileHelper::upload_file('products',$data['thumbnail']);
         $data['country_id'] = auth()->user()->country_id;
         $product = Product::create($data);
+
         foreach( $variants as $variant){
+            $productVariantSku = ProductVariantSku::create([
+                'product_id' => $product->id,
+                'sku' => $variant['sku'],
+                'stock' => $variant['stock'],
+                'price' => $variant['price'],
+                'discount' => $variant['discount'],
+                'price_after_sale' =>  $variant['price'] - $variant['price'] * $variant['discount'] / 100
+            ]);
+
             ProductVariant::create([
                 'product_id' => $product->id,
                 'size_id' => $variant['size_id'],
-                'stock' => $variant['stock'],
-                'sku' => $variant['sku']
+                'sku_id' => $productVariantSku->id,
             ]);
+
+            ProductColor::create([
+                'product_id' => $product->id,
+                'color_id' => $variant['color_id'],
+                'sku_id' => $productVariantSku->id,
+            ]);
+
         }
         foreach( $images as $image){
             $imagename = FileHelper::upload_file('products', $image);
@@ -41,16 +62,27 @@ class ProductService{
                 'category_id' => $category['id'],
             ]);
         }
+        foreach( $specifications as $specification){
+            ProductSpecification::create([
+                'product_id' => $product->id,
+                'name_en' => $specification['name_en'],
+                'name_ar' => $specification['name_ar'],
+                'value_en' => $specification['value_en'],
+                'value_ar' => $specification['value_ar'],
+            ]);
+        }
         return;
     }
 
     public function updateProduct($data,$product){
+        $product = $product->load('variants','categories','specifications','skus');
 
-        $product = $product->load('variants','categories');
-
-        /*reset variants and categories*/
+        /* reset variants - categories -specifications - skus  */
         $product->variants()->delete();
         $product->categories()->detach();
+        $product->specifications()->delete();
+        $product->skus()->delete();
+        dd( $product->specifications);
 
         $data['price_after_sale'] =  $data['price'] - $data['price'] * $data['discount'] / 100;
         if(isset($data['images'])){
@@ -62,22 +94,41 @@ class ProductService{
                 ]);
             }
         }
+
         $variants = $data['variants'];
         $categories = $data['categories'];
+        $specifications = $data['specifications'];
+
         unset($data['images']);
         unset($data['variants']);
         unset($data['categories']);
+        unset($data['specifications']);
+
         if(isset($data['thumbnail'])){
             $data['thumbnail'] = FileHelper::update_file('products',$data['thumbnail'], $product->thumbnail );
         }
         $product->update($data);
 
         foreach( $variants as $variant){
+            $productVariantSku = ProductVariantSku::create([
+                'product_id' => $product->id,
+                'sku' => $variant['sku'],
+                'stock' => $variant['stock'],
+                'price' => $variant['price'],
+                'discount' => $variant['discount'],
+                'price_after_sale' =>  $variant['price'] - $variant['price'] * $variant['discount'] / 100
+            ]);
+
             ProductVariant::create([
                 'product_id' => $product->id,
                 'size_id' => $variant['size_id'],
-                'stock' => $variant['stock'],
-                'sku' => $variant['sku']
+                'sku_id' => $productVariantSku->id,
+            ]);
+
+            ProductColor::create([
+                'product_id' => $product->id,
+                'color_id' => $variant['color_id'],
+                'sku_id' => $productVariantSku->id,
             ]);
         }
 
@@ -87,6 +138,17 @@ class ProductService{
                 'category_id' => $category['id'],
             ]);
         }
+
+        foreach( $specifications as $specification){
+            ProductSpecification::create([
+                'product_id' => $product->id,
+                'name_en' => $specification['name_en'],
+                'name_ar' => $specification['name_ar'],
+                'value_en' => $specification['value_en'],
+                'value_ar' => $specification['value_ar'],
+            ]);
+        }
+
         return;
     }
 
