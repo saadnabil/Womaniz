@@ -35,13 +35,10 @@ class ProductValidation extends AbstractFormRequest
             'price' => ['required', 'string' , 'min:0'],
             'discount' =>  ['required', 'numeric' ,'min:0'],
             'stock' => ['required','numeric','min:1'],
-            'variants' => ['required', 'array'],
-            'variants.*.size_id' => ['required', 'numeric'],
-            'variants.*.color_id' => ['required', 'numeric'],
-            'variants.*.stock' => ['required', 'numeric'],
-            'variants.*.sku' => ['required', 'string','unique:product_variant_skus,sku'],
-            'variants.*.price' => ['required', 'string'],
-            'variants.*.discount' => ['required', 'string'],
+
+
+
+
             'categories' => ['required', 'array'],
             'categories.*id' => ['required','numeric'],
             'brand_id' => ['nullable' , 'numeric'],
@@ -59,6 +56,14 @@ class ProductValidation extends AbstractFormRequest
             $data['images'] = ['required', 'array'];
             $data['images.*'] = ['required', 'image' ,'mimes:png,jpg,jpeg,svg,gif'];
             $data['seller_sku'] = ['required','string','unique:products,seller_sku'];
+
+            $data['variants'] = ['required', 'array'];
+            $data['variants.*.size_id'] = ['required', 'numeric'];
+            $data['variants.*.color_id'] = ['required', 'numeric'];
+            $data['variants.*.stock'] = ['required', 'numeric'];
+            $data['variants.*.sku'] = ['required', 'string','unique:product_variant_skus,sku'];
+            $data['variants.*.price'] = ['required', 'string'];
+            $data['variants.*.discount'] = ['required', 'string'];
         }
 
         if(request()->isMethod('put')){
@@ -66,6 +71,15 @@ class ProductValidation extends AbstractFormRequest
             $data['images'] = ['nullable', 'array'];
             $data['images.*'] = ['nullable', 'image' ,'mimes:png,jpg,jpeg,svg,gif'];
             $data['seller_sku'] = ['required','string','unique:products,seller_sku,'.$id];
+
+            $data['variants'] = ['required', 'array'];
+            $data['variants.*.size_id'] = ['required', 'numeric'];
+            $data['variants.*.color_id'] = ['required', 'numeric'];
+            $data['variants.*.stock'] = ['required', 'numeric'];
+            $data['variants.*.sku'] = ['required', 'string'];
+            $data['variants.*.price'] = ['required', 'string'];
+            $data['variants.*.discount'] = ['required', 'string'];
+
          }
 
         return $data;

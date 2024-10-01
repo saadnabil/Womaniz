@@ -27,6 +27,7 @@ return new class extends Migration
                   ->onUpdate('cascade');
             $table->integer('stock')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

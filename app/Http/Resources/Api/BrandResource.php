@@ -17,8 +17,7 @@ class BrandResource extends JsonResource
        return [
             'id' => $this->id,
             'name_en' => $this->name_en,
-            'icon' => $this->icon?  url('storage/'.$this->icon) : null,
-            'categories' => CategoryResource::collection($this->categories)
+            'icon' => $this->icon,
        ];
     }
 }

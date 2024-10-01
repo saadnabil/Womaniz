@@ -32,37 +32,7 @@ class Product extends Model
     }
 
 
-    public function getFitSizeDescAttribute(){
-        $lang = app()->getLocale();
-        if($lang == 'en'){
-            return $this->fit_size_desc_en;
-        }
-        return $this->fit_size_desc_ar;
-    }
 
-    public function getIngredientsDescAttribute(){
-        $lang = app()->getLocale();
-        if($lang == 'en'){
-            return $this->ingredients_desc_en;
-        }
-        return $this->ingredients_desc_ar;
-    }
-
-    public function getAboutProductDescAttribute(){
-        $lang = app()->getLocale();
-        if($lang == 'en'){
-            return $this->about_product_desc_en;
-        }
-        return $this->about_product_desc_ar;
-    }
-
-    public function getReturnOrderDescAttribute(){
-        $lang = app()->getLocale();
-        if($lang == 'en'){
-            return $this->return_order_desc_en;
-        }
-        return $this->return_order_desc_ar;
-    }
 
     // public function getImageAttribute(){
     //     if (filter_var($this->thumbnail, FILTER_VALIDATE_URL)) {

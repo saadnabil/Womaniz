@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('stock');
             $table->float('price');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

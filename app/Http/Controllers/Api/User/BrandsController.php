@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Api\BrandCateroryResource;
 use App\Http\Resources\Api\BrandResource;
 use App\Http\Resources\Api\CategoryResource;
 use App\Http\Resources\Api\MainCategoryResource;
@@ -17,6 +18,6 @@ class BrandsController extends Controller
     use ApiResponseTrait;
     public function subCategories(Brand $brand){
         $brand->load('categories');
-        return $this->sendResponse(new BrandResource($brand));
+        return $this->sendResponse(new BrandCateroryResource($brand));
     }
 }

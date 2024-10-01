@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained('products')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('color_id')->constrained('colors')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('sku_id')->constrained('product_variant_skus')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

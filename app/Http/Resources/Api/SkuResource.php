@@ -4,7 +4,7 @@ namespace App\Http\Resources\Api;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class VariantResource extends JsonResource
+class SkuResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,10 +15,15 @@ class VariantResource extends JsonResource
     public function toArray($request)
     {
         $data = [
-            'sku_id' => $this->sku_id,
+
             'id' => $this->id,
-            'size_id' => $this->size_id,
-            'size' => $this->size->title,
+            'sku' => $this->sku,
+            'stock' => $this->stock,
+            'price' => $this->stock,
+            'price_after_sale' => $this->price_after_sale,
+            'discount' => $this->discount,
+            'colors' => ColorResource::collection($this->colors),
+            'sizes' => SizeResource::collection($this->variants),
         ];
         return $data;
     }

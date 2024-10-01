@@ -26,7 +26,8 @@ class ProductService{
         $data['country_id'] = auth()->user()->country_id;
         $product = Product::create($data);
 
-        foreach( $variants as $variant){
+         /**create product variant skus */
+         foreach( $variants as $variant){
             $productVariantSku = ProductVariantSku::create([
                 'product_id' => $product->id,
                 'sku' => $variant['sku'],
@@ -47,7 +48,6 @@ class ProductService{
                 'color_id' => $variant['color_id'],
                 'sku_id' => $productVariantSku->id,
             ]);
-
         }
         foreach( $images as $image){
             $imagename = FileHelper::upload_file('products', $image);
@@ -75,14 +75,13 @@ class ProductService{
     }
 
     public function updateProduct($data,$product){
-        $product = $product->load('variants','categories','specifications','skus');
+        $product = $product->load('variants','categories','specifications','skus','colors');
 
-        /* reset variants - categories -specifications - skus  */
+        /* reset variants - categories -specifications - colors  */
         $product->variants()->delete();
         $product->categories()->detach();
         $product->specifications()->delete();
-        $product->skus()->delete();
-        dd( $product->specifications);
+        $product->colors()->delete();
 
         $data['price_after_sale'] =  $data['price'] - $data['price'] * $data['discount'] / 100;
         if(isset($data['images'])){
@@ -95,43 +94,61 @@ class ProductService{
             }
         }
 
+        /**set data in variables and remove from the request */
         $variants = $data['variants'];
         $categories = $data['categories'];
         $specifications = $data['specifications'];
-
         unset($data['images']);
         unset($data['variants']);
         unset($data['categories']);
         unset($data['specifications']);
+
 
         if(isset($data['thumbnail'])){
             $data['thumbnail'] = FileHelper::update_file('products',$data['thumbnail'], $product->thumbnail );
         }
         $product->update($data);
 
+
+
+        /**create product variant skus */
         foreach( $variants as $variant){
-            $productVariantSku = ProductVariantSku::create([
+            $productVariantSku = $product->skus()->where([
                 'product_id' => $product->id,
                 'sku' => $variant['sku'],
-                'stock' => $variant['stock'],
-                'price' => $variant['price'],
-                'discount' => $variant['discount'],
-                'price_after_sale' =>  $variant['price'] - $variant['price'] * $variant['discount'] / 100
-            ]);
-
-            ProductVariant::create([
-                'product_id' => $product->id,
-                'size_id' => $variant['size_id'],
-                'sku_id' => $productVariantSku->id,
-            ]);
-
-            ProductColor::create([
-                'product_id' => $product->id,
-                'color_id' => $variant['color_id'],
-                'sku_id' => $productVariantSku->id,
-            ]);
+            ])->with(['colors','variants'])->first();
+            if(!$productVariantSku){
+                $productVariantSku = ProductVariantSku::create([
+                    'product_id' => $product->id,
+                    'sku' => $variant['sku'],
+                    'stock' => $variant['stock'],
+                    'price' => $variant['price'],
+                    'discount' => $variant['discount'],
+                    'price_after_sale' =>  $variant['price'] - $variant['price'] * $variant['discount'] / 100
+                ]);
+                ProductVariant::create([
+                    'product_id' => $product->id,
+                    'size_id' => $variant['size_id'],
+                    'sku_id' => $productVariantSku->id,
+                ]);
+                ProductColor::create([
+                    'product_id' => $product->id,
+                    'color_id' => $variant['color_id'],
+                    'sku_id' => $productVariantSku->id,
+                ]);
+            }else{
+                $productVariantSku->variants()->withTrashed()->update([
+                    'size_id' => $variant['size_id'],
+                    'deleted_at' => null,
+                ]);
+                $productVariantSku->colors()->withTrashed()->update([
+                    'color_id' => $variant['color_id'],
+                    'deleted_at' => null,
+                ]);
+            }
         }
 
+        /**create product categories */
         foreach( $categories as $category){
             CategoryProduct::create([
                 'product_id' => $product->id,
@@ -139,6 +156,7 @@ class ProductService{
             ]);
         }
 
+        /**create specifications */
         foreach( $specifications as $specification){
             ProductSpecification::create([
                 'product_id' => $product->id,

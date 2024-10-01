@@ -22,9 +22,11 @@ class ProductsController extends Controller
     }
     public function index(GetProductsValidation $request){
         $data = $request->validated();
-        $category = Category::with('products.images','products.variants.size','products.country')->where('id', $data['category'])->first();
+        $category = Category::with('products.images','products.skus.variants.size','products.country','products.skus.colors.color')->where('id', $data['category'])->first();
+        // $category = Category::with('products.images','products.variants.size','products.country','products.colors.color')->where('id', $data['category'])->first();
         return $this->sendResponse(resource_collection(ProductResource::collection($category->products()->where('country_id' , auth()->user()->country_id)->latest()->simplepaginate())));
     }
+
     public function show($id){
         $product = Product::with('images','variants.size')->find($id);
         if(!$product){
@@ -32,6 +34,7 @@ class ProductsController extends Controller
         }
         return $this->sendResponse(new ProductResource($product));
     }
+
     public function favourites(){
         $user = auth()->user()->load('favouriteproducts');
         $favouriteproducts = $user->favouriteproducts()->where('country_id', auth()->user()->country_id)->simplepaginate();

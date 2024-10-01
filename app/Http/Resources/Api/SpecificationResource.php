@@ -2,10 +2,9 @@
 
 namespace App\Http\Resources\Api;
 
-use App\Models\Salon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SizeResource extends JsonResource
+class SpecificationResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,11 +14,10 @@ class SizeResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
-            'sku_id' => $this->sku_id,
-            'id' => $this->id,
-            'size_id' => $this->size_id,
-            'size' => $this->size->name_en,
+        $data = [
+            'name' => $this->name,
+            'value' => $this->value,
         ];
+        return $data;
     }
 }

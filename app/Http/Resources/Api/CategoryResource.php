@@ -19,7 +19,7 @@ class CategoryResource extends JsonResource
         $data = [
             'id' => $this->id,
             'name' => $this->name,
-            // 'image' => $this->image,
+            'image' => $this->image,
             'isLastLevel' => $this->children->count() > 0 ? 0 : 1,
         ];
 
