@@ -30,15 +30,9 @@ class ProductValidation extends AbstractFormRequest
             'name_ar' => ['required', 'string', 'max:250'],
             'desc_en' => ['required', 'string'],
             'desc_ar' => ['required', 'string'],
-            'product_type' => ['required','in:clothes,jewellery,cosmetics,celebrities'],
-            'product_sub_type' => ['required', new CheckSubTypeRule()],
             'price' => ['required', 'string' , 'min:0'],
             'discount' =>  ['required', 'numeric' ,'min:0'],
             'stock' => ['required','numeric','min:1'],
-
-
-
-
             'categories' => ['required', 'array'],
             'categories.*id' => ['required','numeric'],
             'brand_id' => ['nullable' , 'numeric'],

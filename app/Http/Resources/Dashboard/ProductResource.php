@@ -37,8 +37,6 @@ class ProductResource extends JsonResource
             'dimension' => $this->dimension,
             'material' => $this->material,
             'chain_length' => $this->chain_length,
-            'product_type' => $this->product_type,
-            'product_sub_type' => $this->product_sub_type,
             'brand' => new BrandResource($this->brand),
             'categories' => CategoryResource::collection($this->categories),
             'vendor' => new VendorResource($this->vendor),

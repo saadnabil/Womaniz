@@ -39,8 +39,6 @@ class ProductImport implements ToCollection, WithHeadingRow
                     'about_product_desc_ar' => $row[11],
                     'dimension' => $row[12],
                     'chain_length' => $row[13],
-                    'product_type' => $row[14],
-                    'product_sub_type' => $row[15],
                     'material_en' => $row[17],
                     'material_ar' => $row[18],
                     'model_id' => $row[19],

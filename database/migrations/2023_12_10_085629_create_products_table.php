@@ -37,10 +37,6 @@ return new class extends Migration
 
             $table->foreignId('country_id')->nullable()->constrained('countries')->onUpdate('cascade')->onDelete('cascade');
 
-            $table->string('product_type')->nullable();
-
-            $table->string('product_sub_type')->nullable();
-
             $table->string('vat')->default(0)->nullable();
 
             $table->foreignId('size_id')->nullable()->constrained('sizes')->onUpdate('cascade')->onDelete('cascade');

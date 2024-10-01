@@ -51,9 +51,7 @@ class ProductsController extends Controller
                 ->orwhere('dimension', 'like', '%'.$search.'%')
                 ->orwhere('material_en', 'like', '%'.$search.'%')
                 ->orwhere('material_ar', 'like', '%'.$search.'%')
-                ->orwhere('chain_length', 'like', '%'.$search.'%')
-                ->orwhere('product_type', 'like', '%'.$search.'%')
-                ->orwhere('product_sub_type', 'like', '%'.$search.'%');
+                ->orwhere('chain_length', 'like', '%'.$search.'%');
             });
         }
         if($request->has('brand_id')){

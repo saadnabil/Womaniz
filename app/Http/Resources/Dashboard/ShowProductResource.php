@@ -38,8 +38,6 @@ class ShowProductResource extends JsonResource
             'material_en' => $this->material_en,
             'material_ar' => $this->material_ar,
             'chain_length' => $this->chain_length,
-            'product_type' => $this->product_type,
-            'product_sub_type' => $this->product_sub_type,
             'brand' => new BrandResource($this->brand),
             'categories' => CategoryResource::collection($this->categories),
             'return_order_desc' => $this->return_order_desc,

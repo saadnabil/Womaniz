@@ -54,8 +54,6 @@ class ProductsSheetImport implements ToModel, WithHeadingRow
                     'about_product_desc_ar' => $row['about_product_desc_ar'],
                     'dimension' => $row['dimension'],
                     'chain_length' => $row['chain_length'],
-                    'product_type' => $row['product_type'],
-                    'product_sub_type' => $row['product_sub_type'],
                     'material_en' => $row['material_en'],
                     'material_ar' => $row['material_ar'],
                     'model_id' => $row['model_id'],
