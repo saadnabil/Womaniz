@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\Api\Dashboard\ActivitiesController;
 use App\Http\Controllers\Api\Dashboard\AdminsController;
+use App\Http\Controllers\Api\Dashboard\BrandsController;
 use App\Http\Controllers\Api\Dashboard\CategoriesController;
 use App\Http\Controllers\Api\Dashboard\ColorsController;
 use App\Http\Controllers\Api\Dashboard\DataController;
@@ -49,6 +50,10 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
         /**categories */
         Route::get('categories/lastParentChildCategories/{parentCategory}' , [CategoriesController::class, 'getLastChildCategoriesForParentCategory']);
         Route::resource('categories' , CategoriesController::class)->only('index','store');
+
+        /**brands */
+        Route::resource('brands' , BrandsController::class)->only('store');
+
 
 
         /**activities */
