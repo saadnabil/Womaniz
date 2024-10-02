@@ -28,7 +28,7 @@ class ProductsController extends Controller
     }
 
     public function show($id){
-        $product = Product::with('images','variants.size')->find($id);
+        $product = Product::with('skus', 'colors.color','variants.size')->find($id);
         if(!$product){
             return $this->sendResponse(['error' => __('messages.Product is not found')] , 'fail' , 404);
         }
@@ -40,6 +40,7 @@ class ProductsController extends Controller
         $favouriteproducts = $user->favouriteproducts()->where('country_id', auth()->user()->country_id)->simplepaginate();
         return $this->sendResponse(resource_collection(ProductResource::collection($favouriteproducts)));
     }
+
     public function togglefavourites($id){
         $product = Product::with('images','variants.size')->where([
                 'id' => $id,

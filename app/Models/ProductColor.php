@@ -25,4 +25,8 @@ class ProductColor extends Model
     public function sku(){
         return $this->belongsTo(ProductVariantSku::class);
     }
+
+    public function colorsizes(){
+        return $this->hasManyThrough(ProductVariant::class, ProductVariantSku::class);
+    }
 }

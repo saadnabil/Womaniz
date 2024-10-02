@@ -22,8 +22,6 @@ class SkuResource extends JsonResource
             'price' => $this->stock,
             'price_after_sale' => $this->price_after_sale,
             'discount' => $this->discount,
-            'colors' => ColorResource::collection($this->colors),
-            'sizes' => SizeResource::collection($this->variants),
         ];
         return $data;
     }

@@ -14,6 +14,7 @@ class ProductResource extends JsonResource
      */
     public function toArray($request)
     {
+
         $data = [
             'id' => $this->id,
             'name' => $this->name,
@@ -27,8 +28,9 @@ class ProductResource extends JsonResource
             'price' => round($this->price),
             'price_after_sale' => round($this->price_after_sale),
             'discount' => $this->discount,
-            'product_type' => $this->product_type,
             'skus' => SkuResource::collection($this->skus),
+            'colors' => ColorResource::collection($this->colors),
+            'sizes' => SizeResource::collection($this->variants),
             'images' => ImageResource::collection($this->images),
             'specifications' => SpecificationResource::collection($this->specifications),
         ];

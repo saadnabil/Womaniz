@@ -113,6 +113,8 @@ class Product extends Model
         return $this->hasMany(ProductSpecification::class);
     }
 
+
+
     // protected static function boot()
     // {
     //     parent::boot();
