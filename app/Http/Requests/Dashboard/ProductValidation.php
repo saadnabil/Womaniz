@@ -51,13 +51,13 @@ class ProductValidation extends AbstractFormRequest
             $data['images.*'] = ['required', 'image' ,'mimes:png,jpg,jpeg,svg,gif'];
             $data['seller_sku'] = ['required','string','unique:products,seller_sku'];
 
-            $data['variants'] = ['required', 'array'];
-            $data['variants.*.size_id'] = ['required', 'numeric'];
-            $data['variants.*.color_id'] = ['required', 'numeric'];
-            $data['variants.*.stock'] = ['required', 'numeric'];
-            $data['variants.*.sku'] = ['required', 'string','unique:product_variant_skus,sku'];
-            $data['variants.*.price'] = ['required', 'string'];
-            $data['variants.*.discount'] = ['required', 'string'];
+            $data['variants'] = ['nullable', 'array'];
+            $data['variants.*.size_id'] = ['nullable', 'numeric'];
+            $data['variants.*.color_id'] = ['nullable', 'numeric'];
+            $data['variants.*.stock'] = ['nullable', 'numeric'];
+            $data['variants.*.sku'] = ['nullable', 'string','unique:product_variant_skus,sku'];
+            $data['variants.*.price'] = ['nullable', 'string'];
+            $data['variants.*.discount'] = ['nullable', 'string'];
         }
 
         if(request()->isMethod('put')){

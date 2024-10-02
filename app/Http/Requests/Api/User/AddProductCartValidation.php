@@ -26,7 +26,7 @@ class AddProductCartValidation extends AbstractFormRequest
     {
         return [
             'product_id' => ['required','numeric'],
-            'product_variant_id' => ['required','numeric'],
+            'sku_id' => ['nullable','numeric'],
             'quantity' => ['required','numeric','min:1'],
         ];
     }

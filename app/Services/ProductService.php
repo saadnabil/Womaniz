@@ -14,10 +14,10 @@ class ProductService{
 
     public function createProduct($data){
         $data['price_after_sale'] =  $data['price'] - $data['price'] * $data['discount'] / 100;
-        $images = $data['images'];
-        $variants = $data['variants'];
+        $images = $data['images'] ?? null;
+        $variants = $data['variants'] ?? null ;
         $categories = $data['categories'];
-        $specifications = $data['specifications'];
+        $specifications = $data['specifications'] ?? null;
         unset($data['images']);
         unset($data['variants']);
         unset($data['categories']);
@@ -27,34 +27,38 @@ class ProductService{
         $product = Product::create($data);
 
          /**create product variant skus */
-         foreach( $variants as $variant){
-            $productVariantSku = ProductVariantSku::create([
-                'product_id' => $product->id,
-                'sku' => $variant['sku'],
-                'stock' => $variant['stock'],
-                'price' => $variant['price'],
-                'discount' => $variant['discount'],
-                'price_after_sale' =>  $variant['price'] - $variant['price'] * $variant['discount'] / 100
-            ]);
+         if( $variants ){
+            foreach( $variants as $variant){
+                $productVariantSku = ProductVariantSku::create([
+                    'product_id' => $product->id,
+                    'sku' => $variant['sku'],
+                    'stock' => $variant['stock'],
+                    'price' => $variant['price'],
+                    'discount' => $variant['discount'],
+                    'price_after_sale' =>  $variant['price'] - $variant['price'] * $variant['discount'] / 100
+                ]);
 
-            ProductVariant::create([
-                'product_id' => $product->id,
-                'size_id' => $variant['size_id'],
-                'sku_id' => $productVariantSku->id,
-            ]);
+                ProductVariant::create([
+                    'product_id' => $product->id,
+                    'size_id' => $variant['size_id'],
+                    'sku_id' => $productVariantSku->id,
+                ]);
 
-            ProductColor::create([
-                'product_id' => $product->id,
-                'color_id' => $variant['color_id'],
-                'sku_id' => $productVariantSku->id,
-            ]);
-        }
-        foreach( $images as $image){
-            $imagename = FileHelper::upload_file('products', $image);
-            ProductImage::create([
-                'product_id' => $product->id,
-                'image' => $imagename,
-            ]);
+                ProductColor::create([
+                    'product_id' => $product->id,
+                    'color_id' => $variant['color_id'],
+                    'sku_id' => $productVariantSku->id,
+                ]);
+            }
+         }
+         if($images){
+            foreach( $images as $image){
+                $imagename = FileHelper::upload_file('products', $image);
+                ProductImage::create([
+                    'product_id' => $product->id,
+                    'image' => $imagename,
+                ]);
+            }
         }
         foreach( $categories as $category){
             CategoryProduct::create([
@@ -62,15 +66,18 @@ class ProductService{
                 'category_id' => $category['id'],
             ]);
         }
-        foreach( $specifications as $specification){
-            ProductSpecification::create([
-                'product_id' => $product->id,
-                'name_en' => $specification['name_en'],
-                'name_ar' => $specification['name_ar'],
-                'value_en' => $specification['value_en'],
-                'value_ar' => $specification['value_ar'],
-            ]);
+        if($specifications){
+            foreach( $specifications as $specification){
+                ProductSpecification::create([
+                    'product_id' => $product->id,
+                    'name_en' => $specification['name_en'],
+                    'name_ar' => $specification['name_ar'],
+                    'value_en' => $specification['value_en'],
+                    'value_ar' => $specification['value_ar'],
+                ]);
+            }
         }
+
         return;
     }
 

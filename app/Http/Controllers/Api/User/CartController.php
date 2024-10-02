@@ -10,6 +10,7 @@ use App\Http\Resources\Api\CategoryResource;
 use App\Http\Resources\Api\ProductResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Cart;
+use App\Models\CartSku;
 use App\Models\Coupon;
 use App\Models\Product;
 use Carbon\Carbon;
@@ -67,27 +68,68 @@ class CartController extends Controller
     public function add(AddProductCartValidation $request){
         $data = $request->validated();
         $user  =  auth()->user();
-        $product = Product::with('variants')->where([
-                                'id' => $data['product_id'],
-                            ])->whereHas('variants',function($query) use ($data){
-                                $query->where('id', $data['product_variant_id']);
-                            })->first();
+
+        /***trying fetch the product with sku variant or not has*/
+        if(!isset($data['sku_id'])){
+            $product = Product::with(['carts' => function($q) use($data){
+                $q->where('product_id', $data['product_id'] )
+                  ->where('user_id', auth()->user()->id );
+            }])->where('id', $data['product_id'])->first();
+        }else{
+            $product = Product::with(['skus' => function($q) use($data){
+                $q->where('id', $data['sku_id']);
+            }, 'skus.colors' => function($q) use ($data){
+                $q->where('sku_id', $data['sku_id']);
+            },'skus.variants' => function($q) use ($data) {
+                $q->where('sku_id', $data['sku_id']);
+            },'carts' => function($q) use ($data){
+                $q->with(['skus' => function($query) use($data){
+                    $query->where('sku_id', $data['sku_id'])
+                        ->where('user_id', auth()->user()->id );
+                }])->where('product_id',$data['product_id'])
+                  ->where('user_id' ,auth()->user()->id);
+            }])->where([
+                'id' => $data['product_id'],
+            ])->first();
+        }
+
         if(!$product){
             return $this->sendResponse(['error' => __('messages.Product is not found')],'fail',404);
         }
-        $cartExisted = Cart::where([
-            'product_id' => $data['product_id'],
-            'user_id' => auth()->user()->id,
-            'product_variant_id' => $data['product_variant_id']
-        ])->first();
-        if(!$cartExisted){
-            Cart::create([
+
+        /***check item is already added in the cart or not */
+        // $cartExisted = Cart::with(['skus' => function($q) use($data, $user ){
+        //     $q->where('sku_id', $data['sku_id'])
+        //       ->where('user_id', $user->id );
+        // }])->where([
+        //     'product_id' => $data['product_id'],
+        //     'user_id' => auth()->user()->id,
+        // ])->first();
+
+
+        $cartExisted = $product->carts->first();
+        if(!$product->carts->first()){
+
+            /***item is not found and will be created */
+            $cart = Cart::create([
                 'product_id' =>  $data['product_id'] ,
                 'user_id' => auth()->user()->id ,
-                'product_variant_id' => $data['product_variant_id'],
                 'quantity' => $data['quantity'],
+
             ]);
+
+            if(isset($data['sku_id'])){
+                CartSku::create([
+                    'user_id' => auth()->user()->id,
+                    'sku_id' => $data['sku_id'],
+                    'product_id' =>  $data['product_id'] ,
+                    'cart_id' => $cart->id
+                ]);
+            }
+
         }else{
+
+            /***item is found and will be updated the quantity */
             $cartExisted->update([
                 'quantity' =>  $cartExisted->quantity + $data['quantity']
             ]);

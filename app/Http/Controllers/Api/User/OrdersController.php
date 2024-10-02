@@ -12,6 +12,7 @@ use App\Models\Category;
 use App\Models\Expert;
 use App\Models\Order;
 use App\Models\OrderDetails;
+use App\Models\OrderDetailsSku;
 use Illuminate\Http\Request;
 
 class OrdersController extends Controller
@@ -69,7 +70,8 @@ class OrdersController extends Controller
 
         // Create order details
         foreach ($cartData['details'] as $item) {
-            OrderDetails::create([
+            $cartsku = $item->skus->first();
+            $orderDetails = OrderDetails::create([
                 'order_id' => $order->id,
                 'product_id' => $item->product->id,
                 'quantity' => $item->quantity,
@@ -77,6 +79,13 @@ class OrdersController extends Controller
                 'price_after_sale' => $item->product->price_after_sale,
                 'product_variant_id' => $item->product_variant_id,
             ]);
+            if($cartsku ){
+                OrderDetailsSku::create([
+                    'sku_id' => $cartsku->sku->id,
+                    'order_details_id' => $orderDetails->id,
+                    'product_id' =>  $item->product->id
+                ]);
+            }
         }
 
         // Empty the cart
@@ -91,7 +100,7 @@ class OrdersController extends Controller
         $user->update(['coupon_id' => null]);
 
         /**dispatch email */
-        send_order_details_email($order);
+        // send_order_details_email($order);
         /**dispatch email */
         return $this->sendResponse([]);
     }

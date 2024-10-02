@@ -28,15 +28,13 @@ class ProductResource extends JsonResource
             'price' => round($this->price),
             'price_after_sale' => round($this->price_after_sale),
             'discount' => $this->discount,
-            // 'skus' => SkuResource::collection($this->skus),
+             //'skus' => SkuResource::collection($this->skus),
             'colors' => ColorResource::collection($this->colors),
             'sizes' => SizeResource::collection($this->variants),
             'images' => ImageResource::collection($this->images),
             'specifications' => SpecificationResource::collection($this->specifications),
         ];
-        if( $this->product_type == 'clothes' ){
-            $data['fit_size_desc'] = $this->fit_size_desc; //clothes
-        }
+
         return $data;
     }
 }

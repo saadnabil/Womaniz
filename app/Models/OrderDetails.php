@@ -18,6 +18,16 @@ class OrderDetails extends Model
         return $this->belongsTo(ProductVariant::class);
     }
 
+    public function order_details_sku(){
+        return $this->belongsTo(OrderDetailsSku::class);
+    }
+
+    public function sku(){
+        return $this->belongsTo(ProductVariantSku::class);
+    }
+
+
+
     protected static function boot()
     {
         parent::boot();

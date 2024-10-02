@@ -105,17 +105,29 @@ class User extends Authenticatable implements JWTSubject
     }
 
     public function cartData(){
-        $this->load(['carts.product','appliedcoupon']);
+        $this->load(['carts.product','carts.skus.sku','appliedcoupon']);
+
         $totalSub = 0 ;
         $tax  = 0;
         $shipping = count($this->carts) > 0 ?  20 : 0 ;
-        $discount = $this->appliedcoupon ? $this->appliedcoupon->discount : 0  ;
+        $discount = $this->appliedcoupon ? $this->appliedcoupon->discount : 0;
+
         $this->carts->each(function ($cart) use (&$totalSub) {
-            $cart->price = $cart->quantity * $cart->product->price; // Assuming there's a 'price' column in your 'products' table
-            $cart->price_after_sale = $cart->quantity * $cart->product->price_after_sale;
-            //sum cart final
-            $totalSub += $cart->price_after_sale;
-            //sum cart final
+            $cartsku = $cart->skus->first();
+            if(!$cartsku){
+                $cart->price = $cart->quantity * $cart->product->price;
+                $cart->price_after_sale = $cart->quantity * $cart->product->price_after_sale;
+                //sum cart final
+                $totalSub += $cart->price_after_sale;
+                //sum cart final
+            }else{
+                $cartsku->load('sku');
+                $cart->price = $cart->quantity * $cartsku->sku->price;
+                $cart->price_after_sale = $cart->quantity *$cartsku->sku->price_after_sale;
+                //sum cart final
+                $totalSub += $cart->price_after_sale;
+                //sum cart final
+            }
         });
 
         /**Calculate Order Total */
