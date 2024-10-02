@@ -15,6 +15,40 @@ class ProductResource extends JsonResource
     public function toArray($request)
     {
 
+        $colorsData = [];
+
+        // Group colors with sizes
+        foreach ($this->skus as $sku) {
+            $color = $sku->color->color->hexa;
+            $size = $sku->variant->size->name_en;
+
+            if (!isset($colorsData[$color])) {
+                $colorsData[$color] = [
+                    'color' => $color,
+                    'has_quantity' => false,
+                    'quantities' => 0,
+                    'sizes' => []
+                ];
+            }
+
+            // Add sizes for the color
+            $colorsData[$color]['sizes'][] = [
+                'size' => $size,
+                'sku_id' => $sku->id,
+                'quantity' => $sku->stock,
+                'price' => $sku->price
+            ];
+
+            // Accumulate quantities and check if there are any available items
+            $colorsData[$color]['quantities'] += $sku->stock;
+            if ($sku->stock > 0) {
+                $colorsData[$color]['has_quantity'] = true;
+            }
+        }
+
+        // Prepare final color data array
+        $colorsArray = array_values($colorsData);
+
         $data = [
             'id' => $this->id,
             'name' => $this->name,
@@ -29,8 +63,10 @@ class ProductResource extends JsonResource
             'price_after_sale' => round($this->price_after_sale),
             'discount' => $this->discount,
              //'skus' => SkuResource::collection($this->skus),
-            'colors' => ColorResource::collection($this->colors),
-            'sizes' => SizeResource::collection($this->variants),
+            // 'colors' => ColorResource::collection($this->colors),
+            // 'sizes' => SizeResource::collection($this->variants),
+            // 'colors' => ColorResource::collection($this->skus),  // Call the ColorResource for handling colors and sizes
+            'colors' => $colorsArray,  // Call the ColorResource for handling colors and sizes
             'images' => ImageResource::collection($this->images),
             'specifications' => SpecificationResource::collection($this->specifications),
         ];

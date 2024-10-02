@@ -76,9 +76,9 @@ class Product extends Model
         return $this->hasMany(ProductImage::class);
     }
 
-    public function variants(){
-        return $this->hasMany(ProductVariant::class);
-    }
+    // public function variants(){
+    //     return $this->hasMany(ProductVariant::class);
+    // }
 
     public function favoritedbyusers()
     {
@@ -93,9 +93,9 @@ class Product extends Model
         return $this->belongsTo(Country::class);
     }
 
-    public function colors(){
-        return $this->hasMany(ProductColor::class);
-    }
+    // public function colors(){
+    //     return $this->hasMany(ProductColor::class);
+    // }
 
     public function brand(){
         return $this->belongsTo(Brand::class);
@@ -105,15 +105,26 @@ class Product extends Model
         return $this->belongsTo(Vendor::class);
     }
 
-    public function skus(){
-        return $this->hasMany(ProductVariantSku::class);
-    }
+    // public function skus(){
+    //     return $this->hasMany(ProductVariantSku::class);
+    // }
 
     public function specifications(){
         return $this->hasMany(ProductSpecification::class);
     }
 
 
+    public function skus() {
+        return $this->hasMany(ProductVariantSku::class);
+    }
+
+    public function colors() {
+        return $this->hasManyThrough(ProductColor::class, ProductVariantSku::class, 'product_id', 'sku_id');
+    }
+
+    public function variants() {
+        return $this->hasManyThrough(ProductVariant::class, ProductVariantSku::class, 'product_id', 'sku_id');
+    }
 
     // protected static function boot()
     // {

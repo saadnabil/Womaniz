@@ -29,29 +29,16 @@ class ProductsSheetImport implements ToCollection, WithHeadingRow
                     'brand_id' => $row['brand_id'],
                     'seller_sku' => $row['seller_sku'],
                     'vendor_id' => $row['vendor_id'],
-                    'thumbnail' => $row['picture'],
+                    'thumbnail' => $row['thumbnail'],
                 ]);
 
                 // Insert categories
                 $this->insertProductCategories($product->id, $row['categories_id']);
 
-                // Insert images
-                $this->insertProductImages($product->id, $row);
             });
         }
     }
 
-    private function insertProductImages($productId, $row)
-    {
-        foreach ($row as $key => $value) {
-            if (str_starts_with($key, 'picture') && !empty($value)) {
-                ProductImage::create([
-                    'product_id' => $productId,
-                    'image' => $value,
-                ]);
-            }
-        }
-    }
 
     private function insertProductCategories($productId, $categoriesId)
     {

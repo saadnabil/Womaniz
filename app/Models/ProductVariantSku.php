@@ -18,12 +18,20 @@ class ProductVariantSku extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function variants(){
-        return $this->hasMany(ProductVariant::class, 'sku_id');
+    // public function variants(){
+    //     return $this->hasMany(ProductVariant::class, 'sku_id');
+    // }
+
+    // public function colors(){
+    //     return $this->hasMany(ProductColor::class, 'sku_id');
+    // }
+
+    public function color() {
+        return $this->hasOne(ProductColor::class, 'sku_id');
     }
 
-    public function colors(){
-        return $this->hasMany(ProductColor::class, 'sku_id');
+    public function variant() {
+        return $this->hasOne(ProductVariant::class, 'sku_id');
     }
 
 }
