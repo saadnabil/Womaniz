@@ -40,7 +40,7 @@ class AttributesSheetImport implements ToCollection, WithHeadingRow
 
                 if (!empty($row['size'])) {
 
-                    $size = Size::where(['name_en' => $row['size']])->get();
+                    $size = Size::where(['name_en' => $row['size']])->first();
                     if(!$size){
                         $size = Size::create([
                             'name_en' => $row['size_en'],
