@@ -29,6 +29,7 @@ class ProductsSheetImport implements ToCollection, WithHeadingRow
                     'brand_id' => $row['brand_id'],
                     'seller_sku' => $row['seller_sku'],
                     'vendor_id' => $row['vendor_id'],
+                    'thumbnail' => $row['picture'],
                 ]);
 
                 // Insert categories
