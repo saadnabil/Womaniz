@@ -29,8 +29,8 @@ class AttributesSheetImport implements ToCollection, WithHeadingRow
                     'stock' => $row['quantity'],
                 ]);
 
-                if (!empty($row['color'])) {
-                    $color = Color::firstOrCreate(['hexa' => $row['color']]);
+                if (!empty($row['color_code'])) {
+                    $color = Color::firstOrCreate(['hexa' => $row['color_code']]);
                     ProductColor::create([
                         'product_id' => $product->id,
                         'color_id' => $color->id,
