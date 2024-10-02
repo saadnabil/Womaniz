@@ -25,6 +25,7 @@ class ProductsSheetImport implements ToCollection, WithHeadingRow
                     'price_after_sale' => $row['sale_price'],
                     'discount' => $row['sale_price'] ? ((($row['original_price'] - $row['sale_price'] )* $row['sale_price'] )/ 100) : 0,
                     'model_id' => $row['model'],
+                    'stock' => $row['stock'],
                     'brand_id' => $row['brand_id'],
                     'seller_sku' => $row['seller_sku'],
                     'vendor_id' => $row['vendor_id'],
