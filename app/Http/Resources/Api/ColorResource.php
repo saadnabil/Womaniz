@@ -19,6 +19,7 @@ class ColorResource extends JsonResource
             'id' => $this->id,
             'color_id' => $this->color_id,
             'color' => $this->color->hexa,
+            'sku' => new SkuResource($this->sku)
         ];
         return $data;
     }
