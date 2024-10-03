@@ -83,7 +83,7 @@ class CartController extends Controller
             },'skus.variant' => function($q) use ($data) {
                 $q->where('sku_id', $data['sku_id']);
             },'carts' => function($q) use ($data){
-                $q->with(['skus' => function($query) use($data){
+                $q->with(['sku' => function($query) use($data){
                     $query->where('sku_id', $data['sku_id'])
                         ->where('user_id', auth()->user()->id );
                 }])->where('product_id',$data['product_id'])
