@@ -36,7 +36,7 @@ class ProductsController extends Controller
     // }
 
     public function show($id){
-        $product = Product::with(['skus', 'colors', 'variants','specifications'])->find($id);
+        $product = Product::with(['skus.color.color', 'skus.variant.size','specifications'])->find($id);
         if(!$product){
             return $this->sendResponse(['error' => __('messages.Product is not found')] , 'fail' , 404);
         }

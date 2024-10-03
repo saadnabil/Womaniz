@@ -36,7 +36,9 @@ class ProductResource extends JsonResource
                 'size' => $size,
                 'sku_id' => $sku->id,
                 'quantity' => $sku->stock,
-                'price' => $sku->price
+                'price' => $sku->price,
+                'price_after_sale' => $sku->price_after_sale,
+                'discount' => $this->discount,
             ];
 
             // Accumulate quantities and check if there are any available items
@@ -48,7 +50,6 @@ class ProductResource extends JsonResource
 
         // Prepare final color data array
         $colorsArray = array_values($colorsData);
-
         $data = [
             'id' => $this->id,
             'name' => $this->name,
