@@ -105,15 +105,14 @@ class User extends Authenticatable implements JWTSubject
     }
 
     public function cartData(){
-        $this->load(['carts.product','carts.skus.sku','appliedcoupon']);
-
+        $this->load(['carts.product','carts.sku.sku','appliedcoupon']);
         $totalSub = 0 ;
         $tax  = 0;
         $shipping = count($this->carts) > 0 ?  20 : 0 ;
         $discount = $this->appliedcoupon ? $this->appliedcoupon->discount : 0;
 
         $this->carts->each(function ($cart) use (&$totalSub) {
-            $cartsku = $cart->skus->first();
+            $cartsku = $cart->sku;
             if(!$cartsku){
                 $cart->price = $cart->quantity * $cart->product->price;
                 $cart->price_after_sale = $cart->quantity * $cart->product->price_after_sale;

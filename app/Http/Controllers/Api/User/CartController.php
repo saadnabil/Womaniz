@@ -78,9 +78,9 @@ class CartController extends Controller
         }else{
             $product = Product::with(['skus' => function($q) use($data){
                 $q->where('id', $data['sku_id']);
-            }, 'skus.colors' => function($q) use ($data){
+            }, 'skus.color' => function($q) use ($data){
                 $q->where('sku_id', $data['sku_id']);
-            },'skus.variants' => function($q) use ($data) {
+            },'skus.variant' => function($q) use ($data) {
                 $q->where('sku_id', $data['sku_id']);
             },'carts' => function($q) use ($data){
                 $q->with(['skus' => function($query) use($data){
@@ -96,15 +96,6 @@ class CartController extends Controller
         if(!$product){
             return $this->sendResponse(['error' => __('messages.Product is not found')],'fail',404);
         }
-
-        /***check item is already added in the cart or not */
-        // $cartExisted = Cart::with(['skus' => function($q) use($data, $user ){
-        //     $q->where('sku_id', $data['sku_id'])
-        //       ->where('user_id', $user->id );
-        // }])->where([
-        //     'product_id' => $data['product_id'],
-        //     'user_id' => auth()->user()->id,
-        // ])->first();
 
 
         $cartExisted = $product->carts->first();

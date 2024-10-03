@@ -18,8 +18,8 @@ class Cart extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function skus(){
-        return $this->hasMany(CartSku::class);
+    public function sku(){
+        return $this->hasOne(CartSku::class);
     }
 
 

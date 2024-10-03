@@ -70,7 +70,7 @@ class OrdersController extends Controller
 
         // Create order details
         foreach ($cartData['details'] as $item) {
-            $cartsku = $item->skus->first();
+            $cartsku = $item->sku;
             $orderDetails = OrderDetails::create([
                 'order_id' => $order->id,
                 'product_id' => $item->product->id,
