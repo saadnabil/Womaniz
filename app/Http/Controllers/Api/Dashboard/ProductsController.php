@@ -18,6 +18,7 @@ use Maatwebsite\Excel\Facades\Excel;
 class ProductsController extends Controller
 {
     use ApiResponseTrait;
+
     public function index(Request $request){
         $user = auth()->user();
         $user = $user->load('country');

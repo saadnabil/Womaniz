@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\User\BrandsController;
 use App\Http\Controllers\Api\User\CartController;
 use App\Http\Controllers\Api\User\CategoriesController;
 use App\Http\Controllers\Api\User\CouponsController;
+use App\Http\Controllers\Api\User\FcmController;
 use App\Http\Controllers\Api\User\GamesController;
 use App\Http\Controllers\Api\User\HomeController;
 use App\Http\Controllers\Api\User\OrdersController;
@@ -16,6 +17,7 @@ use App\Http\Controllers\Api\User\SalonController;
 use App\Http\Controllers\Api\User\SettingController;
 use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'v1/user'],function(){
+    Route::post('fcm', [FcmController::class , 'store']);
     Route::post('login', [AuthController::class , 'login']);
     Route::post('restoreAccount/request', [AuthController::class , 'restoreAccountRequest']);
     Route::post('register', [AuthController::class , 'register']);
@@ -111,6 +113,9 @@ Route::group(['prefix' => 'v1/user'],function(){
             Route::post('bookStepThree', [SalonController::class, 'bookStepThree']);
             Route::post('bookStepFour', [SalonController::class, 'bookStepFour']);
         });
+
+
+
 
     });
 });
