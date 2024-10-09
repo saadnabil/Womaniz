@@ -33,7 +33,7 @@ return [
 
     'firebase' => [
         'credentials' => [
-            'file' => storage_path('config/serviceAccountKey.json'),
+            'file' => storage_path('config/serviceAccount.json'),
         ],
     ],
 
