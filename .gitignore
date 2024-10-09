@@ -15,11 +15,12 @@ public/hot
 public_html/storage
 public_html/hot
 
+storage/config/serviceAccountKey.json
+
+
 storage/*.key
 .env
 Homestead.yaml
 Homestead.json
 /.vagrant
 .phpunit.result.cache
-storage/config/serviceAccountKey.json
-
