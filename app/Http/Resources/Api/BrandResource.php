@@ -18,6 +18,7 @@ class BrandResource extends JsonResource
             'id' => $this->id,
             'name_en' => $this->name_en,
             'icon' => $this->icon,
+            'categories' => CategoryResource::collection($this->categories)
        ];
     }
 }

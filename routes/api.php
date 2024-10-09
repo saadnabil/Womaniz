@@ -18,6 +18,9 @@ use App\Http\Controllers\Api\User\SettingController;
 use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'v1/user'],function(){
     Route::post('fcm', [FcmController::class , 'store']);
+    Route::get('fcm/testnotification', [FcmController::class , 'testnotification']);
+
+
     Route::post('login', [AuthController::class , 'login']);
     Route::post('restoreAccount/request', [AuthController::class , 'restoreAccountRequest']);
     Route::post('register', [AuthController::class , 'register']);

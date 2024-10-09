@@ -31,4 +31,15 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'firebase' => [
+        'credentials' => [
+            'file' => storage_path('config/serviceAccountKey.json'),
+        ],
+    ],
+
+
+
+
+
+
 ];
