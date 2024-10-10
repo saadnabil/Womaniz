@@ -22,7 +22,7 @@ class ProductsController extends Controller
     }
     public function index(GetProductsValidation $request){
         $data = $request->validated();
-        $category = Category::with('products.images','products.skus.variants.size','products.country','products.skus.colors.color')->where('id', $data['category'])->first();
+        $category = Category::with('products.images','products.skus.variant.size','products.country','products.skus.color.color')->where('id', $data['category'])->first();
         // $category = Category::with('products.images','products.variants.size','products.country','products.colors.color')->where('id', $data['category'])->first();
         return $this->sendResponse(resource_collection(ProductResource::collection($category->products()->where('country_id' , auth()->user()->country_id)->latest()->simplepaginate())));
     }
