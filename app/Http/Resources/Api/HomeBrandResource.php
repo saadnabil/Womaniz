@@ -17,7 +17,7 @@ class HomeBrandResource extends JsonResource
        return [
             'id' => $this->id,
             'name' => $this->name,
-            'icon' => $this->icon?  url('storage/'.$this->icon) : null,
+            'icon' => $this->icon,
        ];
     }
 }

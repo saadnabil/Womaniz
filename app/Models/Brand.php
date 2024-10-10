@@ -30,10 +30,8 @@ class Brand extends Model
     {
         if (filter_var($this->attributes['icon'], FILTER_VALIDATE_URL)) {
             // If the image is a valid URL, return it directly
-            dd('go');
             return $this->attributes['icon'];
         } else {
-            dd('come');
             // If the image is not a URL, assume it's a file path and return it with the asset helper
             return asset('storage/' . $this->attributes['icon']);
         }
