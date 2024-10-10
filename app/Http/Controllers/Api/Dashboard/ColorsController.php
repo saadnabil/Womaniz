@@ -8,7 +8,8 @@ use Illuminate\Http\Request;
 class ColorsController extends Controller
 {
     use ApiResponseTrait;
-    public function index(Request $request){
+
+    public function index(){
         $colors = Color::latest()->get();
         return $this->sendResponse(ColorResource::collection($colors));
     }

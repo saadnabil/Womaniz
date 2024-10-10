@@ -20,7 +20,7 @@ class ColorResource extends JsonResource
         $data = [
             'id' => $this->id,
             'hexa' => $this->hexa,
-            'color' => $this->color,
+            'name' => $this->name,
         ];
 
         return $data;

@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\Dashboard\ProductsController;
 use App\Http\Controllers\Api\Dashboard\RestoreRequestController;
 use App\Http\Controllers\Api\Dashboard\RolesController;
 use App\Http\Controllers\Api\Dashboard\ScratchGameController;
+use App\Http\Controllers\Api\Dashboard\ShipmentController;
 use App\Http\Controllers\Api\Dashboard\SizesController;
 use App\Http\Controllers\Api\Dashboard\SpinGameController;
 use App\Http\Controllers\Api\Dashboard\UsersController;
@@ -45,7 +46,6 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
         Route::get('orders/fulldata/export' , [OrdersController::class, 'fulldataexport']);
         Route::get('orders/changeStatus/{order}/{status}' , [OrdersController::class, 'changeStatus']);
         Route::resource('orders' , OrdersController::class)->only('index','show');
-
 
         /**categories */
         Route::get('categories/lastParentChildCategories/{parentCategory}' , [CategoriesController::class, 'getLastChildCategoriesForParentCategory']);
@@ -102,6 +102,10 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
 
         Route::resource('roles', RolesController::class);
         Route::resource('permissions', PermissionsController::class)->only('index');
+
+        Route::group(['prefix' => 'shipment'],function(){
+            Route::post('createShipment', [ShipmentController::class, 'createShipment']);
+        });
 
     });
     Route::get('data/policy', [DataController::class, 'policy']);

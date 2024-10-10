@@ -12,11 +12,11 @@ class Color extends Model
 
     protected $date = ['deleted_at'];
 
-    public function getColorAttribute(){
+    public function getNameAttribute(){
         $lang = app()->getLocale();
         if($lang == 'en'){
-            return $this->color_en;
+            return $this->name_en;
         }
-        return $this->color_ar;
+        return $this->name_ar;
     }
 }

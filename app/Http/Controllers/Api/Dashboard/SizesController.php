@@ -13,9 +13,6 @@ class SizesController extends Controller
     use ApiResponseTrait;
     public function index(){
         $sizes = Size::get();
-        if(request()->has('product_sub_type')){
-            $sizes = $sizes->whereIn('product_sub_type',['all',request('product_sub_type')]);
-        }
         return $this->sendResponse(SizeResource::collection($sizes));
     }
 }
