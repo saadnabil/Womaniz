@@ -62,7 +62,7 @@ class HomeController extends Controller
     public function partTwo(){
         $user = auth()->user();
         $products = Product::where('country_id' ,$user->country_id)
-                            ->with('images','variants.size','country')
+                            ->with('skus.variant.size','skus.color.color','images','country')
                             ->latest();
         if(request()->has('category_id')){
             $categoryId = request()->input('category_id');
