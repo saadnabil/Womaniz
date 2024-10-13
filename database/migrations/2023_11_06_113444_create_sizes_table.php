@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('sizes', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->nullable();
+            $table->string('name')->nullable();
+            $table->string('product_sub_type')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

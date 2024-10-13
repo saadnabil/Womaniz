@@ -59,6 +59,7 @@ class ProductService{
                     'color_id' =>  $color->id,
                     'sku_id' => $productVariantSku->id,
                 ]);
+
             }
          }
          if($images){

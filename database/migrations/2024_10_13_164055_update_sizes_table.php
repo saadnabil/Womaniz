@@ -15,10 +15,7 @@ return new class extends Migration
     {
         Schema::table('sizes', function (Blueprint $table) {
             //
-            $table->dropColumn('name_en');
-            $table->dropColumn('name_ar');
-            $table->string('name')->nullable();
-
+            $table->dropColumn('product_sub_type');
         });
     }
 
@@ -31,8 +28,7 @@ return new class extends Migration
     {
         Schema::table('sizes', function (Blueprint $table) {
             //
-            $table->string('name_en')->nullable();
-            $table->string('name_ar')->nullable();
+            $table->string('product_sub_type')->nullable();
         });
     }
 };

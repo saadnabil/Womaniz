@@ -13,13 +13,6 @@ class Size extends Model
     protected $guarded = [];
     protected $date = ['deleted_at'];
 
-    public function getNameAttribute(){
-        $lang = app()->getLocale();
-        if($lang == 'en'){
-            return $this->name_en;
-        }
-        return $this->name_ar;
-    }
 
 
     protected static function boot()
