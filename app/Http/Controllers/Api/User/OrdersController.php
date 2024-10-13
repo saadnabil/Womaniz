@@ -21,12 +21,12 @@ class OrdersController extends Controller
 
     public function pastorders(){
         $user = auth()->user()->load('orders.orderDetails.product','orders.coupon');
-        return $this->sendResponse(resource_collection(OrderResource::collection($user->orders()->where('status','delivered')->paginate())));
+        return $this->sendResponse(resource_collection(OrderResource::collection($user->orders()->where('status','delivered')->latest()->paginate())));
     }
 
     public function currentorders(){
         $user = auth()->user()->load('orders.orderDetails.product','orders.coupon');
-        return $this->sendResponse(resource_collection(OrderResource::collection($user->orders()->where('status','!=','delivered')->paginate())));
+        return $this->sendResponse(resource_collection(OrderResource::collection($user->orders()->where('status','!=','delivered')->latest()->paginate())));
     }
 
     public function show(Order $order){
