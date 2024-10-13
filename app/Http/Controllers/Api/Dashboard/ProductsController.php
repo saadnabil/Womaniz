@@ -66,7 +66,7 @@ class ProductsController extends Controller
     }
 
     public function show(Product $product){
-        $product->load('variants','brand','categories','color');
+        $product->load('images','skus.variant.size','country','skus.color.color','brand');
         return $this->sendResponse(new ShowProductResource($product));
     }
 

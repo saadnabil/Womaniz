@@ -71,7 +71,6 @@ class ProductResource extends JsonResource
             'images' => ImageResource::collection($this->images),
             'specifications' => SpecificationResource::collection($this->specifications),
         ];
-
         return $data;
     }
 }
