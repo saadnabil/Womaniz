@@ -3,12 +3,14 @@ namespace App\Services;
 
 use App\Helpers\FileHelper;
 use App\Models\CategoryProduct;
+use App\Models\Color;
 use App\Models\Product;
 use App\Models\ProductColor;
 use App\Models\ProductImage;
 use App\Models\ProductSpecification;
 use App\Models\ProductVariant;
 use App\Models\ProductVariantSku;
+use App\Models\Size;
 
 class ProductService{
 
@@ -38,15 +40,23 @@ class ProductService{
                     'price_after_sale' =>  $variant['price'] - $variant['price'] * $variant['discount'] / 100
                 ]);
 
+                $size = Size::firstorcreate([
+                    'name' => $variant['size'],
+                ]);
+
                 ProductVariant::create([
                     'product_id' => $product->id,
-                    'size_id' => $variant['size_id'],
+                    'size_id' => $size->id,
                     'sku_id' => $productVariantSku->id,
+                ]);
+
+                $color = Color::firstorcreate([
+                    'hexa' => $variant['color'],
                 ]);
 
                 ProductColor::create([
                     'product_id' => $product->id,
-                    'color_id' => $variant['color_id'],
+                    'color_id' =>  $color->id,
                     'sku_id' => $productVariantSku->id,
                 ]);
             }
