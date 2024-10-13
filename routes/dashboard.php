@@ -105,6 +105,7 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
 
         Route::group(['prefix' => 'shipment'],function(){
             Route::post('createShipment', [ShipmentController::class, 'createShipment']);
+            Route::post('trackShipment', [ShipmentController::class, 'trackShipment']);
         });
 
     });
