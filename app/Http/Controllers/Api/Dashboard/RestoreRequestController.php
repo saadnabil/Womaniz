@@ -37,7 +37,7 @@ class RestoreRequestController extends Controller
         if(request()->has('date')){
             $requests->where('created_at', 'like', '%'.request('date').'%');
         }
-        $requests =  $requests->simplepaginate();
+        $requests =  $requests->paginate();
         return $this->sendResponse(resource_collection(RestoreAccountRequestResource::collection($requests)));
     }
 

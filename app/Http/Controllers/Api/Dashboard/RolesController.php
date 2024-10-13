@@ -33,7 +33,7 @@ class RolesController extends Controller
                 });
             });
         }
-        $roles =  $roles->simplepaginate();
+        $roles =  $roles->paginate();
         return $this->sendResponse(resource_collection(RoleResource::collection($roles)));
     }
 

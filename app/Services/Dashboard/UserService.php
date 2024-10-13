@@ -30,7 +30,7 @@ class UserService{
         if($cities){
             $users = $users->whereIn('city_id' ,request('cities'));
         }
-        return $users->simplePaginate();
+        return $users->paginate();
     }
 
     public function createUser($data){

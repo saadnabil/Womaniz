@@ -71,7 +71,7 @@ class HomeController extends Controller
 
             });
         }
-        $products = $products->simplePaginate();
+        $products = $products->paginate();
         return $this->sendResponse(resource_collection(ProductResource::collection($products)));
     }
 }

@@ -25,7 +25,7 @@ class AdminService{
         if(request()->has('status')){
             $admins = $admins->where('status' ,$status);
         }
-        return $admins->simplePaginate();
+        return $admins->paginate();
     }
 
     public function createAdmin($data){

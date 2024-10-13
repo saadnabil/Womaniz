@@ -25,7 +25,7 @@ class ProductService{
                                             $brandQuery->where('name_en', 'like', '%'.$search.'%')
                                                        ->orWhere('name_ar', 'like', '%'.$search.'%');
                                         });
-                    })->latest()->simplePaginate();
+                    })->latest()->paginate();
         return $products;
     }
 }

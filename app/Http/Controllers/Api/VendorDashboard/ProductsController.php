@@ -21,7 +21,7 @@ class ProductsController extends Controller
         $products = Product::where('country_id', $user->country->id)
                            ->with('variants','brand','categories')
                            ->latest();
-        $products = $products->simplepaginate();
+        $products = $products->paginate();
         return $this->sendResponse(resource_collection(ProductResource::collection($products)));
     }
 

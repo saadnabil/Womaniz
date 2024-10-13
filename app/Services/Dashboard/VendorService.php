@@ -35,7 +35,7 @@ class VendorService{
                 $query->whereIn('category_id',$categories);
             });
         }
-        $vendors = $vendors->simplePaginate();
+        $vendors = $vendors->paginate();
         return $vendors;
     }
 

@@ -49,7 +49,7 @@ class OrdersController extends Controller
                   });
             });
         }
-        $orders = $orders->simplepaginate();
+        $orders = $orders->paginate();
         return $this->sendResponse(resource_collection(OrderTableResource::collection($orders)));
     }
     public function show(Order $order){

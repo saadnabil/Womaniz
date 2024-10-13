@@ -61,7 +61,7 @@ class ProductsController extends Controller
         if($request->has('status')){
             $products =  $products->where('status', request('status'));
         }
-        $products = $products->simplepaginate();
+        $products = $products->paginate();
         return $this->sendResponse(resource_collection(ProductResource::collection($products)));
     }
 
