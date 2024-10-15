@@ -41,7 +41,7 @@ class ProfileController extends Controller
     public function update(UpdateProfileValidation $request ){
         $data = $request->validated();
         $user = auth()->user();
-        $data['birthdate'] = Carbon::parse($data['date'])->format('Y/m/d');
+        $data['birthdate'] = Carbon::parse($data['birthdate'])->format('Y/m/d');
         $user->update($data);
         return $this->sendResponse([]);
     }
