@@ -17,6 +17,7 @@ use App\Models\AccountDeleteHistory;
 use App\Models\Address;
 use App\Models\Category;
 use App\Services\User\ProfileService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -40,6 +41,7 @@ class ProfileController extends Controller
     public function update(UpdateProfileValidation $request ){
         $data = $request->validated();
         $user = auth()->user();
+        $data['birthdate'] = Carbon::parse($data['date'])->format('Y/m/d');
         $user->update($data);
         return $this->sendResponse([]);
     }

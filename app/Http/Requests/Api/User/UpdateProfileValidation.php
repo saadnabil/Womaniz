@@ -28,7 +28,7 @@ class UpdateProfileValidation extends AbstractFormRequest
             'name' => ['required','string', 'max:50'],
             'email' => ['required', 'email', 'max:100'],
             'phone' => ['required', 'string', 'max:100'],
-            'birthdate' => ['required', 'string', 'date_format:Y/m/d'],
+            'birthdate' => ['required', 'string', 'date_format:Y-m-d'],
         ];
     }
 }
