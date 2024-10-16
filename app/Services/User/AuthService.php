@@ -74,8 +74,6 @@ class AuthService{
             'street_address' => '34 Anafis Street'
         ]);
          /**Add defualt address */
-
-
         return $this->sendResponse(new UserResource($user));
     }
 

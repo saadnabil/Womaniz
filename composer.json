@@ -9,6 +9,7 @@
         "akaunting/laravel-setting": "^1.2",
         "barryvdh/laravel-dompdf": "^3.0",
         "doctrine/dbal": "^3.0",
+        "elasticsearch/elasticsearch": "^8.15",
         "guzzlehttp/guzzle": "^7.2",
         "kreait/laravel-firebase": "^5.8",
         "laravel/framework": "^9.19",
@@ -71,7 +72,8 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "allow-plugins": {
-            "pestphp/pest-plugin": true
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true
         }
     },
     "minimum-stability": "stable",

@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Api\User;
 
 use App\Http\Requests\AbstractFormRequest;
+use App\Rules\ValidateDeletedEmail;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LoginUserValidation extends AbstractFormRequest
@@ -25,7 +26,7 @@ class LoginUserValidation extends AbstractFormRequest
     public function rules()
     {
         return [
-            'email' => ['required','email', 'max:50'],
+            'email' => ['required','email', 'max:50',new ValidateDeletedEmail()],
             'password' => ['required', 'string', 'min:8'],
         ];
     }
