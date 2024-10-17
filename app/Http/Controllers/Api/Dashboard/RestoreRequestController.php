@@ -43,6 +43,7 @@ class RestoreRequestController extends Controller
 
     public function changeStatus(AccountRestoreRequestChangeStatusValidation $request , RestoreAccountRequest $restoreAccountRequest){
         $data = $request->validated();
+        dd('sdsd');
         $restoreAccountRequest->load([
             'user' => function($q){
                 $q->withTrahsed();
