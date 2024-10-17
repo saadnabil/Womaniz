@@ -56,6 +56,7 @@ class RestoreRequestController extends Controller
 
             /**remove deleted at from user */
             $restoreAccountRequest->user->restore();
+            //
 
         }
         return $this->sendResponse([]);
