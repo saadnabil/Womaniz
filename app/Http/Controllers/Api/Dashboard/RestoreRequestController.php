@@ -48,10 +48,15 @@ class RestoreRequestController extends Controller
                 0 => 'rejected',
                 1 => 'accepted'
             ];
+            $restoreAccountRequest->load('user');
             $restoreAccountRequest->update([
                 'status' =>  $statusMappingArray[$data['status']],
                 'rejection_reason' => $data['rejection_reason'] ?? null,
             ]);
+
+            /**remove deleted at from user */
+            $restoreAccountRequest->user->restore();
+
         }
         return $this->sendResponse([]);
     }

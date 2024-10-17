@@ -3,6 +3,7 @@ namespace App\Http\Requests\Api\User;
 
 use App\Http\Requests\AbstractFormRequest;
 use App\Models\Country;
+use App\Rules\ValidateDeletedEmail;
 use Illuminate\Foundation\Http\FormRequest;
 class RegisterUserValidation extends AbstractFormRequest
 {
@@ -27,7 +28,7 @@ class RegisterUserValidation extends AbstractFormRequest
         $countryIds = implode(',',$countryIds);
         return [
             'name' => ['required','string', 'max:50'],
-            'email' => ['required', 'email','unique:users,email,'.$this->id],
+            'email' => ['required', 'email',new ValidateDeletedEmail(),'unique:users,email,'.$this->id,],
             'birthdate' =>  ['required','string', 'date_format:Y/m/d'],
             'phone' => ['required','string', 'max:50'],
             'password' => ['required', 'string' ,'min:8'],

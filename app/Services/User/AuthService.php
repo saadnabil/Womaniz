@@ -74,8 +74,6 @@ class AuthService{
             'street_address' => '34 Anafis Street'
         ]);
          /**Add defualt address */
-
-
         return $this->sendResponse(new UserResource($user));
     }
 
@@ -123,13 +121,6 @@ class AuthService{
 
     public function login(array $data){
         $user = User::withTrashed()->where('email', $data['email'])->first();
-        if ($user && $user->trashed()) {
-            $restoreRequest = RestoreAccountRequest::where(['email' => $data['email']])->first();
-            if($restoreRequest){
-                return $this->sendResponse(['error' => __('messages.Your account is deactivated. A request to restore your account has been made. Please wait for the admin to respond.')], 'fail', 422);
-            }
-            return $this->sendResponse(['error' => __('messages.This account has been deleted. If you want to restore it, kindly submit a request.')] , 'fail' , 403);
-        }
         $token = Auth::attempt(['email' => $data['email'], 'password' => $data['password']]);
         if (!$token) {
             return $this->sendResponse(['error' => __('messages.Invalid credentials. Please make sure you are registered.')] , 'fail' , 422);

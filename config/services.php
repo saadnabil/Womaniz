@@ -36,6 +36,10 @@ return [
             'file' => storage_path('config/serviceAccountKey.json'),
         ],
     ],
+    'elastic' => [
+        'host' => env('ELASTICSEARCH_HOST', 'localhost'),
+        'port' => env('ELASTICSEARCH_PORT', 9200),
+    ],
 
 
 
