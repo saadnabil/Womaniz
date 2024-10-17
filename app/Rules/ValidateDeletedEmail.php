@@ -41,8 +41,6 @@ class ValidateDeletedEmail implements Rule
         if($user && !$user->trashed()){
             return true;
         }
-
-
     }
 
     /**

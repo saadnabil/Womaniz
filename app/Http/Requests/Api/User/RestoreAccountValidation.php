@@ -22,6 +22,7 @@ class RestoreAccountValidation extends AbstractFormRequest
     {
         return [
             'email' => ['required', 'email'],
+            'otp' => ['nullable', 'digits:4'],
         ];
     }
 }
