@@ -44,7 +44,6 @@ class RestoreRequestController extends Controller
     public function changeStatus(AccountRestoreRequestChangeStatusValidation $request , RestoreAccountRequest $restoreAccountRequest){
         $data = $request->validated();
         $restoreAccountRequest->load('user');
-        return response()->json($restoreAccountRequest);
 
         if($restoreAccountRequest->status == 'pending'){
             $statusMappingArray = [
