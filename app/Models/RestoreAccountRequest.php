@@ -8,10 +8,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class RestoreAccountRequest extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory;
     protected $guarded = [];
 
-    protected $date = ['deleted_at'];
 
 
     public function user(){

@@ -19,9 +19,9 @@ class RestoreRequestController extends Controller
     }
 
     public function index(){
-        $requests = RestoreAccountRequest::with(['user' => function($q){
-            $q->withTrashed();
-        }])->latest();
+
+        $requests = RestoreAccountRequest::with('user')->latest();
+
         if(request()->has('search')){
             $requests = $requests->where(function($q){
                 $q->where('email', 'like', '%'.request('search').'%')
@@ -57,11 +57,8 @@ class RestoreRequestController extends Controller
             ]);
 
             /**remove deleted at from user */
-            dd($restoreAccountRequest->user);
             $restoreAccountRequest->user->update(['deleted_at' => null]);
-
         }
         return $this->sendResponse([]);
     }
-
 }
