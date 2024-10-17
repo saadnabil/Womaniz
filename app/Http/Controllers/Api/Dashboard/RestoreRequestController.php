@@ -57,6 +57,7 @@ class RestoreRequestController extends Controller
             ]);
 
             /**remove deleted at from user */
+            dd($restoreAccountRequest->user);
             $restoreAccountRequest->user->update(['deleted_at' => null]);
 
         }
