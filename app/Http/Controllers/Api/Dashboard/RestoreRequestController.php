@@ -41,26 +41,27 @@ class RestoreRequestController extends Controller
         return $this->sendResponse(resource_collection(RestoreAccountRequestResource::collection($requests)));
     }
 
-    // public function changeStatus(AccountRestoreRequestChangeStatusValidation $request , RestoreAccountRequest $restoreAccountRequest){
-    //     $data = $request->validated();
-    //     if($restoreAccountRequest->status == 'pending'){
-    //         $statusMappingArray = [
-    //             0 => 'rejected',
-    //             1 => 'accepted'
-    //         ];
-    //         $restoreAccountRequest->load('user');
-    //         dd($restoreAccountRequest);
-    //         $restoreAccountRequest->update([
-    //             'status' =>  $statusMappingArray[$data['status']],
-    //             'rejection_reason' => $data['rejection_reason'] ?? null,
-    //         ]);
+    public function changeStatus(AccountRestoreRequestChangeStatusValidation $request , RestoreAccountRequest $restoreAccountRequest){
+        $data = $request->validated();
+        $restoreAccountRequest->load('user');
+        return response()->json($restoreAccountRequest);
 
-    //         /**remove deleted at from user */
+        if($restoreAccountRequest->status == 'pending'){
+            $statusMappingArray = [
+                0 => 'rejected',
+                1 => 'accepted'
+            ];
 
-    //         $restoreAccountRequest->user->restore();
+            $restoreAccountRequest->update([
+                'status' =>  $statusMappingArray[$data['status']],
+                'rejection_reason' => $data['rejection_reason'] ?? null,
+            ]);
 
-    //     }
-    //     return $this->sendResponse([]);
-    // }
+            /**remove deleted at from user */
+            $restoreAccountRequest->user->restore();
+
+        }
+        return $this->sendResponse([]);
+    }
 
 }
