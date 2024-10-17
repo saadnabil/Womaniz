@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthService{
     use ApiResponseTrait;
+
     /**Vonage Register */
     // public function register(array $data)
     // {
@@ -133,14 +134,34 @@ class AuthService{
 
     public function restoreAccountRequest($data){
         $user = User::withTrashed()->where('email', $data['email'])->first();
+
+        /**check if user is not trashed */
         if (!$user->trashed()) {
-            return ['error' => __('messages.This account has not been deleted.')];
+            return [
+                'error' => __('messages.This account has not been deleted.')
+            ];
         }
+
+        /**check otp */
+        if(!isset($data['otp'])){
+            $code = generate_otp_function();
+            create_new_otp($data['email'], $code);
+            return ['code' => $code];
+        }
+        $otp = Otp::where(['email' => $data['email'], 'code' => $data['otp']])->first();
+        if(!$otp){
+            return [
+                'error' => __('messages.Verification code is not correct')
+            ];
+        }
+
+        /**store restore account request */
         RestoreAccountRequest::firstOrCreate([
             'email' => $data['email'],
             'status' => 'pending',
             'user_id' => $user->id,
         ]);
+
         return;
     }
 

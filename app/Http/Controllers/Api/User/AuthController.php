@@ -65,6 +65,9 @@ class AuthController extends Controller
         if(isset($result['error'])){
             return $this->sendResponse(['error' => $result['error']], 'fail' ,422);
         }
+        if(isset($result['code'])){
+            return $this->sendResponse(['code' => $result['code']], 'fail' ,200);
+        }
         return $this->sendResponse([]);
     }
 }
