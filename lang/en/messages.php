@@ -25,5 +25,6 @@ return [
     'This account has not been deleted.' => 'This account has not been deleted.',
     'Your account is deactivated. A request to restore your account has been made. Please wait for the admin to respond.' => 'Your account is deactivated. A request to restore your account has been made. Please wait for the admin to respond.',
     'Order status is invalid!' => 'Order status is invalid!',
-    'Error occured' => 'Error occured'
+    'Error occured' => 'Error occured',
+    'Change status can be updated only in pending status' => 'Change status can be updated only in pending status'
 ];

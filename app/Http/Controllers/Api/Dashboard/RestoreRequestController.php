@@ -45,6 +45,10 @@ class RestoreRequestController extends Controller
         $data = $request->validated();
         $restoreAccountRequest->load('user');
 
+        if($restoreAccountRequest->status != 'pending'){
+            return $this->sendResponse(['error' => __('messages.Change status can be updated only in pending status')], 'success' ,400);
+        }
+
         if($restoreAccountRequest->status == 'pending'){
             $statusMappingArray = [
                 0 => 'rejected',
@@ -57,7 +61,7 @@ class RestoreRequestController extends Controller
             ]);
 
             /**remove deleted at from user */
-            $restoreAccountRequest->user->update(['deleted_at' => null]);
+            $restoreAccountRequest->user->restore();
         }
         return $this->sendResponse([]);
     }
