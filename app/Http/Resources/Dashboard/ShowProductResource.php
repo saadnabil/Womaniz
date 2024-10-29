@@ -16,12 +16,44 @@ class ShowProductResource extends JsonResource
     public function toArray($request)
     {
         $colorsData = [];
+        $categoriesData = [];
+        foreach ($this->categories as $category) {
+            if (!isset($categoriesData[$category->parent->id])) {
+                $categoriesData[$category->parent->id] = [
+                    'id' => $category->parent->id,
+                    'name' => $category->parent->name,
+                    'image' => $category->parent->image,
+                    'childs' => [],
+                    'brand' => [],
+                ];
+            }
+            if(!$category->brand){
+                $categoriesData[$category->parent->id]['childs'][] = [
+                    'id' => $category->id,
+                    'name' => $category->name,
+                    'image' => $category->image,
+
+                ];
+            }else{
+                if(!isset( $categoriesData[$category->parent->id]['brand'][$category->brand->id])){
+                    $categoriesData[$category->parent->id]['brand'][$category->brand->id] = [
+                        'id' => $category->brand->id,
+                        'name' => $category->brand->name,
+                        'childs' => [],
+                    ];
+                }
+                $categoriesData[$category->parent->id]['brand'][$category->brand->id]['childs'][] = [
+                    'id' => $category->id,
+                    'name' => $category->name,
+                    'image' => $category->image,
+                ];
+            }
+        }
 
         // Group colors with sizes
         foreach ($this->skus as $sku) {
             $color = $sku->color->color->hexa;
             $size = $sku->variant->size->name_en;
-
             if (!isset($colorsData[$color])) {
                 $colorsData[$color] = [
                     'color' => $color,
@@ -30,7 +62,6 @@ class ShowProductResource extends JsonResource
                     'sizes' => []
                 ];
             }
-
             // Add sizes for the color
             $colorsData[$color]['sizes'][] = [
                 'size' => $size,
@@ -50,6 +81,7 @@ class ShowProductResource extends JsonResource
 
         // Prepare final color data array
         $colorsArray = array_values($colorsData);
+        $categoriesArray = array_values($categoriesData);
         return [
             'id' => $this->id,
             'name_en' => $this->name_en,
@@ -68,7 +100,7 @@ class ShowProductResource extends JsonResource
             'colors' => $colorsArray,  // Call the ColorResource for handling colors and sizes
             'images' => ImageResource::collection($this->images),
             'brand' => new BrandResource($this->brand),
-            'categories' => CategoryResource::collection($this->categories),
+            'categories' => $categoriesArray,
         ];
     }
 }

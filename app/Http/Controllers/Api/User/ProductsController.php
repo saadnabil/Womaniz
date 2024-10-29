@@ -9,7 +9,7 @@ use App\Http\Traits\ApiResponseTrait;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\UserProduct;
-use App\Services\ElasticsearchService;
+use App\Services\ElasticSearch\ElasticsearchService;
 use App\Services\User\ProductService;
 use Illuminate\Http\Request;
 
@@ -74,18 +74,19 @@ class ProductsController extends Controller
         return $this->sendResponse(new ProductResource($product));
     }
 
-    // public function search(){
-    //     $search = request('search');
-    //     $products = $this->productService->search($search);
-    //     return $this->sendResponse(resource_collection(ProductResource::collection($products)));
-    // }
+    public function search(){
+        $search = request('search');
+        $products = $this->productService->search($search);
+        return $this->sendResponse(resource_collection(ProductResource::collection($products)));
+    }
 
-    public function search(Request $request)
+
+
+    public function elasticSearch(Request $request)
     {
-        $query = $request->input('query');  // Get search query from input
         $service = new ElasticsearchService();
-        $results = $service->search($query);
-        return view('products.search_results', ['results' => $results]);
+        $results = $service->search($request->input('query'));
+        return response()->json($results);
     }
 
 }

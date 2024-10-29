@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\ElasticSearch;
 
 use Elastic\Elasticsearch\ClientBuilder;
 
@@ -40,6 +40,7 @@ class ElasticsearchService
                 'model_id'       => $product->model_id,
             ]
         ];
+
         return $this->client->index($params);
     }
 
@@ -51,21 +52,12 @@ class ElasticsearchService
                 'query' => [
                     'multi_match' => [
                         'query' => $query,
-                        'fields' => [
-                            'name_en', 'name_ar',
-                            'desc_en', 'desc_ar',
-                            'thumbnail',
-                            'price', 'price_after_sale',
-                            'discount', 'designer_id',
-                            'country_id', 'vat',
-                            'size_id', 'brand_id',
-                            'vendor_id', 'seller_sku',
-                            'status', 'model_id'
-                        ]
+                        'fields' => ['name_en', 'desc_en', 'name_ar', 'desc_ar']
                     ]
                 ]
             ]
         ];
+
         return $this->client->search($params);
     }
 }

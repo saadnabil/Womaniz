@@ -10,6 +10,8 @@ use App\Http\Controllers\Api\Dashboard\OrdersController;
 use App\Http\Controllers\Api\Dashboard\PermissionsController;
 use App\Http\Controllers\Api\Dashboard\ProductImagesController;
 use App\Http\Controllers\Api\Dashboard\ProductsController;
+use App\Http\Controllers\Api\Dashboard\ProductSpecificationsController;
+use App\Http\Controllers\Api\Dashboard\ProductVariantSkusController;
 use App\Http\Controllers\Api\Dashboard\RestoreRequestController;
 use App\Http\Controllers\Api\Dashboard\RolesController;
 use App\Http\Controllers\Api\Dashboard\ScratchGameController;
@@ -31,12 +33,23 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
         Route::get('data/productSetting', [DataController::class, 'productSetting']);
 
         Route::get('products/fulldata/export', [ProductsController::class, 'fulldataexport']);
+
         // Route::post('products/bulk/upload' ,[ProductsController::class, 'bulkupload' ]);
         Route::post('products/delete', [ProductsController::class, 'delete']);
         Route::resource('products' , ProductsController::class)->only('index','store','update','show');
 
         /**product images */
-        Route::resource('product-images' , ProductImagesController::class)->only('destroy');
+        Route::resource('product-images' , ProductImagesController::class)->only('destroy','update');
+        Route::post('product-images/upload/{product}' , [ProductImagesController::class, 'uploadimages']);
+
+        /**product variants */
+        Route::resource('product-variant-skus', ProductVariantSkusController::class)->only('store', 'update', 'destroy');
+
+        /**product specifications */
+        Route::resource('product-specifications', ProductSpecificationsController::class)->only('store', 'update', 'destroy');
+
+         /**product specifications */
+         Route::resource('product-specifications', ProductSpecificationsController::class)->only('store', 'update', 'destroy');
 
         /**colors */
         Route::resource('colors' , ColorsController::class)->only('index');
@@ -53,8 +66,6 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
 
         /**brands */
         Route::resource('brands' , BrandsController::class)->only('store');
-
-
 
         /**activities */
         Route::resource('activities', ActivitiesController::class)->only('index');

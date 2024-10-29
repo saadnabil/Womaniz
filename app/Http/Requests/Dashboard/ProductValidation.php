@@ -39,19 +39,10 @@ class ProductValidation extends AbstractFormRequest
             'model_id' => ['required'],
             'vendor_id' => ['nullable','numeric'],
             'specifications' => ['nullable', 'array'],
-            'specifications.*.name_en' => ['required_with:specifications.*.name_ar','required_with:specifications.*.value_en','required_with:specifications.*.value_ar','string'],
-            'specifications.*.name_ar' => ['required_with:specifications.*.name_en','required_with:specifications.*.value_en','required_with:specifications.*.value_ar','string'],
-            'specifications.*.value_en' => ['required_with:specifications.*.name_en','required_with:specifications.*.name_ar','required_with:specifications.*.value_ar','string'],
-            'specifications.*.value_ar' => ['required_with:specifications.*.name_en','required_with:specifications.*.name_ar','required_with:specifications.*.value_en','string'],
-
-            'variants' => ['nullable', 'array'],
-            'variants.*.size' => ['nullable', 'string'],
-            'variants.*.color' => ['nullable', 'string'],
-            'variants.*.stock' => ['nullable', 'numeric'],
-            'variants.*.sku' => ['nullable', 'string','unique:product_variant_skus,sku'],
-            'variants.*.price' => ['nullable', 'string'],
-            'variants.*.discount' => ['nullable', 'string'],
-
+            'specifications.*.name_en' => ['nullable','string'],
+            'specifications.*.name_ar' => ['nullable','string'],
+            'specifications.*.value_en' => ['nullable','string'],
+            'specifications.*.value_ar' => ['nullable','string'],
         ];
 
         if(request()->isMethod('post')){
@@ -60,17 +51,19 @@ class ProductValidation extends AbstractFormRequest
             $data['images.*'] = ['required', 'image' ,'mimes:png,jpg,jpeg,svg,gif'];
             $data['seller_sku'] = ['required','string','unique:products,seller_sku'];
 
-
+            /**in creation it must be unique */
+            $data['variants'] = ['nullable', 'array'];
+            $data['variants.*.sku'] = ['nullable', 'string','unique:product_variant_skus,sku'];
+            $data['variants.*.size'] = ['nullable', 'string'];
+            $data['variants.*.color'] = ['nullable', 'string'];
+            $data[ 'variants.*.stock'] = ['nullable', 'numeric'];
+            $data['variants.*.price'] = ['nullable', 'string'];
+            $data['variants.*.discount'] = ['nullable', 'string'];
         }
 
         if(request()->isMethod('put')){
             $data['thumbnail'] = ['nullable', 'image' ,'mimes:png,jpg,jpeg,svg,gif'];
-            $data['images'] = ['nullable', 'array'];
-            $data['images.*'] = ['nullable', 'image' ,'mimes:png,jpg,jpeg,svg,gif'];
             $data['seller_sku'] = ['required','string','unique:products,seller_sku,'.$id];
-
-
-
          }
 
         return $data;

@@ -107,6 +107,7 @@ Route::group(['prefix' => 'v1/user'],function(){
             Route::get('/favourites',[ProductsController::class,'favourites']);
             Route::get('/favourites/togglefavourites/{id}',[ProductsController::class,'togglefavourites']);
             Route::get('/search',[ProductsController::class,'search']);
+            Route::get('/elasticSearch',[ProductsController::class,'elasticSearch']);
         });
 
         Route::group(['prefix' => 'salon'], function(){

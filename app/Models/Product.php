@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use App\Services\ElasticSearch\ElasticsearchService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Services\ElasticsearchService;
 
 
 class Product extends Model
@@ -120,14 +120,23 @@ class Product extends Model
         return $this->hasMany(ProductVariantSku::class);
     }
 
+    // public function colors() {
+    //     return $this->hasManyThrough(ProductColor::class, ProductVariantSku::class, 'product_id', 'sku_id');
+    // }
+
     public function colors() {
-        return $this->hasManyThrough(ProductColor::class, ProductVariantSku::class, 'product_id', 'sku_id');
+        return $this->hasMany(ProductColor::class);
     }
 
     public function variants() {
-        return $this->hasManyThrough(ProductVariant::class, ProductVariantSku::class, 'product_id', 'sku_id');
+        return $this->hasMany(ProductVariant::class);
     }
 
+    // public function variants() {
+    //     return $this->hasManyThrough(ProductVariant::class, ProductVariantSku::class, 'product_id', 'sku_id');
+    // }
+
+    /**Elastic /search */
     protected static function booted()
     {
         static::created(function ($product) {
@@ -138,6 +147,8 @@ class Product extends Model
             (new ElasticsearchService())->indexProduct($product);
         });
     }
+
+
 
     // protected static function boot()
     // {

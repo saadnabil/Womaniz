@@ -38,12 +38,20 @@ class Category extends Model
         return $this->hasMany(Category::class, 'parent_id', 'id')->where('type','app_category');
     }
 
+    public function parent(){
+        return $this->belongsTo(Category::class, 'parent_id')->where('type','app_category');
+    }
+
     public function allMainCategoryLevelChildren(){
         return $this->hasMany(Category::class, 'parent_id', 'id');
     }
 
     public function brands(){
         return $this->belongsToMany(Brand::class , 'category_brands');
+    }
+
+    public function brand(){
+        return $this->belongsTo(Brand::class);
     }
 
     public function products(){
