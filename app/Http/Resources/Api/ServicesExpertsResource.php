@@ -30,11 +30,11 @@ class ServicesExpertsResource extends JsonResource
                 'expert_id' => $expert->id,
             ])->first();
 
+            $serviceDuration = $this->duration;
             if($expertTime){
-                $timeSlots =  generateTimeSlotsBetweenIntervals($expertTime->start_time, $expertTime->end_time, $expertTime->$this->duration);
+                $timeSlots =  generateTimeSlotsBetweenIntervals($expertTime->start_time, $expertTime->end_time, $serviceDuration);
             }
 
-            $timeSlots = $expertTime ?  generateTimeSlotsBetweenIntervals($expertTime->start_time, $expertTime->end_time, $expertTime->$this->duration) :null;
             $expertsArray[] = [
                 'id' => $expert->id,
                 'name' => $expert->name,

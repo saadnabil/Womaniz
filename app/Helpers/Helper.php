@@ -103,17 +103,17 @@ function checkValidAppliedCouponBeforeSubmitOrder($coupon , $timezone){
     }
 }
 
-function generateTimeSlotsBetweenIntervals($start_time, $end_time, $interval = 2)
+function generateTimeSlotsBetweenIntervals($start_time, $end_time, $interval)
 {
     $start = Carbon::parse($start_time);
     $end = Carbon::parse($end_time);
+
     $slots = [];
 
     while ($start < $end) {
         $slots[] = $start->format('h:i A');
         $start->addHours($interval);
     }
-
     return $slots;
 }
 
