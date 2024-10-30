@@ -37,6 +37,7 @@ class ValidateDeletedEmail implements Rule
         }
         if ($user && $user->trashed()) {
             $this->restoreRequest = RestoreAccountRequest::where(['email' => $email, 'status' => 'pending'])->first();
+            return false;
         }
         if($user && !$user->trashed()){
             return true;
@@ -52,8 +53,9 @@ class ValidateDeletedEmail implements Rule
     {
         if($this->restoreRequest){
             $message =  __('messages.Your account is deactivated. A request to restore your account has been made. Please wait for the admin to respond.');
+        }else{
+            $message = __('messages.This account has been deleted. If you want to restore it, kindly submit a request.');
         }
-        $message = __('messages.This account has been deleted. If you want to restore it, kindly submit a request.');
         return $message;
     }
 }

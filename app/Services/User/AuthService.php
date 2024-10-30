@@ -7,6 +7,7 @@ use App\Models\Address;
 use App\Models\Otp;
 use App\Models\RestoreAccountRequest;
 use App\Models\User;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -156,7 +157,20 @@ class AuthService{
         }
 
         /**store restore account request */
-        RestoreAccountRequest::firstOrCreate([
+        $request = RestoreAccountRequest::where([
+            'email' => $data['email'],
+            'status' => 'pending',
+            'user_id' => $user->id,
+        ]);
+
+        /**delete otp after verification*/
+        $otp->delete();
+
+        if($request){
+            $request->delete();
+        }
+
+        RestoreAccountRequest::create([
             'email' => $data['email'],
             'status' => 'pending',
             'user_id' => $user->id,

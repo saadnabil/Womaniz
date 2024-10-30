@@ -31,6 +31,10 @@ class SalonBranchService extends Model
         return $this->hasMany(SalonBranchService::class, 'parent_id', 'id');
     }
 
+    public function parent(){
+        return $this->belongsTo(SalonBranchService::class, 'parent_id');
+    }
+
     public function experts(){
         return $this->belongsToMany(Expert::class , 'salon_branch_service_experts');
     }

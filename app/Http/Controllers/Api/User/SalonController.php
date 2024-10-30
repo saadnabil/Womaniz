@@ -7,21 +7,57 @@ use App\Http\Requests\Api\User\BookSalonStepFourValidation;
 use App\Http\Requests\Api\User\BookSalonStepOneValidation;
 use App\Http\Requests\Api\User\BookSalonStepThreeValidation;
 use App\Http\Requests\Api\User\BookSalonStepTwoValidation;
+use App\Http\Requests\Api\User\ServicesArrayValidation;
 use App\Http\Resources\Api\ExpertResource;
 use App\Http\Resources\Api\SalonTimesResource;
 use App\Http\Resources\Api\MainServiceWithExpertsResource;
 use App\Http\Resources\Api\SalonBookingResource;
+use App\Http\Resources\Api\SalonBranchResource;
+use App\Http\Resources\Api\SalonBranchServicesResource;
+use App\Http\Resources\Api\SalonResource;
+use App\Http\Resources\Api\ServicesExpertsResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Expert;
+use App\Models\Salon;
 use App\Models\SalonBooking;
 use App\Models\SalonBookingDetails;
+use App\Models\SalonBranch;
 use App\Models\SalonBranchService;
+use App\Models\SalonBranchServiceExpert;
 use App\Models\SalonTime;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+
 class SalonController extends Controller
 {
 
     use ApiResponseTrait;
+
+    public function getSalons(){
+        $salons = Salon::where('country_id', auth()->user()->country_id)->get();
+        return $this->sendResponse(SalonResource::collection($salons));
+    }
+    public function getBranches(Salon $salon){
+        $salon->load('branches');
+        return $this->sendResponse(SalonBranchResource::collection($salon->branches));
+    }
+    public function getBranchServices(SalonBranch $salonBranch){
+        $salonBranch->load('mainservices.children');
+        return $this->sendResponse(SalonBranchServicesResource::collection($salonBranch->mainservices));
+    }
+
+    public function getServicesExperts(ServicesArrayValidation $request){
+        $data = $request->validated();
+        $serviceIds = $data['service_ids'];
+        $services = SalonBranchService::with('experts','parent')->whereIn('id', $serviceIds)->get();
+        if(isset($data['reservation_date'])){
+            $services->map(function ($service) use ($data) {
+                $service->reservation_date = $data['reservation_date']; // or set any specific date
+                return $service;
+            });
+        }
+        return $this->sendResponse(ServicesExpertsResource::collection($services));
+    }
 
     public function bookStepOne(BookSalonStepOneValidation $request){
         $data = $request->validated();

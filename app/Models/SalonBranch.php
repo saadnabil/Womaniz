@@ -23,6 +23,10 @@ class SalonBranch extends Model
         return $this->hasMany(SalonBranchService::class);
     }
 
+    public function mainservices(){
+        return $this->hasMany(SalonBranchService::class)->where('parent_id',null);
+    }
+
     public function experts(){
         return $this->belongsToMany(Expert::class , 'salon_branch_experts');
     }

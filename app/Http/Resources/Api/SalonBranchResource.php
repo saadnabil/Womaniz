@@ -20,8 +20,8 @@ class SalonBranchResource extends JsonResource
             'name' => $this->name,
             'long' => $this->long,
             'lat' => $this->lat,
-            'services' => SalonBranchServicesResource::collection($this->services->where('parent_id',null)),
-            'experts' => ExpertResource::collection($this->experts),
+            // 'services' => SalonBranchServicesResource::collection($this->services->where('parent_id',null)),
+            // 'experts' => ExpertResource::collection($this->experts),
         ];
     }
 }
