@@ -57,6 +57,7 @@ class SalonController extends Controller
                 return $service;
             });
         }
+        dd($services);
         return $this->sendResponse(ServicesExpertsResource::collection($services));
     }
 
