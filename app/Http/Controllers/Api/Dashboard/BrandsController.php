@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\BrandFormValidation;
 use App\Http\Requests\Dashboard\MainCategoryFormValidation;
 use App\Http\Resources\Api\CategoryResource;
+use App\Http\Resources\Dashboard\BrandResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Brand;
 use App\Models\Category;
@@ -14,6 +15,13 @@ use App\Models\CategoryBrand;
 class BrandsController extends Controller
 {
     use ApiResponseTrait;
+
+    public function index(){
+        $brands = Brand::where([
+            'country_id' => auth()->user()->country_id,
+         ])->get();
+        return $this->sendResponse(BrandResource::collection($brands));
+    }
 
     public function store(BrandFormValidation $request){
         $data = $request->validated();

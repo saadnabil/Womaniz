@@ -115,11 +115,12 @@ Route::group(['prefix' => 'v1/user'],function(){
             Route::get('/branches/{salon}', [SalonController::class, 'getbranches']);
             Route::get('/services/{salonBranch}', [SalonController::class, 'getbranchservices']);
             Route::post('/experts', [SalonController::class, 'getServicesExperts']);
+            Route::post('book', [SalonController::class, 'book']);
 
             Route::post('bookStepOne', [SalonController::class, 'bookStepOne']);
             Route::post('bookStepTwo', [SalonController::class, 'bookStepTwo']);
             Route::post('bookStepThree', [SalonController::class, 'bookStepThree']);
-            Route::post('book', [SalonController::class, 'book']);
+
         });
 
 
