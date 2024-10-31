@@ -41,6 +41,9 @@ class ServicesExpertsResource extends JsonResource
                 'slots' => $timeSlots,
             ];
         }
+
+        dd($expertsArray);
+
         return [
             'id' => $this->id,
             'name' => $this->name,
