@@ -23,7 +23,7 @@ class ServicesExpertsResource extends JsonResource
         foreach($this->experts as $expert){
 
             $day = Carbon::parse($this->reservation_date)->format('l');
-            dd($day);
+            $day = strtolower($day);
             $timeSlots = [];
             $expertTime = SalonBranchExpertTime::where([
                 'day' => $day,
