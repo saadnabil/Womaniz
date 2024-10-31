@@ -7,6 +7,7 @@ use App\Http\Requests\Api\User\BookSalonStepFourValidation;
 use App\Http\Requests\Api\User\BookSalonStepOneValidation;
 use App\Http\Requests\Api\User\BookSalonStepThreeValidation;
 use App\Http\Requests\Api\User\BookSalonStepTwoValidation;
+use App\Http\Requests\Api\User\BookSalonValidation;
 use App\Http\Requests\Api\User\ServicesArrayValidation;
 use App\Http\Resources\Api\ExpertResource;
 use App\Http\Resources\Api\SalonTimesResource;
@@ -59,66 +60,20 @@ class SalonController extends Controller
         return $this->sendResponse(ServicesExpertsResource::collection($services));
     }
 
-    public function bookStepOne(BookSalonStepOneValidation $request){
-        $data = $request->validated();
-        $branchId = $data['salon_branch_id'];
-        $salonId = $data['salon_id'];
-        $selectedSubServiceIds = collect($data['salon_branch_service'])->pluck('id')->unique()->values()->all();
-        $parentServices = SalonBranchService::with(['experts' => function ($query) use ($branchId , $salonId) {
-            // Additional condition to filter experts by branch ID
-            $query->whereHas('branches', function ($subquery) use ($branchId , $salonId){
-                $subquery->where('salon_branches.id', $branchId)
-                ->where('salon_branches.salon_id', $salonId);
-            });
-        }])
-        ->where(function ($query) use ($selectedSubServiceIds) {
-            $query->whereIn('id', $selectedSubServiceIds)
-                ->orWhereNull('parent_id');
-        })
-        ->whereNull('parent_id')
-        ->get();
-        return $this->sendResponse(MainServiceWithExpertsResource::collection($parentServices ));
-    }
 
-    public function bookStepTwo(BookSalonStepTwoValidation $request){
+    public function book(BookSalonValidation $request){
         $data = $request->validated();
-        $salonTimes = SalonTime::where([ 'salon_id' => $data['salon_id'] ])->get();
-        return $this->sendResponse(['work_days' => SalonTimesResource::collection($salonTimes)]);
-    }
-
-    public function bookStepThree(BookSalonStepThreeValidation $request){
-        $data = $request->validated();
-        $uniqueExpertsIds = collect($data['salon_branch_service'])->pluck('expert_id')->unique()->values()->all();
-        $branchId = $data['salon_branch_id'];
-        $salonId = $data['salon_id'];
-        $experts = Expert::with(['times' => function($query) use($branchId , $salonId){
-            $query->where('salon_id', $salonId)
-                  ->where('salon_branch_id', $branchId);
-        }])->whereIn('id', $uniqueExpertsIds)->get();
-        $reservationDay = $data['day'];
-        $reservationDayName = Carbon::parse($reservationDay)->format('l');
-        foreach($experts as $expert){
-            $time = $expert->times->where('day', $reservationDayName)->first();
-            if($time){
-                $slots = generateTimeSlotsBetweenIntervals($time->start_time, $time->end_time);
-                $expert->slots = $slots;
-            }
-        }
-        return $this->sendResponse(ExpertResource::collection($experts));
-    }
-
-    public function bookStepFour(BookSalonStepFourValidation $request){
-        $data = $request->validated();
+        $branch = SalonBranch::with('salon')->findorfail($data['branch_id']);
         $booking = SalonBooking::create([
-            'salon_id' => $data['salon_id'],
-            'salon_branch_id' => $data['salon_branch_id'],
-            'user_id' =>auth()->user()->id ,
+            'salon_id' => $branch->salon_id,
+            'salon_branch_id' => $data['branch_id'],
+            'user_id' =>auth()->user()->id,
             'day' => $data['day'],
         ]);
-        foreach($data['salon_branch_service'] as $service){
+        foreach($data['service_ids'] as $service){
             SalonBookingDetails::create([
-                'salon_id' => $data['salon_id'],
-                'salon_branch_id' => $data['salon_branch_id'],
+                'salon_id' => $branch->salon_id,
+                'salon_branch_id' => $data['branch_id'],
                 'user_id' =>auth()->user()->id,
                 'day' => $data['day'],
                 'time' => $service['time'],
@@ -127,6 +82,7 @@ class SalonController extends Controller
                 'salon_booking_id' =>  $booking->id,
             ]);
         }
+
         //get response data
         $bookingData = SalonBookingDetails::query()
             ->where('salon_booking_id', $booking->id)  // Filter by salon_booking_id = 1
@@ -155,8 +111,11 @@ class SalonController extends Controller
                 'bookings' => $bookings,
             ];
         });
+
         //get response data
         return $this->sendResponse(SalonBookingResource::collection($bookingData));
         // return $this->sendResponse($bookingData);
     }
+
+
 }

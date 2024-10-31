@@ -5,7 +5,7 @@ namespace App\Http\Requests\Api\User;
 use App\Http\Requests\AbstractFormRequest;
 use Illuminate\Foundation\Http\FormRequest;
 
-class BookSalonStepFourValidation extends AbstractFormRequest
+class BookSalonValidation extends AbstractFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,12 +25,11 @@ class BookSalonStepFourValidation extends AbstractFormRequest
     public function rules()
     {
         return [
-            'salon_id' => ['required','numeric'],
-            'salon_branch_id' => ['required', 'numeric'],
-            'salon_branch_service.*' => ['required', 'array'],
-            'salon_branch_service.*.id' => ['required', 'numeric'],
-            'salon_branch_service.*.expert_id' => ['required', 'numeric'],
-            'salon_branch_service.*.time' => ['required', 'date_format:h:i a'],
+            'branch_id' => ['required', 'numeric'],
+            'service_ids.*' => ['required', 'array'],
+            'service_ids.*.id' => ['required', 'numeric'],
+            'service_ids.*.expert_id' => ['required', 'numeric'],
+            'service_ids.*.time' => ['required', 'date_format:h:i a'],
             'day' => ['required','date_format:Y/m/d'],
         ];
     }

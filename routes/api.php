@@ -119,7 +119,7 @@ Route::group(['prefix' => 'v1/user'],function(){
             Route::post('bookStepOne', [SalonController::class, 'bookStepOne']);
             Route::post('bookStepTwo', [SalonController::class, 'bookStepTwo']);
             Route::post('bookStepThree', [SalonController::class, 'bookStepThree']);
-            Route::post('bookStepFour', [SalonController::class, 'bookStepFour']);
+            Route::post('book', [SalonController::class, 'book']);
         });
 
 
