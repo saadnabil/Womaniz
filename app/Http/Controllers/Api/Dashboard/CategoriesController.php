@@ -46,4 +46,12 @@ class CategoriesController extends Controller
         return $this->sendResponse([]);
     }
 
+    public function update(MainCategoryFormValidation $request, Category $category){
+        $data = $request->validated();
+        if(isset($data['image'])){
+            $data['image'] = FileHelper::update_file('categories',$data['image'],$category->image);
+        }
+        $category->update($data);
+        return $this->sendResponse([]);
+    }
 }
