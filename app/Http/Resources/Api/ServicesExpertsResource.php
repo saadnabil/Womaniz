@@ -31,7 +31,6 @@ class ServicesExpertsResource extends JsonResource
                 'expert_id' => $expert->id,
             ])->first();
 
-            dd($expertTime);
             $serviceDuration = $this->duration;
             if($expertTime){
                 $timeSlots =  generateTimeSlotsBetweenIntervals($expertTime->start_time, $expertTime->end_time, $serviceDuration);
