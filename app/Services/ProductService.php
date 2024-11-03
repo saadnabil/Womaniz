@@ -107,25 +107,21 @@ class ProductService
 
     public function updateProduct($data, $product)
     {
-        $product = $product->load( 'country', 'brand', 'categories', 'specifications');
+        $product = $product->load( 'country', 'brand', 'categories');
 
-        /* reset  categories - specifications   */
+        /* reset  categories */
 
         $product->categories()->detach();
-        $product->specifications()->delete();
-
 
         $data['price_after_sale'] =  $data['price'] - $data['price'] * $data['discount'] / 100;
 
         if (isset($data['thumbnail'])) {
             $data['thumbnail'] = FileHelper::update_file('products', $data['thumbnail'], $product->thumbnail);
         }
-        $categories = $data['categories'];
-        $specifications = $data['specifications'] ?? null;
 
+        $categories = $data['categories'];
 
         unset($data['categories']);
-        unset($data['specifications']);
 
         $product->update($data);
 
@@ -136,17 +132,6 @@ class ProductService
             ]);
         }
 
-        if ($specifications) {
-            foreach ($specifications as $specification) {
-                ProductSpecification::create([
-                    'product_id' => $product->id,
-                    'name_en' => $specification['name_en'],
-                    'name_ar' => $specification['name_ar'],
-                    'value_en' => $specification['value_en'],
-                    'value_ar' => $specification['value_ar'],
-                ]);
-            }
-        }
         return;
     }
 }

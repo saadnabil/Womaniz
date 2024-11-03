@@ -5,6 +5,8 @@ namespace App\Http\Resources\Dashboard;
 use App\Http\Resources\Dashboard\ImageResource;
 use App\Http\Resources\Dashboard\VariantResource;
 use Illuminate\Http\Resources\Json\JsonResource;
+use stdClass;
+
 class ShowProductResource extends JsonResource
 {
     /**
@@ -24,7 +26,7 @@ class ShowProductResource extends JsonResource
                     'name' => $category->parent->name,
                     'image' => $category->parent->image,
                     'childs' => [],
-                    'brand' => [],
+                    'brand' => new stdClass(),
                 ];
             }
             if(!$category->brand){
@@ -35,14 +37,14 @@ class ShowProductResource extends JsonResource
 
                 ];
             }else{
-                if(!isset( $categoriesData[$category->parent->id]['brand'][$category->brand->id])){
-                    $categoriesData[$category->parent->id]['brand'][$category->brand->id] = [
+                if(!isset( $categoriesData[$category->parent->id]['brand'])){
+                    $categoriesData[$category->parent->id]['brand'] = [
                         'id' => $category->brand->id,
                         'name' => $category->brand->name,
                         'childs' => [],
                     ];
                 }
-                $categoriesData[$category->parent->id]['brand'][$category->brand->id]['childs'][] = [
+                $categoriesData[$category->parent->id]['brand']['childs'][] = [
                     'id' => $category->id,
                     'name' => $category->name,
                     'image' => $category->image,
