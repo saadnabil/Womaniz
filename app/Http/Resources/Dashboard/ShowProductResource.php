@@ -38,11 +38,9 @@ class ShowProductResource extends JsonResource
                 ];
             }else{
                 if(!isset( $categoriesData[$category->parent->id]['brand'])){
-                    $categoriesData[$category->parent->id]['brand'] = [
-                        'id' => $category->brand->id,
-                        'name' => $category->brand->name,
-                        'childs' => [],
-                    ];
+                    $categoriesData[$category->parent->id]['brand']->id =  $category->brand->id ;
+                    $categoriesData[$category->parent->id]['brand']->name =  $category->brand->name;
+                    $categoriesData[$category->parent->id]['brand']->childs = [];
                 }
                 $categoriesData[$category->parent->id]['brand']['childs'][] = [
                     'id' => $category->id,
