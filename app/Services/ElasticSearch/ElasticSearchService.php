@@ -4,7 +4,7 @@ namespace App\Services\ElasticSearch;
 
 use Elastic\Elasticsearch\ClientBuilder;
 
-class ElasticsearchService
+class ElasticSearchService
 {
     protected $client;
 
