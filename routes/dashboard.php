@@ -36,6 +36,7 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
 
         // Route::post('products/bulk/upload' ,[ProductsController::class, 'bulkupload' ]);
         Route::post('products/delete', [ProductsController::class, 'delete']);
+        Route::post('products/updatethumbnail/{product}', [ProductsController::class, 'updateThumbnail']);
         Route::resource('products' , ProductsController::class)->only('index','store','update','show');
 
         /**product images */

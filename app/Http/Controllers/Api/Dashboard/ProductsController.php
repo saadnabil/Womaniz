@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api\Dashboard;
 
+use App\Helpers\FileHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\DeleteValidation;
+use App\Http\Requests\Dashboard\ImageValidation;
 use App\Http\Requests\Dashboard\ProductsBulkUploadValidation;
 use App\Http\Requests\Dashboard\ProductValidation;
 use App\Http\Resources\Dashboard\ProductResource;
@@ -105,6 +107,13 @@ class ProductsController extends Controller
     {
         $data = $request->validated();
         $productService->updateProduct($data, $product);
+        return $this->sendResponse([]);
+    }
+
+    public function updateThumbnail(ImageValidation $request, Product $product){
+        $data = $request->validated();
+        $data['thumbnail'] = FileHelper::update_file('products', $data['image'], $product->thumbnail);
+        $product->update($data);
         return $this->sendResponse([]);
     }
 
