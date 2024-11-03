@@ -38,6 +38,7 @@ class ShowProductResource extends JsonResource
                 ];
             }else{
                 if(!isset( $categoriesData[$category->parent->id]['brand'])){
+                    $categoriesData[$category->parent->id]['brand'] = new stdClass();
                     $categoriesData[$category->parent->id]['brand']->id =  $category->brand->id ;
                     $categoriesData[$category->parent->id]['brand']->name =  $category->brand->name;
                     $categoriesData[$category->parent->id]['brand']->childs = [];
