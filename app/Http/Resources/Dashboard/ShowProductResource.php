@@ -53,7 +53,7 @@ class ShowProductResource extends JsonResource
         // Group colors with sizes
         foreach ($this->skus as $sku) {
             $color = $sku->color->color->hexa;
-            $size = $sku->variant->size->name_en;
+            $size = $sku->variant->size->name;
             if (!isset($colorsData[$color])) {
                 $colorsData[$color] = [
                     'color' => $color,
