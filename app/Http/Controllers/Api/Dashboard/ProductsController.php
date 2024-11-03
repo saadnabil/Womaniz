@@ -113,6 +113,7 @@ class ProductsController extends Controller
     public function updateThumbnail(ImageValidation $request, Product $product){
         $data = $request->validated();
         $data['thumbnail'] = FileHelper::update_file('products', $data['image'], $product->thumbnail);
+        unset($data['image']);
         $product->update($data);
         return $this->sendResponse([]);
     }
