@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Services\ElasticSearch\ElasticsearchService;
+use App\Services\ElasticSearch\ElasticSearchService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -140,11 +140,11 @@ class Product extends Model
     protected static function booted()
     {
         static::created(function ($product) {
-            (new ElasticsearchService())->indexProduct($product);
+            (new ElasticSearchService())->indexProduct($product);
         });
 
         static::updated(function ($product) {
-            (new ElasticsearchService())->indexProduct($product);
+            (new ElasticSearchService())->indexProduct($product);
         });
     }
 
