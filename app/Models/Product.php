@@ -137,16 +137,16 @@ class Product extends Model
     // }
 
     /**Elastic /search */
-    protected static function booted()
-    {
-        static::created(function ($product) {
-            (new ElasticSearchService())->indexProduct($product);
-        });
+    // protected static function booted()
+    // {
+    //     static::created(function ($product) {
+    //         (new ElasticSearchService())->indexProduct($product);
+    //     });
 
-        static::updated(function ($product) {
-            (new ElasticSearchService())->indexProduct($product);
-        });
-    }
+    //     static::updated(function ($product) {
+    //         (new ElasticSearchService())->indexProduct($product);
+    //     });
+    // }
 
 
 
