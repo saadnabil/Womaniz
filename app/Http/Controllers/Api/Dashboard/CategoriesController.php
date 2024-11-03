@@ -54,4 +54,5 @@ class CategoriesController extends Controller
         $category->update($data);
         return $this->sendResponse([]);
     }
+
 }
