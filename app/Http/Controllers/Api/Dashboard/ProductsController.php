@@ -94,7 +94,10 @@ class ProductsController extends Controller
     public function store(ProductValidation $request, ProductService $productService)
     {
         $data = $request->validated();
-        $productService->createProduct($data);
+        $result = $productService->createProduct($data);
+        if(isset($result['error'])){
+            return $this->sendResponse(['error' => $result['error']]);
+        }
         return $this->sendResponse([]);
     }
 
