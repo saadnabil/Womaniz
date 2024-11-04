@@ -23,6 +23,18 @@ class SalonBranchService extends Model
         return $this->name_ar;
     }
 
+    public function getImageAttribute()
+    {
+        if (filter_var($this->attributes['thumbnail'], FILTER_VALIDATE_URL)) {
+            // If the image is a valid URL, return it directly
+            return $this->attributes['thumbnail'];
+        } else {
+            // If the image is not a URL, assume it's a file path and return it with the asset helper
+            return asset('storage/' . $this->attributes['thumbnail']);
+        }
+    }
+
+
     public function branch(){
         return $this->belongsTo(SalonBranch::class)->withTrashed();
     }

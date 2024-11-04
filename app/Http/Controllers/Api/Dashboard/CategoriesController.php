@@ -7,6 +7,7 @@ use App\Http\Requests\Dashboard\MainCategoryFormValidation;
 use App\Http\Resources\Api\CategoryResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Category;
+use App\Models\CategoryBrand;
 
 class CategoriesController extends Controller
 {
@@ -42,7 +43,21 @@ class CategoriesController extends Controller
         }
         $data['type'] = 'app_category';
         $data['country_id'] = auth()->user()->country_id;
-        Category::create($data);
+        $category = Category::create($data);
+        if(isset($data['brand_id'])){
+            $checkParentHasThisBrand = CategoryBrand::where([
+                'category_id' => $data['parent_id'],
+                'brand_id' => $data['brand_id'],
+            ])->first();
+            if($checkParentHasThisBrand){
+                CategoryBrand::firstorcreate([
+                    'category_id' => $category->id,
+                    'brand_id' => $data['brand_id'],
+                ]);
+            }else{
+                return $this->sendResponse(['error' => 'sorry, cant add this category to this brand id because parent is different'], 'fail', 400);
+            }
+        }
         return $this->sendResponse([]);
     }
 
@@ -51,7 +66,18 @@ class CategoriesController extends Controller
         if(isset($data['image'])){
             $data['image'] = FileHelper::update_file('categories',$data['image'],$category->image);
         }
+        if(isset($data['brand_id'])){
+            return $this->sendResponse(['error' => 'sorry, it is forbidden to update brand id'], 'fail', 400);
+         }
+        if(isset($data['parent_id'])){
+           return $this->sendResponse(['error' => 'sorry, it is forbidden to update parent id'], 'fail', 400);
+        }
         $category->update($data);
+        return $this->sendResponse([]);
+    }
+
+    public function destroy(Category $category){
+        $category->delete();
         return $this->sendResponse([]);
     }
 

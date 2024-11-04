@@ -26,7 +26,8 @@ class MainCategoryFormValidation extends AbstractFormRequest
         return [
             'name_en' => ['required','string'],
             'name_ar' => ['required','string'],
-            'parent_id' => ['nullable' , 'numeric'],
+            'parent_id' => ['nullable' , 'numeric','exists:categories,id'],
+            'brand_id' => ['nullable' , 'numeric','exists:brands,id','required_with:parent_id'],
             'image' => ['nullable' ,'image' , 'mimes:jpg,jpeg,gif,png,svg'],
         ];
     }
