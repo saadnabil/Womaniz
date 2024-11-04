@@ -63,7 +63,7 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
 
         /**categories */
         Route::get('categories/lastParentChildCategories/{parentCategory}' , [CategoriesController::class, 'getLastChildCategoriesForParentCategory']);
-        Route::resource('categories' , CategoriesController::class)->only('index','store');
+        Route::resource('categories' , CategoriesController::class)->only('index','store','update');
 
         /**brands */
         Route::resource('brands' , BrandsController::class)->only('index','store');
