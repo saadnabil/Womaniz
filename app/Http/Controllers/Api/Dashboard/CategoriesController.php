@@ -54,6 +54,7 @@ class CategoriesController extends Controller
                     'category_id' => $category->id,
                     'brand_id' => $data['brand_id'],
                 ]);
+                $data['type'] = 'brand_category';
             }else{
                 return $this->sendResponse(['error' => 'sorry, cant add this category to this brand id because parent is different'], 'fail', 400);
             }
