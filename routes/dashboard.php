@@ -66,7 +66,7 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
         Route::resource('categories' , CategoriesController::class)->only('index','store','update','destroy');
 
         /**brands */
-        Route::resource('brands' , BrandsController::class)->only('index','store');
+        Route::resource('brands' , BrandsController::class)->only('index','store','update','destroy');
 
         /**activities */
         Route::resource('activities', ActivitiesController::class)->only('index');

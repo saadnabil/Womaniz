@@ -23,12 +23,18 @@ class BrandFormValidation extends AbstractFormRequest
      */
     public function rules()
     {
-        return [
+        $data =  [
             'name_en' => ['required','string'],
             'name_ar' => ['required','string'],
-            'parent_category_ids' => ['required' , 'array'],
-            'parent_category_ids.*' => ['required' , 'numeric'],
-            'icon' => ['required' ,'image' , 'mimes:jpg,jpeg,gif,png,svg'],
         ];
+        if(request()->isMethod('post')){
+            $data['parent_category_ids'] = ['required' , 'array'];
+            $data['parent_category_ids.*'] =  ['required' , 'numeric'];
+            $data['icon'] = ['required' ,'image' , 'mimes:jpg,jpeg,gif,png,svg'];
+        }
+        if(request()->isMethod('put')){
+            $data['icon'] = ['nullable' ,'image' , 'mimes:jpg,jpeg,gif,png,svg'];
+        }
+        return $data;
     }
 }
