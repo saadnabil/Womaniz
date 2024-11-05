@@ -3,7 +3,7 @@ namespace App\Http\Controllers\Api\Dashboard;
 
 use App\Helpers\FileHelper;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Dashboard\MainCategoryFormValidation;
+use App\Http\Requests\Dashboard\StoreCategoryValidation;
 use App\Http\Resources\Api\CategoryResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Category;
@@ -36,13 +36,14 @@ class CategoriesController extends Controller
         return $lastChildren;
     }
 
-    public function store(MainCategoryFormValidation $request){
+    public function store(StoreCategoryValidation $request){
         $data = $request->validated();
         if(isset($data['image'])){
             $data['image'] = FileHelper::upload_file('categories',$data['image']);
         }
         $data['type'] = 'app_category';
         $data['country_id'] = auth()->user()->country_id;
+        $data['type'] = isset($data['brand_id']) ? 'brand_category' : 'app_category';
         $category = Category::create($data);
         if(isset($data['brand_id'])){
             $checkParentHasThisBrand = CategoryBrand::where([
@@ -54,7 +55,6 @@ class CategoriesController extends Controller
                     'category_id' => $category->id,
                     'brand_id' => $data['brand_id'],
                 ]);
-                $data['type'] = 'brand_category';
             }else{
                 return $this->sendResponse(['error' => 'sorry, cant add this category to this brand id because parent is different'], 'fail', 400);
             }
@@ -62,7 +62,7 @@ class CategoriesController extends Controller
         return $this->sendResponse([]);
     }
 
-    public function update(MainCategoryFormValidation $request, Category $category){
+    public function update(StoreCategoryValidation $request, Category $category){
         $data = $request->validated();
         if(isset($data['image'])){
             $data['image'] = FileHelper::update_file('categories',$data['image'],$category->image);

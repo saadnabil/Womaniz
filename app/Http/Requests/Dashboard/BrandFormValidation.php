@@ -26,8 +26,9 @@ class BrandFormValidation extends AbstractFormRequest
         return [
             'name_en' => ['required','string'],
             'name_ar' => ['required','string'],
-            'category_id' => ['nullable' , 'numeric'],
-            'icon' => ['nullable' ,'image' , 'mimes:jpg,jpeg,gif,png,svg'],
+            'parent_category_ids' => ['required' , 'array'],
+            'parent_category_ids.*' => ['required' , 'numeric'],
+            'icon' => ['required' ,'image' , 'mimes:jpg,jpeg,gif,png,svg'],
         ];
     }
 }

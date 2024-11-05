@@ -29,16 +29,18 @@ class BrandsController extends Controller
             $data['image'] = FileHelper::upload_file('categories',$data['image']);
         }
         $data['country_id'] = auth()->user()->country_id;
-        $category_id = $data['category_id'];
-        unset($data['category_id']);
+        $parent_category_ids = $data['parent_category_ids'];
+        unset($data['parent_category_ids']);
         if(isset($data['icon'])){
             $data['icon'] = FileHelper::upload_file('brands',$data['icon']);
         }
         $brand = Brand::create($data);
-        CategoryBrand::create([
-            'category_id' => $category_id,
-            'brand_id' => $brand->id
-        ]);
+        foreach($parent_category_ids as  $parent_category_id){
+            CategoryBrand::create([
+                'category_id' => $parent_category_id,
+                'brand_id' => $brand->id
+            ]);
+        }
         return $this->sendResponse([]);
     }
 
