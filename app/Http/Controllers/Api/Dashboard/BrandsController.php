@@ -4,14 +4,12 @@ namespace App\Http\Controllers\Api\Dashboard;
 use App\Helpers\FileHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\BrandFormValidation;
-use App\Http\Requests\Dashboard\MainCategoryFormValidation;
-use App\Http\Resources\Api\CategoryResource;
+use App\Http\Resources\Dashboard\BrandCategoryResource;
+use App\Http\Resources\Dashboard\BrandCateroryResource;
 use App\Http\Resources\Dashboard\BrandResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Brand;
-use App\Models\Category;
 use App\Models\CategoryBrand;
-use Illuminate\Http\Request;
 
 class BrandsController extends Controller
 {
@@ -59,6 +57,11 @@ class BrandsController extends Controller
         $brand->categories()->delete(); // Deletes all related categories
         $brand->delete();
         return $this->sendResponse([]);
+    }
+
+    public function subCategories(Brand $brand){
+        $brand->load('categories');
+        return $this->sendResponse(new BrandCategoryResource($brand));
     }
 
 }

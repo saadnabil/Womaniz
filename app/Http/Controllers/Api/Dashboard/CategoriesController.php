@@ -5,6 +5,8 @@ use App\Helpers\FileHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\StoreCategoryValidation;
 use App\Http\Resources\Api\CategoryResource;
+use App\Http\Resources\Dashboard\ChildCategoryResource;
+use App\Http\Resources\Dashboard\MainCategoryResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Category;
 use App\Models\CategoryBrand;
@@ -15,6 +17,20 @@ class CategoriesController extends Controller
     public function index(){
         $categories = Category::whereNull('parent_id')->where(['type' => 'app_category' , 'country_id'=> 1 /** will replace it with country id */, 'is_salon' => 0])->with('children','brands.categories')->get();
         return $this->sendResponse(CategoryResource::collection($categories));
+    }
+
+    public function mainCategories(){
+        $categories = Category::where('parent_id',null)->where([
+            'type' => 'app_category' ,
+            'country_id'=> auth()->user()->country_id,
+            'is_salon' => 0
+        ])->get();
+        return $this->sendResponse(MainCategoryResource::collection($categories));
+    }
+
+    public function subCategories(Category $category){
+        $category->load('children','brands');
+        return $this->sendResponse(new ChildCategoryResource($category));
     }
 
     public function getLastChildCategoriesForParentCategory($parentCategoryId){
