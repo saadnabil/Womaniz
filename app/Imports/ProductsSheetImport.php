@@ -58,8 +58,8 @@ class ProductsSheetImport implements ToCollection, WithHeadingRow
 
     private function insertProductImages($productId, $row)
     {
-        foreach ($row as $column => $value) {
-            if (str_starts_with($column, 'image') && !empty($value)) {
+        foreach ($row as $key => $value) {
+            if (str_starts_with($key, 'image') && !empty($value)) {
                 ProductImage::create([
                     'product_id' => $productId,
                     'image' => $value,
