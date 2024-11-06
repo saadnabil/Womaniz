@@ -7,6 +7,7 @@ use App\Http\Requests\Dashboard\StoreCategoryValidation;
 use App\Http\Resources\Api\CategoryCustomDataResource;
 use App\Http\Resources\Api\CategoryResource;
 use App\Http\Resources\Dashboard\ChildCategoryResource;
+use App\Http\Resources\Dashboard\DataTableCategoryResource;
 use App\Http\Resources\Dashboard\MainCategoryResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Category;
@@ -20,17 +21,7 @@ class CategoriesController extends Controller
         return $this->sendResponse(CategoryResource::collection($categories));
     }
 
-    /**Ayman request this api from saad */
-    public function categoriesCustomData(){
-        $categories = Category::with('children')->where('parent_id',null)->where([
-            'type' => 'app_category' ,
-            'country_id'=> auth()->user()->country_id,
-            'is_salon' => 0
-        ])->get();
-        return $this->sendResponse(CategoryCustomDataResource::collection($categories));
-    }
 
-    /**Ayman request this api from saad */
 
     public function mainCategories(){
         $categories = Category::where('parent_id',null)->where([
@@ -38,12 +29,12 @@ class CategoriesController extends Controller
             'country_id'=> auth()->user()->country_id,
             'is_salon' => 0
         ])->get();
-        return $this->sendResponse(MainCategoryResource::collection($categories));
+        return $this->sendResponse(DataTableCategoryResource::collection($categories));
     }
 
     public function subCategories(Category $category){
-        $category->load('children','brands');
-        return $this->sendResponse(new ChildCategoryResource($category));
+        $category->load('children');
+        return $this->sendResponse(DataTableCategoryResource::collection($category->children));
     }
 
     public function getLastChildCategoriesForParentCategory($parentCategoryId){

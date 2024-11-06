@@ -7,6 +7,7 @@ use App\Http\Requests\Dashboard\BrandFormValidation;
 use App\Http\Resources\Dashboard\BrandCategoryResource;
 use App\Http\Resources\Dashboard\BrandCateroryResource;
 use App\Http\Resources\Dashboard\BrandResource;
+use App\Http\Resources\Dashboard\DataTableCategoryResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Brand;
 use App\Models\CategoryBrand;
@@ -61,7 +62,7 @@ class BrandsController extends Controller
 
     public function subCategories(Brand $brand){
         $brand->load('categories');
-        return $this->sendResponse(new BrandCategoryResource($brand));
+        return $this->sendResponse(DataTableCategoryResource::collection($brand->categories));
     }
 
 }

@@ -62,9 +62,6 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
         Route::resource('orders' , OrdersController::class)->only('index','show');
 
         /**categories */
-        /**Ayman request this api from saad */
-        Route::get('categories/categoriesCustomData' , [CategoriesController::class, 'categoriesCustomData']);
-        /**Ayman request this api from saad */
         Route::get('categories/lastParentChildCategories/{parentCategory}' , [CategoriesController::class, 'getLastChildCategoriesForParentCategory']);
         Route::get('categories/main' , [CategoriesController::class, 'mainCategories']);
         Route::get('categories/sub/{category}' , [CategoriesController::class, 'subCategories']);

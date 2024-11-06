@@ -5,7 +5,7 @@ namespace App\Http\Resources\Dashboard;
 use App\Models\Salon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class MainCategoryResource extends JsonResource
+class DataTableCategoryResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,9 +17,12 @@ class MainCategoryResource extends JsonResource
     {
         $data = [
             'id' => $this->id,
-            'name' => $this->name,
+            'nameEn' => $this->name_en,
+            'nameAr' => $this->name_ar,
             'image' => $this->image,
-            'isLastLevel' => $this->children->count() > 0 ? 0 : 1,
+            'isLastLevel' => $this->children->count() > 0 ? true : false,
+            'isParent' => !$this->parent_id ? true : false,
+            'isChild' =>  $this->parent_id ? true : false,
         ];
         return $data;
     }
