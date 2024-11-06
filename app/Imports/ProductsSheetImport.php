@@ -61,7 +61,7 @@ class ProductsSheetImport implements ToCollection, WithHeadingRow
             if (str_starts_with($column, 'image') && !empty($value)) {
                 ProductImage::create([
                     'product_id' => $productId,
-                    'image_url' => $value,
+                    'image' => $value,
                 ]);
             }
         }
