@@ -80,13 +80,21 @@ class ProductsSheetImport implements ToCollection, WithHeadingRow
             }
         }
 
-        // Insert each image
-        foreach ($images as $image) {
-            ProductImage::create([
-                'product_id' => $productId,
-                'image' => $image,
-            ]);
+        // Log the collected images for debugging
+        Log::info("Collected images for product ID $productId: ", $images);
+
+        // Insert each image if there are any in the array
+        if (!empty($images)) {
+            foreach ($images as $image) {
+                ProductImage::create([
+                    'product_id' => $productId,
+                    'image' => $image,
+                ]);
+            }
+        } else {
+            Log::warning("No images found for product ID $productId");
         }
     }
+
 }
 
