@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Dashboard;
 use App\Helpers\FileHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\StoreCategoryValidation;
+use App\Http\Resources\Api\CategoryCustomDataResource;
 use App\Http\Resources\Api\CategoryResource;
 use App\Http\Resources\Dashboard\ChildCategoryResource;
 use App\Http\Resources\Dashboard\MainCategoryResource;
@@ -15,9 +16,21 @@ class CategoriesController extends Controller
 {
     use ApiResponseTrait;
     public function index(){
-        $categories = Category::whereNull('parent_id')->where(['type' => 'app_category' , 'country_id'=> 1 /** will replace it with country id */, 'is_salon' => 0])->with('children','brands.categories')->get();
+        $categories = Category::whereNull('parent_id')->where(['type' => 'app_category' , 'country_id'=> auth()->user()->country_id, 'is_salon' => 0])->with('children','brands.categories')->get();
         return $this->sendResponse(CategoryResource::collection($categories));
     }
+
+    /**Ayman request this api from saad */
+    public function categoriesCustomData(){
+        $categories = Category::with('children')->where('parent_id',null)->where([
+            'type' => 'app_category' ,
+            'country_id'=> auth()->user()->country_id,
+            'is_salon' => 0
+        ])->get();
+        return $this->sendResponse(CategoryCustomDataResource::collection($categories));
+    }
+
+    /**Ayman request this api from saad */
 
     public function mainCategories(){
         $categories = Category::where('parent_id',null)->where([
