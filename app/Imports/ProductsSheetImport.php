@@ -34,6 +34,7 @@ class ProductsSheetImport implements ToCollection, WithHeadingRow
 
                 // Insert categories
                 $this->insertProductCategories($product->id, $row['categories_id']);
+                $this->insertProductImages($product->id, $row);
 
             });
         }
@@ -52,4 +53,18 @@ class ProductsSheetImport implements ToCollection, WithHeadingRow
             }
         }
     }
+
+
+    private function insertProductImages($productId, $row)
+    {
+        foreach ($row as $column => $value) {
+            if (str_starts_with($column, 'image') && !empty($value)) {
+                ProductImage::create([
+                    'product_id' => $productId,
+                    'image_url' => $value,
+                ]);
+            }
+        }
+    }
 }
+
