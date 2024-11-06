@@ -67,5 +67,26 @@ class ProductsSheetImport implements ToCollection, WithHeadingRow
             }
         }
     }
+
+
+    private function insertProductImages($productId, $row)
+    {
+        // Collect all image columns into an array
+        $images = [];
+
+        foreach ($row as $key => $value) {
+            if (str_starts_with($key, 'image') && !empty($value)) {
+                $images[] = $value;
+            }
+        }
+
+        // Insert each image
+        foreach ($images as $image) {
+            ProductImage::create([
+                'product_id' => $productId,
+                'image' => $image,
+            ]);
+        }
+    }
 }
 
