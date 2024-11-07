@@ -20,7 +20,6 @@ class ProductsImport implements WithMultipleSheets
             'Products' => new ProductsSheetImport(),
             'Attributes' => new AttributesSheetImport(),
             'Specifications' => new SpecificationsSheetImport(),
-            'Images' => new ImagesSheetImport(),
         ];
     }
 }
