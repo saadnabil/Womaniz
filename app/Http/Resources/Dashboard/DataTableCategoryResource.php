@@ -23,6 +23,7 @@ class DataTableCategoryResource extends JsonResource
             'isLastLevel' => $this->children->count() > 0 ? true : false,
             'isParent' => $this->children->count() > 0 ? true : false,
             'isChild' =>  $this->parent_id ? true : false,
+            'hasProducts' => $this->products->count() > 0 ? true : false,
         ];
         return $data;
     }
