@@ -21,9 +21,18 @@ class CategoryResource extends JsonResource
             'name' => $this->name,
             'image' => $this->image,
             'isLastLevel' => $this->children->count() > 0 ? 0 : 1,
-            'brands' => BrandResource::collection($this->brands),
-            'childs' => CategoryResource::collection($this->children),
         ];
+
+        if($this->parent_id == null && $this->is_salon != 1 && $this->type == 'app_category'){
+            $data['brands'] = BrandResource::collection($this->brands);
+        }
+
+        if($this->children->count() > 0){
+            $data['childs'] = CategoryResource::collection($this->children);
+        }
+
+
+
         return $data;
     }
 }
