@@ -20,11 +20,12 @@ class DataTableCategoryResource extends JsonResource
             'nameEn' => $this->name_en,
             'nameAr' => $this->name_ar,
             'image' => $this->image,
-            'isLastLevel' => $this->children->count() > 0 ? true : false,
+            'isLastLevel' => $this->children->count() > 0 ? false : true,
             'isParent' => $this->children->count() > 0 ? true : false,
             'isChild' =>  $this->parent_id ? true : false,
             'hasProducts' => $this->products->count() > 0 ? true : false,
         ];
+
         return $data;
     }
 }

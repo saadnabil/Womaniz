@@ -34,7 +34,6 @@ class CheckInsertProductCategories implements Rule
         if (!$category) {
             return false;
             $this->message = 'Category does not exist.';
-
         }
 
         if ($category->children->count() > 0) {
