@@ -4,6 +4,7 @@ namespace App\Http\Requests\Dashboard;
 
 use App\Http\Requests\AbstractFormRequest;
 use App\Rules\CheckInsertProductCategories;
+use App\Rules\Dashboard\CheckInsertedCategories;
 use App\Rules\Dashboard\CheckSubTypeRule;
 
 class ProductValidation extends AbstractFormRequest
@@ -35,7 +36,7 @@ class ProductValidation extends AbstractFormRequest
             'discount' =>  ['required', 'numeric' ,'min:0'],
             'stock' => ['required','numeric','min:1'],
             'categories' => ['required', 'array'],
-            'categories.*.id' => ['required', 'numeric', new CheckInsertProductCategories()],
+            'categories.*.id' => ['required', 'numeric'],
             'brand_id' => ['required' , 'numeric'],
             'model_id' => ['required'],
             'vendor_id' => ['nullable','numeric'],
