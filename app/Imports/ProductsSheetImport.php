@@ -8,14 +8,33 @@ use App\Models\CategoryProduct;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 
+HeadingRowFormatter::extend('custom', function($value, $key) {
+    if ($value === 'image') {
+        return 'image_' . $key;
+    }
+    return $value;
+});
 class ProductsSheetImport implements ToCollection, WithHeadingRow
 {
+
+    public function __construct()
+    {
+        // Set the formatter to custom
+        HeadingRowFormatter::default('custom');
+    }
     public function collection(Collection $rows)
     {
+
+
         foreach ($rows as $row) {
             DB::transaction(function () use ($row) {
+
+                $thumbnail = $this->getFirstImage($row);
+
                 $product = Product::create([
                     'name_en' => $row['name_en'],
                     'name_ar' => $row['name_ar'],
@@ -30,7 +49,7 @@ class ProductsSheetImport implements ToCollection, WithHeadingRow
                     'seller_sku' => $row['seller_sku'],
                     'vendor_id' => $row['vendor_id'],
                     'country_id' => 1,
-                    'thumbnail' => $row['image'],
+                    'thumbnail' => $thumbnail,
                 ]);
 
                 // Insert categories
@@ -56,34 +75,34 @@ class ProductsSheetImport implements ToCollection, WithHeadingRow
     }
 
 
-    // private function insertProductImages($productId, $row)
-    // {
-    //     foreach ($row as $key => $value) {
-    //         if (str_starts_with($key, 'image') && !empty($value)) {
-    //             ProductImage::create([
-    //                 'product_id' => $productId,
-    //                 'image' => $value,
-    //             ]);
-    //         }
-    //     }
-    // }
-
+    private function getFirstImage($row)
+    {
+        // Loop through the row to find the first 'image_*' key with a value
+        foreach ($row as $key => $value) {
+            if (str_starts_with($key, 'image_') && !empty($value)) {
+                return $value; // Return the first image found
+            }
+        }
+        return null; // Return null if no image is found
+    }
 
     private function insertProductImages($productId, $row)
     {
-        // Collect all image columns into an array
+        // Collect all columns that start with 'image_' (from custom formatter)
         $images = [];
-
         foreach ($row as $key => $value) {
-            if (str_starts_with($key, 'image') && !empty($value)) {
+            if (str_starts_with($key, 'image_') && !empty($value)) {
                 $images[] = $value;
+                Log::info('Collected images for product ID ' . $key);
+
             }
+
         }
 
-        // Log the collected images for debugging
-        Log::info("Collected images for product ID $productId: ", $images);
+        // Log collected images for debugging
+        Log::info('Collected images for product ID ' . $productId . ': ', $images);
 
-        // Insert each image if there are any in the array
+        // Insert images if found
         if (!empty($images)) {
             foreach ($images as $image) {
                 ProductImage::create([
@@ -92,7 +111,7 @@ class ProductsSheetImport implements ToCollection, WithHeadingRow
                 ]);
             }
         } else {
-            Log::warning("No images found for product ID $productId");
+            Log::warning('No images found for product ID ' . $productId);
         }
     }
 
