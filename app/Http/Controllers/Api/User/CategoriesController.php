@@ -14,7 +14,6 @@ use Illuminate\Http\Request;
 class CategoriesController extends Controller
 {
     use ApiResponseTrait;
-
     public function index(){
         $categories = Category::whereNull('parent_id')->where(['type' => 'app_category' , 'country_id'=> auth()->user()->country_id])->with('children','brands.categories','salons.branches.services.children','salons.branches.experts.times')->get();
         return $this->sendResponse(CategoryResource::collection($categories));
@@ -27,7 +26,7 @@ class CategoriesController extends Controller
 
     public function subCategories(Category $category){
         $category->load('children','brands');
-        return $this->sendResponse(new CategoryResource($category));
+        return $this->sendResponse( CategoryResource::collection($category->children));
     }
 
 }
