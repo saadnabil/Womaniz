@@ -21,7 +21,7 @@ class DataTableCategoryResource extends JsonResource
             'nameAr' => $this->name_ar,
             'image' => $this->image,
             'isLastLevel' => $this->children->count() > 0 ? true : false,
-            'isParent' => $this->children->count > 0 ? true : false,
+            'isParent' => $this->children->count() > 0 ? true : false,
             'isChild' =>  $this->parent_id ? true : false,
         ];
         return $data;

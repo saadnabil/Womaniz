@@ -16,7 +16,7 @@ class CheckInsertProductCategories implements Rule
     public function __construct()
     {
         //
-        $this->message = 'An error occured!';
+
     }
 
     /**
@@ -32,8 +32,9 @@ class CheckInsertProductCategories implements Rule
         $category = Category::where('id', $categoryId)->with('children')->first();
 
         if (!$category) {
-            $this->message = 'Category does not exist.';
             return false;
+            $this->message = 'Category does not exist.';
+
         }
 
         if ($category->children->count() > 0) {
@@ -52,6 +53,6 @@ class CheckInsertProductCategories implements Rule
      */
     public function message()
     {
-        return $this->message;
+        return 'fdfdfdfdfd';
     }
 }
