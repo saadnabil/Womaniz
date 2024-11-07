@@ -28,7 +28,7 @@ class CategoryResource extends JsonResource
         }
 
         if($this->children->count() > 0){
-            $data['childs'] = CategoryResource::collection($this->children);
+            $data['childs'] = MainCategoryResource::collection($this->children);
         }
 
 
