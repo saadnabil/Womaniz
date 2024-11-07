@@ -22,7 +22,7 @@ class CategoryResource extends JsonResource
             'image' => $this->image,
             'isLastLevel' => $this->children->count() > 0 ? 0 : 1,
             'brands' => BrandResource::collection($this->brands),
-            'childs' => MainCategoryResource::collection($this->children),
+            'childs' => CategoryResource::collection($this->children),
         ];
         return $data;
     }
