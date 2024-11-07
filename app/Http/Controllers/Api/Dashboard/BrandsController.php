@@ -61,7 +61,7 @@ class BrandsController extends Controller
     }
 
     public function subCategories(Brand $brand){
-        $brand->load('categories');
+        $brand->load('categories.children');
         return $this->sendResponse(DataTableCategoryResource::collection($brand->categories));
     }
 

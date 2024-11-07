@@ -21,10 +21,8 @@ class CategoriesController extends Controller
         return $this->sendResponse(CategoryResource::collection($categories));
     }
 
-
-
     public function mainCategories(){
-        $categories = Category::where('parent_id',null)->where([
+        $categories = Category::with('children')->where('parent_id',null)->where([
             'type' => 'app_category' ,
             'country_id'=> auth()->user()->country_id,
             'is_salon' => 0
