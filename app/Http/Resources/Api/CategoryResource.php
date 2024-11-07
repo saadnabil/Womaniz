@@ -5,7 +5,7 @@ namespace App\Http\Resources\Api;
 use App\Models\Salon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CategorySubResource extends JsonResource
+class CategoryResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,7 +16,10 @@ class CategorySubResource extends JsonResource
     public function toArray($request)
     {
 
-        return[
+        $data = [
+            'id' => $this->id,
+            'name' => $this->name,
+            'image' => $this->image,
             'isLastLevel' => $this->children->count() > 0 ? 0 : 1,
             'brands' => BrandResource::collection($this->brands),
             'childs' => MainCategoryResource::collection($this->children),

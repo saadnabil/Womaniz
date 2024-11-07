@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\CategoryResource;
-use App\Http\Resources\Api\CategorySubResource;
 use App\Http\Resources\Api\MainCategoryResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Brand;
@@ -27,7 +26,7 @@ class CategoriesController extends Controller
 
     public function subCategories(Category $category){
         $category->load('children','brands');
-        return $this->sendResponse( CategorySubResource::collection($category->children));
+        return $this->sendResponse(new CategoryResource($category));
     }
 
 }
