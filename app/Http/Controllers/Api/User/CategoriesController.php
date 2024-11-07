@@ -26,7 +26,6 @@ class CategoriesController extends Controller
 
     public function subCategories(Category $category){
         $category->load('children','brands');
-        return response()->json($category);
         return $this->sendResponse(new CategoryResource($category));
     }
 
