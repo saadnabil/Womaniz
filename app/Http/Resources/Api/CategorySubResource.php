@@ -17,6 +17,7 @@ class CategorySubResource extends JsonResource
     {
 
         return[
+            'isLastLevel' => $this->children->count() > 0 ? 0 : 1,
             'brands' => BrandResource::collection($this->brands),
             'childs' => MainCategoryResource::collection($this->children),
         ];
