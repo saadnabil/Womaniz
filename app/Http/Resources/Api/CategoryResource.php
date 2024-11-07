@@ -16,21 +16,10 @@ class CategoryResource extends JsonResource
     public function toArray($request)
     {
 
-        $data = [
-            'id' => $this->id,
-            'name' => $this->name,
-            'image' => $this->image,
-            'isLastLevel' => $this->children->count() > 0 ? 0 : 1,
+        return[
+            'brands' => BrandResource::collection($this->brands),
+            'childs' => MainCategoryResource::collection($this->children),
         ];
-
-        if($this->parent_id == null && $this->is_salon != 1 && $this->type == 'app_category'){
-            $data['brands'] = BrandResource::collection($this->brands);
-        }
-
-        if($this->children->count() > 0){
-            $data['childs'] = MainCategoryResource::collection($this->children);
-        }
-
 
 
         return $data;
