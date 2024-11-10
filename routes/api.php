@@ -40,6 +40,7 @@ Route::group(['prefix' => 'v1/user'],function(){
 
         Route::group(['prefix' => 'brands'],function(){
             Route::get('/subCategories/{brand}',[BrandsController::class,'subCategories']);
+            Route::get('/products/{brand}', [BrandsController::class,'products']);
         });
 
         Route::group(['prefix' => 'categories'],function(){

@@ -7,6 +7,7 @@ use App\Http\Resources\Api\BrandCateroryResource;
 use App\Http\Resources\Api\BrandResource;
 use App\Http\Resources\Api\CategoryResource;
 use App\Http\Resources\Api\MainCategoryResource;
+use App\Http\Resources\Api\ProductResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Brand;
 use App\Models\Category;
@@ -19,5 +20,11 @@ class BrandsController extends Controller
     public function subCategories(Brand $brand){
         $brand->load('categories');
         return $this->sendResponse(new BrandCateroryResource($brand));
+    }
+
+    public function products(Brand $brand){
+        $brand->load('products');
+        return $this->sendResponse(ProductResource::collection($brand->categories));
+
     }
 }
