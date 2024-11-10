@@ -27,7 +27,7 @@ class BrandFormValidation extends AbstractFormRequest
         $data =  [
             'name_en' => ['required','string'],
             'name_ar' => ['required','string'],
-            'icon' => ['nullable' ,'image' , 'mimes:jpg,jpeg,gif,png,svg'],
+            'icon' => ['required' ,'image' , 'mimes:jpg,jpeg,gif,png,svg'],
         ];
         return $data;
     }
