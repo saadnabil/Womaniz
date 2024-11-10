@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Dashboard;
 
 use App\Http\Requests\AbstractFormRequest;
+use App\Rules\Dashboard\CheckBrandCategoryIsMainCategory;
 use Illuminate\Foundation\Http\FormRequest;
 
 class BrandFormValidation extends AbstractFormRequest
@@ -26,15 +27,8 @@ class BrandFormValidation extends AbstractFormRequest
         $data =  [
             'name_en' => ['required','string'],
             'name_ar' => ['required','string'],
+            'icon' => ['nullable' ,'image' , 'mimes:jpg,jpeg,gif,png,svg'],
         ];
-        if(request()->isMethod('post')){
-            $data['parent_category_ids'] = ['required' , 'array'];
-            $data['parent_category_ids.*'] =  ['required' , 'numeric'];
-            $data['icon'] = ['required' ,'image' , 'mimes:jpg,jpeg,gif,png,svg'];
-        }
-        if(request()->isMethod('put')){
-            $data['icon'] = ['nullable' ,'image' , 'mimes:jpg,jpeg,gif,png,svg'];
-        }
         return $data;
     }
 }

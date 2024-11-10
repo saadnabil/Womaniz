@@ -25,22 +25,11 @@ class BrandsController extends Controller
 
     public function store(BrandFormValidation $request){
         $data = $request->validated();
-        if(isset($data['image'])){
-            $data['image'] = FileHelper::upload_file('categories',$data['image']);
-        }
         $data['country_id'] = auth()->user()->country_id;
-        $parent_category_ids = $data['parent_category_ids'];
-        unset($data['parent_category_ids']);
         if(isset($data['icon'])){
             $data['icon'] = FileHelper::upload_file('brands',$data['icon']);
         }
         $brand = Brand::create($data);
-        foreach($parent_category_ids as  $parent_category_id){
-            CategoryBrand::create([
-                'category_id' => $parent_category_id,
-                'brand_id' => $brand->id
-            ]);
-        }
         return $this->sendResponse([]);
     }
 
