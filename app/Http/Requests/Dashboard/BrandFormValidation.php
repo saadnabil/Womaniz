@@ -24,11 +24,20 @@ class BrandFormValidation extends AbstractFormRequest
      */
     public function rules()
     {
-        $data =  [
-            'name_en' => ['required','string'],
-            'name_ar' => ['required','string'],
-            'icon' => ['required' ,'image' , 'mimes:jpg,jpeg,gif,png,svg'],
-        ];
+
+
+            $data = [
+                'name_en' => ['required','string'],
+                'name_ar' => ['required','string'],
+            ];
+            if(request()->isMethod('POST')){
+                $data['icon'] = ['required' ,'image' , 'mimes:jpg,jpeg,gif,png,svg'];
+            }
+            if(request()->isMethod('PUT')){
+                $data['icon'] = ['nullable' ,'image' , 'mimes:jpg,jpeg,gif,png,svg'];
+            }
+
+
         return $data;
     }
 }
