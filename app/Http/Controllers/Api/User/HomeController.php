@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\User;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\BannerResource;
 use App\Http\Resources\Api\BrandResource;
+use App\Http\Resources\Api\CategoryHomeScreenResource;
 use App\Http\Resources\Api\CategoryResource;
 use App\Http\Resources\Api\HomeBrandResource;
 use App\Http\Resources\Api\MainCategoryResource;
@@ -21,11 +22,13 @@ class HomeController extends Controller
     //
     use ApiResponseTrait;
     public function partOne(){
-
         $user = auth()->user();
 
+
+        /**banners */
         $banners = Banner::where('country_id',$user->country_id)->latest()->get();
 
+        /**main categories */
         $categories = Category::whereNull('parent_id')
                                 ->where([
                                     'type' => 'app_category',
@@ -33,21 +36,31 @@ class HomeController extends Controller
                                     'is_salon' => 0
                                 ])
                                 ->get();
-        $brands = Brand::where([
-                            'country_id' => $user->country_id,
-                        ])->get();
 
+       /**last level app categories */
+       $lastLevelSubCategories = Category::where([
+                                    'type' => 'app_category',
+                                    'country_id' => $user->country_id,
+                                    'is_salon' => 0
+                                ])
+                                ->whereNotNull('parent_id')
+                                ->whereDoesntHave('children')
+                                ->get();
+
+        /**super deals products */
         $superDealsProducts = Product::with('images','variants.size','country')->inRandomOrder()->take(5)->get();
 
+        /**recommend products */
         $recommendedProducts = Product::with('images','variants.size','country')->inRandomOrder()->take(5)->get();
 
         $data = [
             'banners' => BannerResource::collection($banners),
             'mainCategories' => MainCategoryResource::collection($categories),
-            'brands' => HomeBrandResource::collection($brands),
+            'lastLevelSubCategories' => CategoryHomeScreenResource::collection($lastLevelSubCategories),
             'recommendedProducts' => ProductResource::collection($recommendedProducts),
             'superDealsProducts' => ProductResource::collection($superDealsProducts),
         ];
+
         return $this->sendResponse($data);
     }
 
