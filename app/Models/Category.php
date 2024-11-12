@@ -62,9 +62,7 @@ class Category extends Model
         return $this->hasMany(Salon::class);
     }
 
-    public function isLastChild(){
-        return $this->children()->count() > 0 ? false : true;
-    }
+
 
     public function getNameAttribute(){
         $lang = app()->getLocale();

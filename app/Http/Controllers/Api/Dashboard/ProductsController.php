@@ -98,7 +98,7 @@ class ProductsController extends Controller
         $data = $request->validated();
         $result = $productService->createProduct($data);
         if(isset($result['error'])){
-            return $this->sendResponse(['error' => $result['error']]);
+            return $this->sendResponse(['error' => $result['error']], 'fail' , 422);
         }
         return $this->sendResponse([]);
     }

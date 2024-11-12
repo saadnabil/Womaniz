@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Helpers\FileHelper;
+use App\Models\Category;
 use App\Models\CategoryProduct;
 use App\Models\Color;
 use App\Models\Product;
@@ -78,6 +79,12 @@ class ProductService
                 }
             }
             foreach ($categories as $category) {
+                $category = Category::find($category['id']);
+                if($category->children->count() > 0){
+                    return [
+                        'error' => 'category id '.$category['id'] . ' is not last child'
+                    ];
+                }
                 CategoryProduct::create([
                     'product_id' => $product->id,
                     'category_id' => $category['id'],
@@ -102,7 +109,6 @@ class ProductService
             ];
             DB::rollback();
         }
-
     }
 
     public function updateProduct($data, $product)
