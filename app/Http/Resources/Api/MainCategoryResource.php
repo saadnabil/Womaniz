@@ -20,6 +20,7 @@ class MainCategoryResource extends JsonResource
             'name' => $this->name,
             'image' => $this->image,
             'isLastLevel' => $this->children->count() > 0 ? 0 : 1,
+            'isSalon' => $this->is_salon,
         ];
         return $data;
     }
