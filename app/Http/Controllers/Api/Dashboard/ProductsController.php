@@ -84,12 +84,9 @@ class ProductsController extends Controller
     public function bulkupload(ProductsBulkUploadValidation $request)
     {
         $data = $request->validated();
-
-        // Excel::import(new ProductImport,  $data['file']);
         $logBatch = LogBatch::startBatch();
         Excel::import(new ProductsImport,  $data['file']);
         LogBatch::endBatch($logBatch);
-
         return $this->sendResponse([]);
     }
 
