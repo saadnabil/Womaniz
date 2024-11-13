@@ -47,6 +47,10 @@ class HomeController extends Controller
                                 ->whereDoesntHave('children')
                                 ->get();
 
+        $brands = Brand::where([
+                                    'country_id' => $user->country_id,
+                                ])->get();
+
         /**super deals products */
         $superDealsProducts = Product::with('images','variants.size','country')->inRandomOrder()->take(5)->get();
 
@@ -59,6 +63,8 @@ class HomeController extends Controller
             'lastLevelSubCategories' => CategoryHomeScreenResource::collection($lastLevelSubCategories),
             'recommendedProducts' => ProductResource::collection($recommendedProducts),
             'superDealsProducts' => ProductResource::collection($superDealsProducts),
+            'brands' => HomeBrandResource::collection($brands),
+
         ];
 
         return $this->sendResponse($data);
