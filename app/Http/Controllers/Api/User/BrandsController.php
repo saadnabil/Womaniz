@@ -25,6 +25,5 @@ class BrandsController extends Controller
     public function products(Brand $brand){
         $brand->load('products');
         return $this->sendResponse(ProductResource::collection($brand->products));
-
     }
 }
