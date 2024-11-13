@@ -20,7 +20,7 @@ class CategoryHomeScreenResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'image' => $this->image,
-            'isLastLevel' => 0,
+            'isLastLevel' => 1,
         ];
         return $data;
     }
