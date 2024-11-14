@@ -28,7 +28,7 @@ class ProductsCategoriesController extends Controller
                 ]);
             }
             DB::commit();
-            return $this->sendResponse(['id' => $product->id]);
+            return $this->sendResponse([]);
         }catch(Exception $ex){
             DB::rollBack();
             return $this->sendResponse(['error' => 'An error occured !'], 'fail' , 400);

@@ -97,7 +97,7 @@ class ProductsController extends Controller
         if(isset($result['error'])){
             return $this->sendResponse(['error' => $result['error']], 'fail' , 422);
         }
-        return $this->sendResponse([]);
+        return $this->sendResponse(['id' =>  $result]);
     }
 
     public function update(ProductValidation $request, Product $product, ProductService $productService)

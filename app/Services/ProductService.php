@@ -38,20 +38,9 @@ class ProductService
                     ]);
                 }
             }
-            // foreach ($categories as $category) {
-            //     $category = Category::find($category['id']);
-            //     if($category->children->count() > 0){
-            //         return [
-            //             'error' => 'category id '.$category['id'] . ' is not last child'
-            //         ];
-            //     }
-            //     CategoryProduct::create([
-            //         'product_id' => $product->id,
-            //         'category_id' => $category['id'],
-            //     ]);
-            // }
+
             DB::commit();
-            return;
+            return $product->id;
         }catch(Exception $x){
             return [
                 'error' => 'an error occured'
