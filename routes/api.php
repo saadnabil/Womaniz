@@ -19,8 +19,6 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'v1/user'],function(){
     Route::post('fcm', [FcmController::class , 'store']);
     Route::get('fcm/testnotification', [FcmController::class , 'testnotification']);
-
-
     Route::post('login', [AuthController::class , 'login']);
     Route::post('restoreAccount/request', [AuthController::class , 'restoreAccountRequest']);
     Route::post('register', [AuthController::class , 'register']);
@@ -117,11 +115,9 @@ Route::group(['prefix' => 'v1/user'],function(){
             Route::get('/services/{salonBranch}', [SalonController::class, 'getbranchservices']);
             Route::post('/experts', [SalonController::class, 'getServicesExperts']);
             Route::post('book', [SalonController::class, 'book']);
-
             Route::post('bookStepOne', [SalonController::class, 'bookStepOne']);
             Route::post('bookStepTwo', [SalonController::class, 'bookStepTwo']);
             Route::post('bookStepThree', [SalonController::class, 'bookStepThree']);
-
         });
 
 

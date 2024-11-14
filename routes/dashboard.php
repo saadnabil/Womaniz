@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\Dashboard\InvoicesController;
 use App\Http\Controllers\Api\Dashboard\OrdersController;
 use App\Http\Controllers\Api\Dashboard\PermissionsController;
 use App\Http\Controllers\Api\Dashboard\ProductImagesController;
+use App\Http\Controllers\Api\Dashboard\ProductsCategoriesController;
 use App\Http\Controllers\Api\Dashboard\ProductsController;
 use App\Http\Controllers\Api\Dashboard\ProductSpecificationsController;
 use App\Http\Controllers\Api\Dashboard\ProductVariantSkusController;
@@ -45,6 +46,9 @@ Route::group(['prefix' => 'v1/dashboard'], function(){
 
         /**product variants */
         Route::resource('product-variant-skus', ProductVariantSkusController::class)->only('store', 'update', 'destroy');
+
+         /**product categories */
+         Route::post('product-categories/update/{product}', [ProductsCategoriesController::class, 'updateCategories']);
 
         /**product specifications */
         Route::resource('product-specifications', ProductSpecificationsController::class)->only('store', 'update', 'destroy');

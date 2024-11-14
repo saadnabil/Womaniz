@@ -127,4 +127,5 @@ class ProductsController extends Controller
         Product::whereIn('id', $data['ids'])->delete();
         return $this->sendResponse([]);
     }
+    
 }
