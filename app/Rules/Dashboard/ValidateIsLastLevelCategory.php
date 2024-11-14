@@ -30,9 +30,9 @@ class ValidateIsLastLevelCategory implements Rule
         if($category && count($category->children) > 0){
             return false;
         }elseif(!$category){
-            return true;
-        }else{
             return false;
+        }else{
+            return true;
         }
     }
     /**

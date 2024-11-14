@@ -17,7 +17,7 @@ class ProductsCategoriesController extends Controller
         $data = $request->validated();
         try{
             DB::beginTransaction();
-            $data['status'] ? $data['status'] : 'live';
+            isset($data['status']) ? $data['status'] : 'live';
             $product->update([
                 'status' => 'live',
             ]);
